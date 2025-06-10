@@ -17,6 +17,12 @@ import { Link, useLocation } from 'react-router-dom';
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import PermDataSettingIcon from '@mui/icons-material/PermDataSetting';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import SimCardIcon from '@mui/icons-material/SimCard';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 const DashboardSidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const theme = useTheme();
@@ -39,9 +45,34 @@ const DashboardSidebar = () => {
     },
     {
       icon: <RequestQuoteIcon />,
-      text: 'Tarrif Mangement',
+      text: 'Tarrif Management',
       path: '/dashboard/plan'
+    },
+    {
+      icon: <HandshakeIcon />,
+      text: 'Dealer Management',
+      path: '/dashboard/dealer'
+    }, {
+      icon: <InventoryIcon />,
+      text: 'Inventory',
+      path: '/dashboard/inventory'
+    },
+    , {
+      icon: <SimCardIcon />,
+      text: 'Sim Conversion',
+      path: '/dashboard/simConver'
     }
+    , {
+      icon: <WhatshotIcon />,
+      text: 'Marketing Campain',
+      path: '/dashboard/config'
+    }
+    , {
+      icon: <AutoGraphIcon />,
+      text: 'Reports',
+      path: '/dashboard/reports'
+    }
+
   ];
 
   return (

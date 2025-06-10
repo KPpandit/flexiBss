@@ -109,7 +109,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
   }
 
   return (
-    <Zoom in={true} timeout={600}>
+    <Zoom in={true} timeout={600} >
       <Card
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -118,6 +118,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
           minHeight: 580, // Set minimum height for consistency
           display: "flex",
           flexDirection: "column",
+          width:550,
           position: "relative",
           overflow: "hidden",
           borderRadius: 4,
@@ -229,10 +230,13 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                     label={pack.pack_code}
                     size="small"
                     sx={{
-                      backgroundColor: theme.palette.grey[100],
-                      color: theme.palette.text.secondary,
+                      background: categoryConfig.gradient,
+                      color: "white",
                       fontWeight: 600,
                       fontSize: "0.75rem",
+                      "& .MuiChip-icon": {
+                        color: "white",
+                      },
                     }}
                   />
                   <Chip
@@ -297,18 +301,18 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
           >
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Avatar
+                {/* <Avatar
                   sx={{
-                    width: 32,
-                    height: 32,
+                    width: 40,
+                    height: 40,
                     backgroundColor: theme.palette.success.main,
                   }}
                 >
-                  <PriceIcon fontSize="small" />
-                </Avatar>
+                 
+                </Avatar> */}
                 <Box>
                   <Typography variant="h5" sx={{ fontWeight: 800, color: theme.palette.success.main }}>
-                    ₹{pack.pack_price.toLocaleString()}
+                    Rs. {pack.pack_price.toLocaleString()}
                   </Typography>
                   <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
                     {pack.pricing_model} Price

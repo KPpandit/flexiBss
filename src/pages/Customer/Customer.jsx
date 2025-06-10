@@ -14,18 +14,9 @@ import {
   Tooltip,
   TextField,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Typography,
   Avatar,
   Chip,
-  Grid,
   Card,
   CardHeader,
   Divider,
@@ -33,6 +24,10 @@ import {
   Toolbar,
   Snackbar,
   Alert,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material"
 import {
   Add as AddIcon,
@@ -48,40 +43,28 @@ import {
   Female as FemaleIcon,
   Male as MaleIcon,
   Star as VIPIcon,
+  MoreVert as MoreVertIcon,
+  Info as InfoIcon,
 } from "@mui/icons-material"
-import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
 import { format } from "date-fns"
+import CustomerForm from "./CustomerForm"
+import CustomerDetails from "./CustomerDetails"
 
-// Initial customer data structure
-const initialCustomerState = {
-  name: "",
-  serviceType: "Prepaid",
-  customerType: "Individual",
-  simType: "Physical",
-  msisdn: "",
-  imsi: "",
-  vip: false,
-  gender: "Male",
-  dob: new Date(),
-  ekycToken: "",
-  ekycDate: new Date(),
-  ekycStatus: "Pending",
-}
-
-// Sample data
+// Enhanced sample data with detailed information
 const sampleCustomers = Array.from({ length: 50 }, (_, i) => ({
   id: i + 1,
   name: `Customer ${i + 1}`,
   serviceType: ["Prepaid", "Postpaid", "Corporate"][Math.floor(Math.random() * 3)],
   customerType: ["Individual", "Business"][Math.floor(Math.random() * 2)],
-  simType: ["Physical", "eSIM"][Math.floor(Math.random() * 2)],
-  msisdn: `8801${Math.floor(100000000 + Math.random() * 900000000)}`,
-  imsi: `4520${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+  simType: ["micro-SIM", "nano-SIM", "eSIM"][Math.floor(Math.random() * 3)],
+  msisdn: `230${["5", "4", "6"][Math.floor(Math.random() * 3)]}${Math.floor(1000000 + Math.random() * 9000000)}`,
+  imsi: `61701${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+
   vip: Math.random() > 0.8,
-  gender: ["Male", "Female", "Other"][Math.floor(Math.random() * 3)],
-  dob: new Date(1980 + Math.floor(Math.random() * 30), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)),
+  gender: ["Male", "Female"][Math.floor(Math.random() * 2)], // Removed "Other" option
+  dob: new Date(1995 + Math.floor(Math.random() * 30), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)),
   ekycToken: `EKYC${Math.floor(100000 + Math.random() * 900000)}`,
   ekycDate: new Date(
     2020 + Math.floor(Math.random() * 3),
@@ -89,6 +72,76 @@ const sampleCustomers = Array.from({ length: 50 }, (_, i) => ({
     Math.floor(Math.random() * 28),
   ),
   ekycStatus: ["Verified", "Pending", "Rejected"][Math.floor(Math.random() * 3)],
+  // Additional detailed information
+  simDetails: {
+    allocationDate: new Date(2025, 0, 23, 14, 31, 55),
+    iccId: `8967400324200324${Math.floor(100 + Math.random() * 900)}`,
+  },
+  currentPack: {
+    packName: ["ENT 20", "Super 4", "Premium 50", "Basic 10"][Math.floor(Math.random() * 4)],
+    activationDate: new Date(2025, 5, 3, 16, 59, 41),
+    expirationDate: new Date(2025, 5, 10, 16, 59, 41),
+    mainBalance: Math.floor(Math.random() * 100),
+    usage: {
+      totalData: { offered: 35, used: 2.93, available: 32.07 },
+      onNetCalls: { offered: "Unlimited", used: 0, available: "Unlimited" },
+      onNetSms: { offered: "Unlimited", used: 0, available: "Unlimited" },
+      offNetCalls: { offered: 10, used: 0, available: 10 },
+      offNetSms: { offered: 10, used: 0, available: 10 },
+    },
+  },
+  rechargeHistory: [
+    {
+      packName: "ENT 20",
+      activationDate: "2025-06-03 16:59:41",
+      expirationDate: "2025-06-10 16:59:41",
+      dataBalance: "35 GB",
+      onnCalls: "Unlimited",
+      offnCalls: "0 Mins",
+      onnSms: "Unlimited",
+      offnSms: "10",
+    },
+    {
+      packName: "ENT 4",
+      activationDate: "2025-05-15 20:49:04",
+      expirationDate: "2025-05-16 20:49:04",
+      dataBalance: "8 GB",
+      onnCalls: "Unlimited",
+      offnCalls: "0 Mins",
+      onnSms: "Unlimited",
+      offnSms: "10",
+    },
+    {
+      packName: "ENT 20",
+      activationDate: "2025-05-07 17:20:08",
+      expirationDate: "2025-05-14 17:20:08",
+      dataBalance: "35 GB",
+      onnCalls: "Unlimited",
+      offnCalls: "0 Mins",
+      onnSms: "Unlimited",
+      offnSms: "10",
+    },
+    {
+      packName: "Super 4",
+      activationDate: "2025-04-26 10:27:07",
+      expirationDate: "2025-04-27 10:27:07",
+      dataBalance: "8 GB",
+      onnCalls: "Unlimited",
+      offnCalls: "0 Mins",
+      onnSms: "Unlimited",
+      offnSms: "10",
+    },
+    {
+      packName: "Super 4",
+      activationDate: "2025-04-24 01:46:01",
+      expirationDate: "2025-04-25 01:46:01",
+      dataBalance: "8 GB",
+      onnCalls: "Unlimited",
+      offnCalls: "0 Mins",
+      onnSms: "Unlimited",
+      offnSms: "10",
+    },
+  ],
 }))
 
 const Customer = () => {
@@ -97,15 +150,18 @@ const Customer = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [searchTerm, setSearchTerm] = useState("")
-  const [openDialog, setOpenDialog] = useState(false)
-  const [currentCustomer, setCurrentCustomer] = useState(initialCustomerState)
+  const [openForm, setOpenForm] = useState(false)
+  const [currentCustomer, setCurrentCustomer] = useState(null)
   const [isEditMode, setIsEditMode] = useState(false)
-  
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedCustomer, setSelectedCustomer] = useState(null)
+  const [detailsDialog, setDetailsDialog] = useState(false)
+
   // Notification state
   const [notification, setNotification] = useState({
     open: false,
     message: "",
-    severity: "success", // 'success', 'error', 'warning', 'info'
+    severity: "success",
   })
 
   const handleCloseNotification = () => {
@@ -114,7 +170,9 @@ const Customer = () => {
 
   // Filter customers based on search term
   const filteredCustomers = customers.filter((customer) =>
-    Object.values(customer).some((value) => value && value.toString().toLowerCase().includes(searchTerm.toLowerCase())),
+    Object.values(customer).some((value) =>
+      value && typeof value === "object" ? false : String(value).toLowerCase().includes(searchTerm.toLowerCase()),
+    ),
   )
 
   // Pagination
@@ -127,17 +185,32 @@ const Customer = () => {
     setPage(0)
   }
 
+  // Menu handlers
+  const handleMenuClick = (event, customer) => {
+    setAnchorEl(event.currentTarget)
+    setSelectedCustomer(customer)
+  }
+
+  const handleMenuClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleViewDetails = () => {
+    setDetailsDialog(true)
+    handleMenuClose()
+  }
+
   // CRUD operations
   const handleAddCustomer = () => {
-    setCurrentCustomer(initialCustomerState)
+    setCurrentCustomer(null)
     setIsEditMode(false)
-    setOpenDialog(true)
+    setOpenForm(true)
   }
 
   const handleEditCustomer = (customer) => {
-    setCurrentCustomer({ ...customer })
+    setCurrentCustomer(customer)
     setIsEditMode(true)
-    setOpenDialog(true)
+    setOpenForm(true)
   }
 
   const handleDeleteCustomer = (id) => {
@@ -149,9 +222,9 @@ const Customer = () => {
     })
   }
 
-  const handleSaveCustomer = () => {
+  const handleSaveCustomer = (customer) => {
     if (isEditMode) {
-      setCustomers(customers.map((customer) => (customer.id === currentCustomer.id ? currentCustomer : customer)))
+      setCustomers(customers.map((c) => (c.id === customer.id ? customer : c)))
       setNotification({
         open: true,
         message: "Customer updated successfully!",
@@ -159,8 +232,27 @@ const Customer = () => {
       })
     } else {
       const newCustomer = {
-        ...currentCustomer,
+        ...customer,
         id: customers.length > 0 ? Math.max(...customers.map((c) => c.id)) + 1 : 1,
+        // Add default values for detailed information
+        simDetails: {
+          allocationDate: new Date(),
+          iccId: `8967400324200324${Math.floor(100 + Math.random() * 900)}`,
+        },
+        currentPack: {
+          packName: "New Basic Pack",
+          activationDate: new Date(),
+          expirationDate: new Date(new Date().setDate(new Date().getDate() + 30)),
+          mainBalance: 0,
+          usage: {
+            totalData: { offered: 10, used: 0, available: 10 },
+            onNetCalls: { offered: "Unlimited", used: 0, available: "Unlimited" },
+            onNetSms: { offered: "Unlimited", used: 0, available: "Unlimited" },
+            offNetCalls: { offered: 10, used: 0, available: 10 },
+            offNetSms: { offered: 10, used: 0, available: 10 },
+          },
+        },
+        rechargeHistory: [],
       }
       setCustomers([...customers, newCustomer])
       setNotification({
@@ -169,22 +261,7 @@ const Customer = () => {
         severity: "success",
       })
     }
-    setOpenDialog(false)
-  }
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setCurrentCustomer((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }))
-  }
-
-  const handleDateChange = (name, date) => {
-    setCurrentCustomer((prev) => ({
-      ...prev,
-      [name]: date || new Date(),
-    }))
+    setOpenForm(false)
   }
 
   return (
@@ -210,7 +287,6 @@ const Customer = () => {
         <Card sx={{ mb: 3 }}>
           <CardHeader
             title="Customer Management"
-            // subheader="Please go through with all the point"
             action={
               <Button
                 variant="contained"
@@ -250,15 +326,16 @@ const Customer = () => {
                   backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[900] : theme.palette.grey[100],
                 }}
               >
-                <TableRow>
-                  <TableCell sx={{ color: theme.palette.text.primary }}>Customer</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary }}>Service</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary }}>SIM Details</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary }}>VIP</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary }}>Gender</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary }}>DOB</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary }}>eKYC</TableCell>
-                  <TableCell align="right" sx={{ color: theme.palette.text.primary }}>
+                <TableRow >
+                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>Customer</TableCell>
+                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>Service</TableCell>
+                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>SIM Type</TableCell>
+                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>MSISDN</TableCell>
+                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>VIP</TableCell>
+                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>Gender</TableCell>
+                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>DOB</TableCell>
+                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>eKYC</TableCell>
+                  <TableCell align="right" sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>
                     Actions
                   </TableCell>
                 </TableRow>
@@ -290,9 +367,11 @@ const Customer = () => {
                     <TableCell>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
                         <SimCardIcon sx={{ mr: 1, color: "action.active" }} />
-                        <Typography variant="body2" sx={{ mr: 2 }}>
-                          {customer.simType}
-                        </Typography>
+                        <Typography variant="body2">{customer.simType}</Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
                         <PhoneIcon sx={{ mr: 1, color: "action.active" }} />
                         <Typography variant="body2">{customer.msisdn}</Typography>
                       </Box>
@@ -340,6 +419,11 @@ const Customer = () => {
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
+                      <Tooltip title="More Options">
+                        <IconButton onClick={(e) => handleMenuClick(e, customer)}>
+                          <MoreVertIcon />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -357,149 +441,27 @@ const Customer = () => {
           />
         </Card>
 
+        {/* More Options Menu */}
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+          <MenuItem onClick={handleViewDetails}>
+            <ListItemIcon>
+              <InfoIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>View Details</ListItemText>
+          </MenuItem>
+        </Menu>
+
         {/* Customer Form Dialog */}
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-          <DialogTitle>{isEditMode ? "Edit Customer" : "Add New Customer"}</DialogTitle>
-          <DialogContent dividers>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Full Name"
-                  name="name"
-                  value={currentCustomer.name}
-                  onChange={handleInputChange}
-                  margin="normal"
-                  variant="outlined"
-                />
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Service Type</InputLabel>
-                  <Select
-                    name="serviceType"
-                    value={currentCustomer.serviceType}
-                    onChange={handleInputChange}
-                    label="Service Type"
-                  >
-                    <MenuItem value="Prepaid">Prepaid</MenuItem>
-                    <MenuItem value="Postpaid">Postpaid</MenuItem>
-                    <MenuItem value="Corporate">Corporate</MenuItem>
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Customer Type</InputLabel>
-                  <Select
-                    name="customerType"
-                    value={currentCustomer.customerType}
-                    onChange={handleInputChange}
-                    label="Customer Type"
-                  >
-                    <MenuItem value="Individual">Individual</MenuItem>
-                    <MenuItem value="Business">Business</MenuItem>
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>SIM Type</InputLabel>
-                  <Select name="simType" value={currentCustomer.simType} onChange={handleInputChange} label="SIM Type">
-                    <MenuItem value="Physical">Physical SIM</MenuItem>
-                    <MenuItem value="eSIM">eSIM</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="MSISDN"
-                  name="msisdn"
-                  value={currentCustomer.msisdn}
-                  onChange={handleInputChange}
-                  margin="normal"
-                  variant="outlined"
-                />
-                <TextField
-                  fullWidth
-                  label="IMSI"
-                  name="imsi"
-                  value={currentCustomer.imsi}
-                  onChange={handleInputChange}
-                  margin="normal"
-                  variant="outlined"
-                />
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Gender</InputLabel>
-                  <Select name="gender" value={currentCustomer.gender} onChange={handleInputChange} label="Gender">
-                    <MenuItem value="Male">Male</MenuItem>
-                    <MenuItem value="Female">Female</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
-                  </Select>
-                </FormControl>
-                <Box sx={{ mt: 2 }}>
-                  <DatePicker
-                    label="Date of Birth"
-                    value={currentCustomer.dob}
-                    onChange={(date) => handleDateChange("dob", date)}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        margin: "normal",
-                      },
-                    }}
-                  />
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="eKYC Token"
-                  name="ekycToken"
-                  value={currentCustomer.ekycToken}
-                  onChange={handleInputChange}
-                  margin="normal"
-                  variant="outlined"
-                />
-                <Box sx={{ mt: 2 }}>
-                  <DatePicker
-                    label="eKYC Date"
-                    value={currentCustomer.ekycDate}
-                    onChange={(date) => handleDateChange("ekycDate", date)}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        margin: "normal",
-                      },
-                    }}
-                  />
-                </Box>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>eKYC Status</InputLabel>
-                  <Select
-                    name="ekycStatus"
-                    value={currentCustomer.ekycStatus}
-                    onChange={handleInputChange}
-                    label="eKYC Status"
-                  >
-                    <MenuItem value="Verified">Verified</MenuItem>
-                    <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Rejected">Rejected</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-                  <Typography variant="body1" sx={{ mr: 2 }}>
-                    VIP Customer:
-                  </Typography>
-                  <input type="checkbox" name="vip" checked={currentCustomer.vip} onChange={handleInputChange} />
-                </Box>
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-            <Button onClick={handleSaveCustomer} variant="contained" color="primary">
-              {isEditMode ? "Update" : "Save"}
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <CustomerForm
+          open={openForm}
+          onClose={() => setOpenForm(false)}
+          onSave={handleSaveCustomer}
+          customer={currentCustomer}
+          isEditMode={isEditMode}
+        />
+
+        {/* Customer Details Dialog */}
+        <CustomerDetails open={detailsDialog} onClose={() => setDetailsDialog(false)} customer={selectedCustomer} />
       </Box>
     </LocalizationProvider>
   )

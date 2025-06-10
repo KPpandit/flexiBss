@@ -75,7 +75,7 @@ const DashboardTopbar = ({ toggleTheme, mode }) => {
         </Select>
         
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <StarIcon fontSize="small" sx={{ mr: 0.5 }} />
             <Typography variant="body2">Star</Typography>
             <Badge 
@@ -83,16 +83,16 @@ const DashboardTopbar = ({ toggleTheme, mode }) => {
               color="secondary" 
               sx={{ ml: 1 }}
             />
-          </Box>
+          </Box> */}
           
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <DownloadIcon fontSize="small" sx={{ mr: 0.5 }} />
             <Typography variant="body2">470,000</Typography>
-          </Box>
+          </Box> */}
           
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <EmailIcon fontSize="small" sx={{ mr: 0.5 }} />
-            <Typography variant="body2">CONTACT@AKVEO.COM</Typography>
+            {/* <EmailIcon fontSize="small" sx={{ mr: 0.5 }} /> */}
+            <Typography variant="body2">Hello, Admin</Typography>
           </Box>
           
           <Avatar 
@@ -103,7 +103,7 @@ const DashboardTopbar = ({ toggleTheme, mode }) => {
               color: theme.palette.primary.main
             }}
           >
-            NJ
+            A
           </Avatar>
         </Box>
       </Toolbar>

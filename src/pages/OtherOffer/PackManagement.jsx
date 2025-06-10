@@ -154,7 +154,7 @@ const PackManagement = () => {
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
               <Box>
                 <Typography variant="h3" sx={{ fontWeight: 800, mb: 1, textShadow: "0 2px 4px rgba(0,0,0,0.3)" }}>
-                  Pack Management
+                  Tarrif Management
                 </Typography>
                 {/* <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 400 }}>
                   Please Make all Packs Analysis
@@ -252,7 +252,7 @@ const PackManagement = () => {
         >
           <Grid container spacing={3} alignItems="center">
             {/* Increased search bar width to 8 columns */}
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={8} sx={{width:400}}>
               <TextField
                 fullWidth
                 placeholder="Search packs by name, code, or description..."
@@ -279,7 +279,7 @@ const PackManagement = () => {
               />
             </Grid>
             {/* Reduced category filter to 4 columns */}
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} sx={{width:300}}>
               <FormControl fullWidth>
                 <InputLabel>Category Filter</InputLabel>
                 <Select

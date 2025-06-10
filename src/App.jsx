@@ -12,6 +12,12 @@ import Customer from './pages/Customer/Customer';
 import Offers from './pages/Offers/Offers';
 import PlanManagement from './pages/Offers/PlanManagement';
 import PackManagement from './pages/OtherOffer/PackManagement';
+import DealerManagement from './pages/Dealer/DealerMangemnt';
+import InventoryMangement from './pages/Inventory/InventoryMangement';
+import Configuration from './pages/Configuration/Configuration';
+import Report from './pages/reports/Reports';
+import SimConversion from './pages/Configuration/SimConversion';
+import CampaignManagement from './pages/Configuration/CampaignManagement';
 
 
 function App() {
@@ -60,66 +66,58 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route
-          path="/dashboard/forms"
+        <Route
+          path="/dashboard/dealer"
           element={
             <ProtectedRoute>
               <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
-                <FormsPage />
+                <DealerManagement />
               </DashboardLayout>
             </ProtectedRoute>
           }
-        /> */}
-        {/* <Route
-          path="/dashboard/ui-features"
+        />
+         <Route
+          path="/dashboard/inventory"
           element={
             <ProtectedRoute>
               <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
-                <UiFeatures />
+                <InventoryMangement />
               </DashboardLayout>
             </ProtectedRoute>
           }
-        /> */}
-        {/* <Route
-          path="/dashboard/modal-overlays"
+        />
+         <Route
+          path="/dashboard/config"
           element={
             <ProtectedRoute>
               <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
-                <ModalOverlays />
-              </DashboardLayout>
-            </ProtectedRoute>
-          }
-        /> */}
-        {/* <Route
-          path="/dashboard/extra-components"
-          element={
-            <ProtectedRoute>
-              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
-                <ExtraComponents />
+                <CampaignManagement />
               </DashboardLayout>
             </ProtectedRoute>
           }
         />
         <Route
-          path="/dashboard/maps"
+          path="/dashboard/simConver"
           element={
             <ProtectedRoute>
               <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
-                <MapsPage />
+                <SimConversion />
               </DashboardLayout>
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/dashboard/charts"
+         <Route
+          path="/dashboard/reports"
           element={
             <ProtectedRoute>
               <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
-                <ChartsPage />
+                <Report />
               </DashboardLayout>
             </ProtectedRoute>
           }
-        /> */}
+        />
+       
+       
       </Routes>
     </ThemeProvider>
   );
