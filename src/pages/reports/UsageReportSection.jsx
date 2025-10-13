@@ -37,8 +37,8 @@ export default function UsageReportSection() {
   // Sample data
   const smsUsageData = [
     {
-      activationDate: "2024-01-15",
-      msisdn: "230526167890",
+      activationDate: "2025-01-15",
+      msisdn: "675526167890",
       packName: "Premium SMS Pack",
       offeredSms: 1000,
       consumedSms: 750,
@@ -46,8 +46,8 @@ export default function UsageReportSection() {
       consumedOffNetSms: 320,
     },
     {
-      activationDate: "2024-01-16",
-      msisdn: "230526167891",
+      activationDate: "2025-01-16",
+      msisdn: "675526167891",
       packName: "Basic SMS Pack",
       offeredSms: 500,
       consumedSms: 450,
@@ -55,8 +55,8 @@ export default function UsageReportSection() {
       consumedOffNetSms: 180,
     },
     {
-      activationDate: "2024-01-17",
-      msisdn: "230526167892",
+      activationDate: "2025-01-17",
+      msisdn: "675526167892",
       packName: "Business SMS Pack",
       offeredSms: 2000,
       consumedSms: 1200,
@@ -67,8 +67,8 @@ export default function UsageReportSection() {
 
   const dataUsageData = [
     {
-      activationDate: "2024-01-15",
-      msisdn: "230526167890",
+      activationDate: "2025-01-15",
+      msisdn: "675526167890",
       packName: "Premium Data Pack",
       offeredData: "10GB",
       consumedData: "7.5GB",
@@ -76,8 +76,8 @@ export default function UsageReportSection() {
       consumedOffNetData: "3.2GB",
     },
     {
-      activationDate: "2024-01-16",
-      msisdn: "230526167891",
+      activationDate: "2025-01-16",
+      msisdn: "675526167891",
       packName: "Basic Data Pack",
       offeredData: "5GB",
       consumedData: "4.5GB",
@@ -88,7 +88,7 @@ export default function UsageReportSection() {
 
   const callsUsageData = [
     {
-      activationDate: "2024-01-15",
+      activationDate: "2025-01-15",
       msisdn: "+1234567890",
       packName: "Premium Call Pack",
       offeredMinutes: 1000,
@@ -97,7 +97,7 @@ export default function UsageReportSection() {
       consumedOffNetMinutes: 320,
     },
     {
-      activationDate: "2024-01-16",
+      activationDate: "2025-01-16",
       msisdn: "+1234567891",
       packName: "Basic Call Pack",
       offeredMinutes: 500,
@@ -120,43 +120,72 @@ export default function UsageReportSection() {
     <Card
       sx={{
         mt: 3,
-        borderRadius: theme.shape.borderRadius,
-        boxShadow: 3,
+        borderRadius: 2,
+        border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
         bgcolor: theme.palette.background.paper,
+        boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
       }}
     >
       <CardContent>
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
           {icon}
-          <Typography variant="h6" sx={{ ml: 1, fontWeight: 600 }}>
+          <Typography
+            variant="h6"
+            sx={{ ml: 1, fontWeight: 600, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+          >
             {title}
           </Typography>
         </Box>
 
-        <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+        <TableContainer
+          component={Paper}
+          sx={{ borderRadius: 2, border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}` }}
+        >
           <Table>
             <TableHead>
-              <TableRow sx={{ backgroundColor: theme.palette.primary.main }}>
+              <TableRow sx={{ backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#f5f5f5" }}>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
                     sx={{
                       fontWeight: "bold",
-                      color: "white",
-                      fontSize: "0.9rem",
+                      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                      fontSize: "0.875rem",
+                      borderBottom: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
                     }}
                   >
                     {column.label}
                   </TableCell>
                 ))}
-                <TableCell sx={{ fontWeight: "bold", color: "white", fontSize: "0.9rem" }}>Usage %</TableCell>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    fontSize: "0.875rem",
+                    borderBottom: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+                  }}
+                >
+                  Usage %
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                <TableRow key={index} sx={{ "&:hover": { backgroundColor: theme.palette.action.hover } }}>
+                <TableRow
+                  key={index}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor:
+                        theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)",
+                    },
+                    borderBottom: `1px solid ${theme.palette.mode === "dark" ? "#666666" : "#e0e0e0"}`,
+                  }}
+                >
                   {columns.map((column) => (
-                    <TableCell key={column.id} sx={{ fontSize: "0.9rem" }}>
+                    <TableCell
+                      key={column.id}
+                      sx={{ fontSize: "0.875rem", color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                    >
                       {row[column.id]}
                     </TableCell>
                   ))}
@@ -172,9 +201,16 @@ export default function UsageReportSection() {
                           width: 60,
                           height: 8,
                           borderRadius: 4,
+                          backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
+                          "& .MuiLinearProgress-bar": {
+                            backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          },
                         }}
                       />
-                      <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                      <Typography
+                        variant="caption"
+                        sx={{ fontWeight: 600, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                      >
                         {getUsagePercentage(
                           row[columns.find((col) => col.id.includes("consumed"))?.id],
                           row[columns.find((col) => col.id.includes("offered"))?.id],
@@ -196,7 +232,7 @@ export default function UsageReportSection() {
           onPageChange={(event, newPage) => setPage(newPage)}
           rowsPerPage={rowsPerPage}
           rowsPerPageOptions={[10]}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
         />
       </CardContent>
     </Card>
@@ -235,13 +271,19 @@ export default function UsageReportSection() {
   return (
     <Box>
       <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-        <TrendingUpIcon sx={{ fontSize: 32, color: theme.palette.primary.main, mr: 1 }} />
-        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+        <TrendingUpIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mr: 1 }} />
+        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
           Customer Usage Reports
         </Typography>
       </Box>
 
-      <Paper sx={{ borderRadius: theme.shape.borderRadius, boxShadow: 3 }}>
+      <Paper
+        sx={{
+          borderRadius: 2,
+          border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+          bgcolor: theme.palette.background.paper,
+        }}
+      >
         <Tabs
           value={usageTab}
           onChange={handleUsageTabChange}
@@ -251,6 +293,13 @@ export default function UsageReportSection() {
               fontWeight: 600,
               fontSize: "1rem",
               textTransform: "none",
+              color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
+            },
+            "& .Mui-selected": {
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+            },
+            "& .MuiTabs-indicator": {
+              backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
             },
           }}
         >
@@ -267,7 +316,7 @@ export default function UsageReportSection() {
           smsPage,
           setSmsPage,
           "SMS Usage Report",
-          <SmsIcon sx={{ color: theme.palette.primary.main }} />,
+          <SmsIcon sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }} />,
         )}
       {usageTab === 1 &&
         renderUsageTable(
@@ -276,7 +325,7 @@ export default function UsageReportSection() {
           dataPage,
           setDataPage,
           "Data Usage Report",
-          <DataIcon sx={{ color: theme.palette.info.main }} />,
+          <DataIcon sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }} />,
         )}
       {usageTab === 2 &&
         renderUsageTable(
@@ -285,7 +334,7 @@ export default function UsageReportSection() {
           callsPage,
           setCallsPage,
           "Calls Usage Report",
-          <PhoneIcon sx={{ color: theme.palette.success.main }} />,
+          <PhoneIcon sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }} />,
         )}
     </Box>
   )

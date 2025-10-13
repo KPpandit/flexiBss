@@ -1,22 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TablePagination,
-  IconButton,
-  Tooltip,
   TextField,
   Button,
   Typography,
-  Avatar,
-  Chip,
   Card,
   CardHeader,
   Divider,
@@ -24,432 +13,869 @@ import {
   Toolbar,
   Snackbar,
   Alert,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
+  Dialog,
+  DialogContent,
 } from "@mui/material"
-import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Search as SearchIcon,
-  Refresh as RefreshIcon,
-  CheckCircle as CheckCircleIcon,
-  Cancel as CancelIcon,
-  Person as PersonIcon,
-  SimCard as SimCardIcon,
-  Phone as PhoneIcon,
-  Female as FemaleIcon,
-  Male as MaleIcon,
-  Star as VIPIcon,
-  MoreVert as MoreVertIcon,
-  Info as InfoIcon,
-} from "@mui/icons-material"
+import { Add as AddIcon, Search as SearchIcon } from "@mui/icons-material"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
-import { format } from "date-fns"
 import CustomerForm from "./CustomerForm"
 import CustomerDetails from "./CustomerDetails"
 
-// Enhanced sample data with detailed information
-const sampleCustomers = Array.from({ length: 50 }, (_, i) => ({
-  id: i + 1,
-  name: `Customer ${i + 1}`,
-  serviceType: ["Prepaid", "Postpaid", "Corporate"][Math.floor(Math.random() * 3)],
-  customerType: ["Individual", "Business"][Math.floor(Math.random() * 2)],
-  simType: ["micro-SIM", "nano-SIM", "eSIM"][Math.floor(Math.random() * 3)],
-  msisdn: `230${["5", "4", "6"][Math.floor(Math.random() * 3)]}${Math.floor(1000000 + Math.random() * 9000000)}`,
-  imsi: `61701${Math.floor(1000000000 + Math.random() * 9000000000)}`,
-
-  vip: Math.random() > 0.8,
-  gender: ["Male", "Female"][Math.floor(Math.random() * 2)], // Removed "Other" option
-  dob: new Date(1995 + Math.floor(Math.random() * 30), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)),
-  ekycToken: `EKYC${Math.floor(100000 + Math.random() * 900000)}`,
-  ekycDate: new Date(
-    2020 + Math.floor(Math.random() * 3),
-    Math.floor(Math.random() * 12),
-    Math.floor(Math.random() * 28),
-  ),
-  ekycStatus: ["Verified", "Pending", "Rejected"][Math.floor(Math.random() * 3)],
-  // Additional detailed information
-  simDetails: {
-    allocationDate: new Date(2025, 0, 23, 14, 31, 55),
-    iccId: `8967400324200324${Math.floor(100 + Math.random() * 900)}`,
+const sampleCustomers = [
+  {
+    id: 1,
+    name: "John Kila",
+    customerType: "Prepaid",
+    serviceType: "Mobility",
+    simType: "nano-SIM",
+    msisdn: "67512345678",
+    imsi: "617011234567890",
+    vip: true,
+    gender: "Male",
+    dob: new Date(1985, 5, 15),
+    registrationDate: new Date(2022, 2, 10),
+    email: "john.kila@email.com",
+    alternateNumber: "67587654321",
+    address: "Section 15, Boroko, National Capital District, Papua New Guinea",
+    city: "Port Moresby",
+    state: "National Capital District",
+    pincode: "111",
+    eKycToken: "EKYC123456789",
+    eKycDate: new Date(2022, 2, 12),
+    eKycStatus: "Verified",
+    status: "Active",
+    overdue: null,
+    nextInvoiceDate: null,
+    billCycle: null,
+    simDetails: {
+      allocationDate: new Date(2022, 2, 10),
+      iccId: "8967400324200324123",
+    },
+    currentPack: {
+      name: "Premium 50GB",
+      price: 599,
+      validity: 30,
+      activationDate: new Date(2025, 8, 1),
+      expirationDate: new Date(2025, 8, 31),
+    },
+    currentBill: null,
+    rechargeHistory: [
+      {
+        date: new Date(2025, 8, 1),
+        amount: 599,
+        type: "Recharge",
+        paymentMethod: "UPI",
+        status: "Success",
+      },
+      {
+        date: new Date(2025, 7, 1),
+        amount: 399,
+        type: "Recharge",
+        paymentMethod: "Visa",
+        status: "Success",
+      },
+    ],
+    tickets: [
+      {
+        id: "TKT1001",
+        subject: "Network Issue",
+        priority: "High",
+        status: "Resolved",
+        createdDate: new Date(2025, 8, 5),
+      },
+    ],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
   },
-  currentPack: {
-    packName: ["ENT 20", "Super 4", "Premium 50", "Basic 10"][Math.floor(Math.random() * 4)],
-    activationDate: new Date(2025, 5, 3, 16, 59, 41),
-    expirationDate: new Date(2025, 5, 10, 16, 59, 41),
-    mainBalance: Math.floor(Math.random() * 100),
-    usage: {
-      totalData: { offered: 35, used: 2.93, available: 32.07 },
-      onNetCalls: { offered: "Unlimited", used: 0, available: "Unlimited" },
-      onNetSms: { offered: "Unlimited", used: 0, available: "Unlimited" },
-      offNetCalls: { offered: 10, used: 0, available: 10 },
-      offNetSms: { offered: 10, used: 0, available: 10 },
+  {
+    id: 2,
+    name: "Mary Temu",
+    customerType: "Postpaid",
+    serviceType: "Mobility",
+    simType: "nano-SIM",
+    msisdn: "67523456789",
+    imsi: "617012345678901",
+    vip: false,
+    gender: "Female",
+    dob: new Date(1990, 8, 22),
+    registrationDate: new Date(2021, 5, 18),
+    email: "mary.temu@email.com",
+    alternateNumber: "67598765432",
+    address: "Geroro, Hela Province, Papua New Guinea",
+    city: "Tari",
+    state: "Hela Province",
+    pincode: "281",
+    eKycToken: "EKYC234567890",
+    eKycDate: new Date(2021, 5, 20),
+    eKycStatus: "Verified",
+    status: "Active",
+    overdue: 250,
+    nextInvoiceDate: new Date(2025, 10, 25),
+    billCycle: "25th of every month",
+    simDetails: {
+      allocationDate: new Date(2021, 5, 18),
+      iccId: "8967400324200324234",
     },
+    currentPack: {
+      name: "Postpaid Unlimited",
+      price: 999,
+      validity: 30,
+    },
+    currentBill: {
+      amount: 1299,
+      dueDate: new Date(2025, 9, 25),
+      status: "Pending",
+      rental: 999,
+      extraUsage: 200,
+      taxes: 100,
+    },
+    rechargeHistory: [
+      {
+        date: new Date(2025, 7, 25),
+        amount: 999,
+        type: "Bill Payment",
+        paymentMethod: "PayPal",
+        status: "Success",
+      },
+    ],
+    tickets: [],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
   },
-  rechargeHistory: [
-    {
-      packName: "ENT 20",
-      activationDate: "2025-06-03 16:59:41",
-      expirationDate: "2025-06-10 16:59:41",
-      dataBalance: "35 GB",
-      onnCalls: "Unlimited",
-      offnCalls: "0 Mins",
-      onnSms: "Unlimited",
-      offnSms: "10",
+  {
+    id: 3,
+    name: "Peter Namaliu",
+    customerType: "Prepaid",
+    serviceType: "FWA",
+    simType: "micro-SIM",
+    msisdn: "67534567890",
+    imsi: "617013456789012",
+    vip: false,
+    gender: "Male",
+    dob: new Date(1988, 11, 8),
+    registrationDate: new Date(2023, 1, 5),
+    email: "peter.namaliu@email.com",
+    alternateNumber: "67509876543",
+    address: "Waigani, National Capital District, Papua New Guinea",
+    city: "Port Moresby",
+    state: "National Capital District",
+    pincode: "131",
+    eKycToken: "EKYC345678901",
+    eKycDate: new Date(2023, 1, 7),
+    eKycStatus: "Verified",
+    status: "Active",
+    overdue: null,
+    nextInvoiceDate: null,
+    billCycle: null,
+    simDetails: {
+      allocationDate: new Date(2023, 1, 5),
+      iccId: "8967400324200324345",
     },
-    {
-      packName: "ENT 4",
-      activationDate: "2025-05-15 20:49:04",
-      expirationDate: "2025-05-16 20:49:04",
-      dataBalance: "8 GB",
-      onnCalls: "Unlimited",
-      offnCalls: "0 Mins",
-      onnSms: "Unlimited",
-      offnSms: "10",
+    currentPack: {
+      name: "FWA Basic 100GB",
+      price: 799,
+      validity: 30,
     },
-    {
-      packName: "ENT 20",
-      activationDate: "2025-05-07 17:20:08",
-      expirationDate: "2025-05-14 17:20:08",
-      dataBalance: "35 GB",
-      onnCalls: "Unlimited",
-      offnCalls: "0 Mins",
-      onnSms: "Unlimited",
-      offnSms: "10",
+    currentBill: null,
+    rechargeHistory: [
+      {
+        date: new Date(2025, 8, 10),
+        amount: 799,
+        type: "Recharge",
+        paymentMethod: "Cash",
+        status: "Success",
+      },
+    ],
+    tickets: [],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
+  },
+  {
+    id: 4,
+    name: "Grace Wanma",
+    customerType: "Postpaid",
+    serviceType: "BroadBand",
+    simType: "eSIM",
+    msisdn: "67545678901",
+    imsi: "617014567890123",
+    vip: true,
+    gender: "Female",
+    dob: new Date(1982, 3, 12),
+    registrationDate: new Date(2020, 8, 15),
+    email: "grace.wanma@email.com",
+    alternateNumber: "67520987654",
+    address: "Lae, Morobe Province, Papua New Guinea",
+    city: "Lae",
+    state: "Morobe Province",
+    pincode: "411",
+    eKycToken: "EKYC456789012",
+    eKycDate: new Date(2020, 8, 17),
+    eKycStatus: "Verified",
+    status: "Active",
+    overdue: null,
+    nextInvoiceDate: new Date(2025, 10, 15),
+    billCycle: "15th of every month",
+    simDetails: {
+      allocationDate: new Date(2020, 8, 15),
+      iccId: "8967400324200324456",
     },
-    {
-      packName: "Super 4",
-      activationDate: "2025-04-26 10:27:07",
-      expirationDate: "2025-04-27 10:27:07",
-      dataBalance: "8 GB",
-      onnCalls: "Unlimited",
-      offnCalls: "0 Mins",
-      onnSms: "Unlimited",
-      offnSms: "10",
+    currentPack: {
+      name: "BroadBand Premium",
+      price: 1499,
+      validity: 30,
     },
-    {
-      packName: "Super 4",
-      activationDate: "2025-04-24 01:46:01",
-      expirationDate: "2025-04-25 01:46:01",
-      dataBalance: "8 GB",
-      onnCalls: "Unlimited",
-      offnCalls: "0 Mins",
-      onnSms: "Unlimited",
-      offnSms: "10",
+    currentBill: {
+      amount: 1499,
+      dueDate: new Date(2025, 9, 15),
+      status: "Paid",
+      rental: 1299,
+      extraUsage: 100,
+      taxes: 100,
     },
-  ],
-}))
+    rechargeHistory: [
+      {
+        date: new Date(2025, 7, 15),
+        amount: 1499,
+        type: "Bill Payment",
+        paymentMethod: "Visa",
+        status: "Success",
+      },
+    ],
+    tickets: [],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
+  },
+  {
+    id: 5,
+    name: "Michael Somare",
+    customerType: "Prepaid",
+    serviceType: "VOIP",
+    simType: "nano-SIM",
+    msisdn: "67556789012",
+    imsi: "617015678901234",
+    vip: false,
+    gender: "Male",
+    dob: new Date(1995, 7, 25),
+    registrationDate: new Date(2024, 0, 20),
+    email: "michael.somare@email.com",
+    alternateNumber: "67531098765",
+    address: "Wewak, East Sepik Province, Papua New Guinea",
+    city: "Wewak",
+    state: "East Sepik Province",
+    pincode: "531",
+    eKycToken: "EKYC567890123",
+    eKycDate: new Date(2024, 0, 22),
+    eKycStatus: "Pending",
+    status: "Active",
+    overdue: null,
+    nextInvoiceDate: null,
+    billCycle: null,
+    simDetails: {
+      allocationDate: new Date(2024, 0, 20),
+      iccId: "8967400324200324567",
+    },
+    currentPack: {
+      name: "VOIP Starter",
+      price: 299,
+      validity: 30,
+    },
+    currentBill: null,
+    rechargeHistory: [
+      {
+        date: new Date(2025, 8, 15),
+        amount: 299,
+        type: "Recharge",
+        paymentMethod: "UPI",
+        status: "Success",
+      },
+    ],
+    tickets: [],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
+  },
+  {
+    id: 6,
+    name: "Helen Siaguru",
+    customerType: "Postpaid",
+    serviceType: "Mobility",
+    simType: "nano-SIM",
+    msisdn: "67567890123",
+    imsi: "617016789012345",
+    vip: false,
+    gender: "Female",
+    dob: new Date(1987, 10, 18),
+    registrationDate: new Date(2022, 6, 8),
+    email: "helen.siaguru@email.com",
+    alternateNumber: "67542109876",
+    address: "Mount Hagen, Western Highlands Province, Papua New Guinea",
+    city: "Mount Hagen",
+    state: "Western Highlands Province",
+    pincode: "281",
+    eKycToken: "EKYC678901234",
+    eKycDate: new Date(2022, 6, 10),
+    eKycStatus: "Verified",
+    status: "Active",
+    overdue: 450,
+    nextInvoiceDate: new Date(2025, 10, 8),
+    billCycle: "8th of every month",
+    simDetails: {
+      allocationDate: new Date(2022, 6, 8),
+      iccId: "8967400324200324678",
+    },
+    currentPack: {
+      name: "Postpaid Premium",
+      price: 1199,
+      validity: 30,
+    },
+    currentBill: {
+      amount: 1649,
+      dueDate: new Date(2025, 9, 8),
+      status: "Overdue",
+      rental: 1199,
+      extraUsage: 350,
+      taxes: 100,
+    },
+    rechargeHistory: [
+      {
+        date: new Date(2025, 6, 8),
+        amount: 1199,
+        type: "Bill Payment",
+        paymentMethod: "Cash",
+        status: "Success",
+      },
+    ],
+    tickets: [
+      {
+        id: "TKT2001",
+        subject: "Billing Issue",
+        priority: "Medium",
+        status: "In Progress",
+        createdDate: new Date(2025, 8, 12),
+      },
+    ],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
+  },
+  {
+    id: 7,
+    name: "James Marape",
+    customerType: "Prepaid",
+    serviceType: "Mobility",
+    simType: "nano-SIM",
+    msisdn: "67578901234",
+    imsi: "617017890123456",
+    vip: true,
+    gender: "Male",
+    dob: new Date(1980, 2, 5),
+    registrationDate: new Date(2019, 11, 12),
+    email: "james.marape@email.com",
+    alternateNumber: "67553210987",
+    address: "Vanimo, Sandaun Province, Papua New Guinea",
+    city: "Vanimo",
+    state: "Sandaun Province",
+    pincode: "471",
+    eKycToken: "EKYC789012345",
+    eKycDate: new Date(2019, 11, 14),
+    eKycStatus: "Verified",
+    status: "Active",
+    overdue: null,
+    nextInvoiceDate: null,
+    billCycle: null,
+    simDetails: {
+      allocationDate: new Date(2019, 11, 12),
+      iccId: "8967400324200324789",
+    },
+    currentPack: {
+      name: "VIP Unlimited",
+      price: 999,
+      validity: 30,
+    },
+    currentBill: null,
+    rechargeHistory: [
+      {
+        date: new Date(2025, 8, 20),
+        amount: 999,
+        type: "Recharge",
+        paymentMethod: "PayPal",
+        status: "Success",
+      },
+    ],
+    tickets: [],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
+  },
+  {
+    id: 8,
+    name: "Rose Kerenga",
+    customerType: "Postpaid",
+    serviceType: "FWA",
+    simType: "micro-SIM",
+    msisdn: "67589012345",
+    imsi: "617018901234567",
+    vip: false,
+    gender: "Female",
+    dob: new Date(1992, 6, 30),
+    registrationDate: new Date(2023, 3, 25),
+    email: "rose.kerenga@email.com",
+    alternateNumber: "67564321098",
+    address: "Madang, Madang Province, Papua New Guinea",
+    city: "Madang",
+    state: "Madang Province",
+    pincode: "511",
+    eKycToken: "EKYC890123456",
+    eKycDate: new Date(2023, 3, 27),
+    eKycStatus: "Verified",
+    status: "Active",
+    overdue: null,
+    nextInvoiceDate: new Date(2025, 10, 25),
+    billCycle: "25th of every month",
+    simDetails: {
+      allocationDate: new Date(2023, 3, 25),
+      iccId: "8967400324200324890",
+    },
+    currentPack: {
+      name: "FWA Premium",
+      price: 1299,
+      validity: 30,
+    },
+    currentBill: {
+      amount: 1299,
+      dueDate: new Date(2025, 9, 25),
+      status: "Paid",
+      rental: 1199,
+      extraUsage: 0,
+      taxes: 100,
+    },
+    rechargeHistory: [
+      {
+        date: new Date(2025, 7, 25),
+        amount: 1299,
+        type: "Bill Payment",
+        paymentMethod: "Visa",
+        status: "Success",
+      },
+    ],
+    tickets: [],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
+  },
+  {
+    id: 9,
+    name: "David Arore",
+    customerType: "Prepaid",
+    serviceType: "BroadBand",
+    simType: "eSIM",
+    msisdn: "67590123456",
+    imsi: "617019012345678",
+    vip: false,
+    gender: "Male",
+    dob: new Date(1989, 4, 14),
+    registrationDate: new Date(2021, 9, 3),
+    email: "david.arore@email.com",
+    alternateNumber: "67575432109",
+    address: "Popondetta, Oro Province, Papua New Guinea",
+    city: "Popondetta",
+    state: "Oro Province",
+    pincode: "325",
+    eKycToken: "EKYC901234567",
+    eKycDate: new Date(2021, 9, 5),
+    eKycStatus: "Rejected",
+    status: "Active",
+    overdue: null,
+    nextInvoiceDate: null,
+    billCycle: null,
+    simDetails: {
+      allocationDate: new Date(2021, 9, 3),
+      iccId: "8967400324200324901",
+    },
+    currentPack: {
+      name: "BroadBand Basic",
+      price: 699,
+      validity: 30,
+    },
+    currentBill: null,
+    rechargeHistory: [
+      {
+        date: new Date(2025, 8, 3),
+        amount: 699,
+        type: "Recharge",
+        paymentMethod: "UPI",
+        status: "Success",
+      },
+    ],
+    tickets: [
+      {
+        id: "TKT3001",
+        subject: "eKYC Rejection",
+        priority: "High",
+        status: "Open",
+        createdDate: new Date(2025, 8, 18),
+      },
+    ],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
+  },
+  {
+    id: 10,
+    name: "Sarah Siaguru",
+    customerType: "Postpaid",
+    serviceType: "VOIP",
+    simType: "nano-SIM",
+    msisdn: "67501234567",
+    imsi: "617020123456789",
+    vip: true,
+    gender: "Female",
+    dob: new Date(1984, 9, 28),
+    registrationDate: new Date(2020, 4, 15),
+    email: "sarah.siaguru@email.com",
+    alternateNumber: "67586543210",
+    address: "Kerema, Gulf Province, Papua New Guinea",
+    city: "Kerema",
+    state: "Gulf Province",
+    pincode: "304",
+    eKycToken: "EKYC012345678",
+    eKycDate: new Date(2020, 4, 17),
+    eKycStatus: "Verified",
+    status: "Active",
+    overdue: null,
+    nextInvoiceDate: new Date(2025, 10, 15),
+    billCycle: "15th of every month",
+    simDetails: {
+      allocationDate: new Date(2020, 4, 15),
+      iccId: "8967400324200324012",
+    },
+    currentPack: {
+      name: "VOIP Enterprise",
+      price: 1999,
+      validity: 30,
+    },
+    currentBill: {
+      amount: 1999,
+      dueDate: new Date(2025, 9, 15),
+      status: "Paid",
+      rental: 1799,
+      extraUsage: 100,
+      taxes: 100,
+    },
+    rechargeHistory: [
+      {
+        date: new Date(2025, 7, 15),
+        amount: 1999,
+        type: "Bill Payment",
+        paymentMethod: "PayPal",
+        status: "Success",
+      },
+    ],
+    tickets: [],
+    planUpgradeHistory: [],
+    simSwapHistory: [],
+    complaintHistory: [],
+    generateBillHistory: [],
+  },
+]
 
-const Customer = () => {
+const Customer = ({ onCustomersChange, onCurrentCustomerChange }) => {
   const theme = useTheme()
   const [customers, setCustomers] = useState(sampleCustomers)
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
   const [searchTerm, setSearchTerm] = useState("")
   const [openForm, setOpenForm] = useState(false)
   const [currentCustomer, setCurrentCustomer] = useState(null)
   const [isEditMode, setIsEditMode] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedCustomer, setSelectedCustomer] = useState(null)
-  const [detailsDialog, setDetailsDialog] = useState(false)
-
-  // Notification state
+  const [selectedCustomer, setSelectedCustomer] = useState(sampleCustomers[0])
+  const [notFoundDialog, setNotFoundDialog] = useState(false)
   const [notification, setNotification] = useState({
     open: false,
     message: "",
     severity: "success",
   })
 
+  useEffect(() => {
+    if (onCustomersChange) {
+      onCustomersChange(customers)
+    }
+  }, [customers, onCustomersChange])
+
+  useEffect(() => {
+    if (onCurrentCustomerChange) {
+      onCurrentCustomerChange(selectedCustomer)
+    }
+  }, [selectedCustomer, onCurrentCustomerChange])
+
   const handleCloseNotification = () => {
     setNotification({ ...notification, open: false })
   }
 
-  // Filter customers based on search term
-  const filteredCustomers = customers.filter((customer) =>
-    Object.values(customer).some((value) =>
-      value && typeof value === "object" ? false : String(value).toLowerCase().includes(searchTerm.toLowerCase()),
-    ),
-  )
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      const exactMatches = customers.filter((customer) => {
+        const searchLower = searchTerm.toLowerCase()
+        return (
+          customer.name.toLowerCase().includes(searchLower) ||
+          customer.msisdn.includes(searchTerm) ||
+          customer.eKycToken.toLowerCase().includes(searchLower) ||
+          customer.customerType.toLowerCase().includes(searchLower) ||
+          customer.serviceType.toLowerCase().includes(searchLower) ||
+          customer.id.toString().includes(searchTerm)
+        )
+      })
 
-  // Pagination
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
+      if (exactMatches.length > 0) {
+        setSelectedCustomer(exactMatches[0])
+        setNotification({
+          open: true,
+          message: `Customer found: ${exactMatches[0].name}`,
+          severity: "success",
+        })
+      } else {
+        setNotFoundDialog(true)
+      }
+    }
   }
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(Number.parseInt(event.target.value, 10))
-    setPage(0)
-  }
-
-  // Menu handlers
-  const handleMenuClick = (event, customer) => {
-    setAnchorEl(event.currentTarget)
-    setSelectedCustomer(customer)
-  }
-
-  const handleMenuClose = () => {
-    setAnchorEl(null)
-  }
-
-  const handleViewDetails = () => {
-    setDetailsDialog(true)
-    handleMenuClose()
-  }
-
-  // CRUD operations
   const handleAddCustomer = () => {
     setCurrentCustomer(null)
     setIsEditMode(false)
     setOpenForm(true)
   }
 
-  const handleEditCustomer = (customer) => {
-    setCurrentCustomer(customer)
-    setIsEditMode(true)
-    setOpenForm(true)
-  }
-
-  const handleDeleteCustomer = (id) => {
-    setCustomers(customers.filter((customer) => customer.id !== id))
-    setNotification({
-      open: true,
-      message: "Customer deleted successfully!",
-      severity: "success",
-    })
+  const handleEditCustomer = () => {
+    if (selectedCustomer) {
+      setCurrentCustomer(selectedCustomer)
+      setIsEditMode(true)
+      setOpenForm(true)
+    }
   }
 
   const handleSaveCustomer = (customer) => {
     if (isEditMode) {
-      setCustomers(customers.map((c) => (c.id === customer.id ? customer : c)))
-      setNotification({
-        open: true,
-        message: "Customer updated successfully!",
-        severity: "success",
-      })
+      // Update existing customer
+      setCustomers((prev) => prev.map((c) => (c.id === customer.id ? customer : c)))
+      setSelectedCustomer(customer) // Update the selected customer display
     } else {
-      const newCustomer = {
-        ...customer,
-        id: customers.length > 0 ? Math.max(...customers.map((c) => c.id)) + 1 : 1,
-        // Add default values for detailed information
-        simDetails: {
-          allocationDate: new Date(),
-          iccId: `8967400324200324${Math.floor(100 + Math.random() * 900)}`,
-        },
-        currentPack: {
-          packName: "New Basic Pack",
-          activationDate: new Date(),
-          expirationDate: new Date(new Date().setDate(new Date().getDate() + 30)),
-          mainBalance: 0,
-          usage: {
-            totalData: { offered: 10, used: 0, available: 10 },
-            onNetCalls: { offered: "Unlimited", used: 0, available: "Unlimited" },
-            onNetSms: { offered: "Unlimited", used: 0, available: "Unlimited" },
-            offNetCalls: { offered: 10, used: 0, available: 10 },
-            offNetSms: { offered: 10, used: 0, available: 10 },
-          },
-        },
-        rechargeHistory: [],
-      }
-      setCustomers([...customers, newCustomer])
-      setNotification({
-        open: true,
-        message: "Customer added successfully!",
-        severity: "success",
-      })
+      // Add new customer
+      const newCustomer = { ...customer, id: customers.length + 1 }
+      setCustomers((prev) => [...prev, newCustomer])
     }
+
+    setNotification({
+      open: true,
+      message: isEditMode ? "Customer updated successfully!" : "Customer added successfully!",
+      severity: "success",
+    })
     setOpenForm(false)
+  }
+
+  const handlePlanUpgradeNotification = (notificationData) => {
+    let message = ""
+    let severity = "success"
+
+    if (typeof notificationData === "string") {
+      message = notificationData
+    } else if (notificationData && typeof notificationData === "object") {
+      // If notificationData.message is also an object, extract its message property
+      if (typeof notificationData.message === "string") {
+        message = notificationData.message
+      } else if (notificationData.message && typeof notificationData.message === "object") {
+        message = notificationData.message.message || JSON.stringify(notificationData.message)
+      } else {
+        message = JSON.stringify(notificationData)
+      }
+      severity = notificationData.severity || "success"
+    }
+
+    setNotification({
+      open: true,
+      message: message,
+      severity: severity,
+    })
   }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box sx={{ p: 3 }}>
+      <Box
+        sx={{
+          p: 3,
+          maxWidth: "80vw",
+          width: "100%",
+          boxSizing: "border-box",
+          overflowX: "hidden",
+          backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+          minHeight: "100vh",
+          fontSize: "1rem",
+        }}
+      >
         {/* Success Notification */}
         <Snackbar
           open={notification.open}
-          autoHideDuration={3000}
+          autoHideDuration={4000}
           onClose={handleCloseNotification}
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          <Alert
-            onClose={handleCloseNotification}
-            severity={notification.severity}
-            variant="filled"
-            sx={{ width: "100%" }}
-          >
+          <Alert onClose={handleCloseNotification} severity={notification.severity} sx={{ width: "100%" }}>
             {notification.message}
           </Alert>
         </Snackbar>
 
-        <Card sx={{ mb: 3 }}>
+        <Card
+          sx={{
+            mb: 3,
+            backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+            border: theme.palette.mode === "dark" ? "1px solid #ffffff" : "1px solid #e0e0e0",
+            boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
+          }}
+        >
           <CardHeader
-            title="Customer Management"
-            action={
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={handleAddCustomer}
-                sx={{ borderRadius: 2 }}
-              >
-                Add Customer
-              </Button>
-            }
-          />
-          <Divider />
-          <Toolbar sx={{ p: 2 }}>
-            <TextField
-              variant="outlined"
-              size="small"
-              placeholder="Search customers..."
-              InputProps={{
-                startAdornment: <SearchIcon sx={{ mr: 1, color: "action.active" }} />,
-              }}
-              sx={{ width: 300 }}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Box sx={{ flexGrow: 1 }} />
-            <Tooltip title="Refresh">
-              <IconButton>
-                <RefreshIcon />
-              </IconButton>
-            </Tooltip>
-          </Toolbar>
-          <TableContainer>
-            <Table>
-              <TableHead
+            title={
+              <Typography
+                variant="h4"
                 sx={{
-                  backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[900] : theme.palette.grey[100],
+                  fontWeight: 600,
+                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                 }}
               >
-                <TableRow >
-                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>Customer</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>Service</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>SIM Type</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>MSISDN</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>VIP</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>Gender</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>DOB</TableCell>
-                  <TableCell sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>eKYC</TableCell>
-                  <TableCell align="right" sx={{ color: theme.palette.text.primary ,fontWeight:'bold'}}>
-                    Actions
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((customer) => (
-                  <TableRow key={customer.id} hover>
-                    <TableCell>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Avatar sx={{ mr: 2, bgcolor: theme.palette.primary.main }}>
-                          <PersonIcon />
-                        </Avatar>
-                        <Box>
-                          <Typography variant="subtitle2">{customer.name}</Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {customer.customerType}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Chip
-                        label={customer.serviceType}
-                        color={customer.serviceType === "Postpaid" ? "primary" : "default"}
-                        size="small"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <SimCardIcon sx={{ mr: 1, color: "action.active" }} />
-                        <Typography variant="body2">{customer.simType}</Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <PhoneIcon sx={{ mr: 1, color: "action.active" }} />
-                        <Typography variant="body2">{customer.msisdn}</Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      {customer.vip ? (
-                        <Chip icon={<VIPIcon />} label="VIP" color="warning" size="small" />
-                      ) : (
-                        <Typography variant="body2" color="text.secondary">
-                          Regular
-                        </Typography>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        {customer.gender === "Female" ? (
-                          <FemaleIcon color="error" sx={{ mr: 1 }} />
-                        ) : customer.gender === "Male" ? (
-                          <MaleIcon color="primary" sx={{ mr: 1 }} />
-                        ) : null}
-                        <Typography variant="body2">{customer.gender}</Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">{format(customer.dob, "dd MMM yyyy")}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        {customer.ekycStatus === "Verified" ? (
-                          <CheckCircleIcon color="success" sx={{ mr: 1 }} />
-                        ) : customer.ekycStatus === "Rejected" ? (
-                          <CancelIcon color="error" sx={{ mr: 1 }} />
-                        ) : null}
-                        <Typography variant="body2">{customer.ekycStatus}</Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Tooltip title="Edit">
-                        <IconButton color="primary" onClick={() => handleEditCustomer(customer)}>
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton color="error" onClick={() => handleDeleteCustomer(customer.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="More Options">
-                        <IconButton onClick={(e) => handleMenuClick(e, customer)}>
-                          <MoreVertIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={filteredCustomers.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+                CRM Subscriber Module
+              </Typography>
+            }
           />
+          <Divider
+            sx={{
+              borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+            }}
+          />
+          <Toolbar
+            sx={{
+              p: 3,
+              gap: 2,
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: { xs: "stretch", md: "center" },
+            }}
+          >
+            <TextField
+              variant="outlined"
+              size="medium"
+              placeholder="Search MSISDN, Subscriber ID, Account No."
+              InputProps={{
+                startAdornment: (
+                  <SearchIcon sx={{ mr: 1, color: theme.palette.mode === "dark" ? "#ffffff" : "action.active" }} />
+                ),
+              }}
+              sx={{
+                flexGrow: 1,
+                maxWidth: { xs: "100%", md: 500 },
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 2,
+                  backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  "& fieldset": {
+                    borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  },
+                },
+                "& .MuiInputBase-input::placeholder": {
+                  color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
+                  opacity: 1,
+                },
+              }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch()
+                }
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                flexDirection: { xs: "column", sm: "row" },
+                width: { xs: "100%", md: "auto" },
+              }}
+            >
+              <Button
+                variant="contained"
+                startIcon={<SearchIcon />}
+                onClick={handleSearch}
+                disabled={!searchTerm.trim()}
+                sx={{
+                  borderRadius: 2,
+                  px: 3,
+                  py: 1.5,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                  "&:hover": {
+                    backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
+                  },
+                  "&:disabled": {
+                    backgroundColor: theme.palette.mode === "dark" ? "#666666" : "#cccccc",
+                    color: theme.palette.mode === "dark" ? "#333333" : "#666666",
+                  },
+                }}
+              >
+                Search
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleAddCustomer}
+                sx={{
+                  borderRadius: 2,
+                  px: 3,
+                  py: 1.5,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                  "&:hover": {
+                    backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
+                  },
+                }}
+              >
+                <span style={{ color: theme.palette.mode === "dark" ? "#000000" : "#ffffff" }}>New Customer</span>
+              </Button>
+            </Box>
+          </Toolbar>
         </Card>
 
-        {/* More Options Menu */}
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-          <MenuItem onClick={handleViewDetails}>
-            <ListItemIcon>
-              <InfoIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>View Details</ListItemText>
-          </MenuItem>
-        </Menu>
+        {selectedCustomer && (
+          <CustomerDetails
+            customer={selectedCustomer}
+            onClose={() => setSelectedCustomer(null)}
+            inline={true}
+            onEdit={handleEditCustomer}
+            onCustomerUpdate={(updatedCustomer) => {
+              setCustomers((prev) => prev.map((c) => (c.id === updatedCustomer.id ? updatedCustomer : c)))
+              setSelectedCustomer(updatedCustomer)
+            }}
+            onPlanUpgradeNotification={handlePlanUpgradeNotification}
+          />
+        )}
 
         {/* Customer Form Dialog */}
         <CustomerForm
@@ -460,8 +886,89 @@ const Customer = () => {
           isEditMode={isEditMode}
         />
 
-        {/* Customer Details Dialog */}
-        <CustomerDetails open={detailsDialog} onClose={() => setDetailsDialog(false)} customer={selectedCustomer} />
+        {/* Customer Not Found Dialog */}
+        <Dialog
+          open={notFoundDialog}
+          onClose={() => setNotFoundDialog(false)}
+          maxWidth="sm"
+          fullWidth
+          PaperProps={{
+            sx: {
+              borderRadius: 3,
+              p: 2,
+              backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+              border: theme.palette.mode === "dark" ? "1px solid #ffffff" : "none",
+            },
+          }}
+        >
+          <DialogContent sx={{ textAlign: "center", py: 4 }}>
+            <Box sx={{ mb: 3 }}>
+              <SearchIcon
+                sx={{
+                  fontSize: 80,
+                  color: theme.palette.mode === "dark" ? "#ffffff" : "text.secondary",
+                  mb: 2,
+                }}
+              />
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: 600,
+                  mb: 1,
+                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                }}
+              >
+                Customer Not Found
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: theme.palette.mode === "dark" ? "#cccccc" : "text.secondary",
+                  mb: 3,
+                }}
+              >
+                We couldn't find any customer matching "{searchTerm}". Please check the details and try again.
+              </Typography>
+              <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setNotFoundDialog(false)}
+                  sx={{
+                    borderRadius: 2,
+                    px: 3,
+                    borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    "&:hover": {
+                      borderColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
+                      backgroundColor:
+                        theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+                    },
+                  }}
+                >
+                  Try Again
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setNotFoundDialog(false)
+                    handleAddCustomer()
+                  }}
+                  sx={{
+                    borderRadius: 2,
+                    px: 3,
+                    backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                    "&:hover": {
+                      backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
+                    },
+                  }}
+                >
+                  Add New Customer
+                </Button>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
       </Box>
     </LocalizationProvider>
   )

@@ -44,26 +44,25 @@ export default function CustomerPackSection() {
   })
   const rowsPerPage = 10
 
-  // Sample data
   const activeCustomers = [
     {
-      activationDate: "2024-01-15",
-      expirationDate: "2024-02-15",
-      msisdn: "230526167890",
+      activationDate: "2025-01-15",
+      expirationDate: "2025-02-15",
+      msisdn: "675526167890",
       packName: "Premium Pack",
       mainBalance: 25.5,
     },
     {
-      activationDate: "2024-01-16",
-      expirationDate: "2024-02-16",
-      msisdn: "230526167891",
+      activationDate: "2025-01-16",
+      expirationDate: "2025-02-16",
+      msisdn: "675526167891",
       packName: "Basic Pack",
       mainBalance: 15.75,
     },
     {
-      activationDate: "2024-01-17",
-      expirationDate: "2024-02-17",
-      msisdn: "230526167892",
+      activationDate: "2025-01-17",
+      expirationDate: "2025-02-17",
+      msisdn: "675526167892",
       packName: "Business Pack",
       mainBalance: 45.25,
     },
@@ -71,51 +70,54 @@ export default function CustomerPackSection() {
 
   const inactiveCustomers = [
     {
-      activationDate: "2024-01-10",
-      expirationDate: "2024-01-20",
-      msisdn: "230526167893",
+      activationDate: "2025-01-10",
+      expirationDate: "2025-01-20",
+      msisdn: "675526167893",
       packName: "Premium Pack",
       mainBalance: 0.0,
     },
     {
-      activationDate: "2024-01-05",
-      expirationDate: "2024-01-15",
-      msisdn: "230526167894",
+      activationDate: "2025-01-05",
+      expirationDate: "2025-01-15",
+      msisdn: "675526167894",
       packName: "Basic Pack",
       mainBalance: 0.0,
     },
   ]
 
-  const repeatedCustomers = [
-    {
-      packName: "Premium Pack",
-      msisdn: "230526167890",
-      activationDate: "2024-01-15",
-      expirationDate: "2024-02-15",
-      lastPackName: "Basic Pack",
-      lastActivationDate: "2023-12-15",
-    },
-    {
-      packName: "Business Pack",
-      msisdn: "230526167895",
-      activationDate: "2024-01-20",
-      expirationDate: "2024-02-20",
-      lastPackName: "Premium Pack",
-      lastActivationDate: "2023-12-20",
-    },
-  ]
+ const repeatedCustomers = [
+  {
+    packName: "Premium Pack",
+    msisdn: "675526167890",
+    activationDate: "2025-01-15",
+    expirationDate: "2025-02-15",
+    lastPackName: "Basic Pack",
+    lastActivationDate: "2023-12-15",
+    mainBalance: 20.5,   
+  },
+  {
+    packName: "Business Pack",
+    msisdn: "675526167895",
+    activationDate: "2025-01-20",
+    expirationDate: "2025-02-20",
+    lastPackName: "Premium Pack",
+    lastActivationDate: "2023-12-20",
+    mainBalance: 10.0,    
+  },
+]
+
 
   const newCustomers = [
     {
-      activationDate: "2024-01-15",
-      expirationDate: "2024-02-15",
-      msisdn: "230526167896",
+      activationDate: "2025-01-15",
+      expirationDate: "2025-02-15",
+      msisdn: "675526167896",
       packName: "Starter Pack",
     },
     {
-      activationDate: "2024-01-18",
-      expirationDate: "2024-02-18",
-      msisdn: "230526167897",
+      activationDate: "2025-01-18",
+      expirationDate: "2025-02-18",
+      msisdn: "675526167897",
       packName: "Basic Pack",
     },
   ]
@@ -143,7 +145,15 @@ export default function CustomerPackSection() {
   }
 
   const renderCustomerTable = (data, title, page, setPage, icon, color, sectionKey) => (
-    <Card sx={{ mb: 2, borderRadius: theme.shape.borderRadius, boxShadow: 3, bgcolor: theme.palette.background.paper }}>
+    <Card
+      sx={{
+        mb: 2,
+        borderRadius: 2,
+        border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+        bgcolor: theme.palette.background.paper,
+        boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
+      }}
+    >
       <CardContent>
         <Box
           sx={{
@@ -158,10 +168,13 @@ export default function CustomerPackSection() {
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Avatar sx={{ bgcolor: color, width: 40, height: 40 }}>{icon}</Avatar>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 600, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+              >
                 {title}
               </Typography>
-              <Typography variant="body2" color="textSecondary">
+              <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
                 {data.length} customers
               </Typography>
             </Box>
@@ -170,6 +183,7 @@ export default function CustomerPackSection() {
             sx={{
               transform: expandedSections[sectionKey] ? "rotate(180deg)" : "rotate(0deg)",
               transition: "transform 0.3s",
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
             }}
           >
             <ExpandMoreIcon />
@@ -178,37 +192,115 @@ export default function CustomerPackSection() {
 
         <Collapse in={expandedSections[sectionKey]} timeout="auto" unmountOnExit>
           <Box sx={{ mt: 2 }}>
-            <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+            <TableContainer
+              component={Paper}
+              sx={{ borderRadius: 2, border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}` }}
+            >
               <Table>
                 <TableHead>
-                  <TableRow sx={{
-                    backgroundColor:
-                      theme.palette.mode === "dark"
-                        ? theme.palette.grey[900]
-                        : theme.palette.grey[100],
-                  }}>
-                    <TableCell sx={{ fontWeight: "bold" }}>Activation Date</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Expiration Date</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>MSISDN</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Pack Name</TableCell>
-                    {title !== "New Customers" && <TableCell sx={{ fontWeight: "bold" }}>Main Balance</TableCell>}
+                  <TableRow sx={{ backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#f5f5f5" }}>
+                    <TableCell
+                      sx={{
+                        fontWeight: "bold",
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      Activation Date
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        fontWeight: "bold",
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      Expiration Date
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        fontWeight: "bold",
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      MSISDN
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        fontWeight: "bold",
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      Pack Name
+                    </TableCell>
+                    {title !== "New Customers" && (
+                      <TableCell
+                        sx={{
+                          fontWeight: "bold",
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          fontSize: "0.875rem",
+                        }}
+                      >
+                        Main Balance
+                      </TableCell>
+                    )}
                     {title === "Repeated Customers" && (
                       <>
-                        <TableCell sx={{ fontWeight: "bold" }}>Last Pack Name</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>Last Activation Date</TableCell>
+                        <TableCell
+                          sx={{
+                            fontWeight: "bold",
+                            color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                            fontSize: "0.875rem",
+                          }}
+                        >
+                          Last Pack Name
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontWeight: "bold",
+                            color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                            fontSize: "0.875rem",
+                          }}
+                        >
+                          Last Activation Date
+                        </TableCell>
                       </>
                     )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                    <TableRow key={index} sx={{ "&:hover": { backgroundColor: theme.palette.action.hover } }}>
-                      <TableCell>{row.activationDate}</TableCell>
-                      <TableCell>{row.expirationDate}</TableCell>
+                    <TableRow
+                      key={index}
+                      sx={{
+                        "&:hover": {
+                          backgroundColor:
+                            theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)",
+                        },
+                        borderBottom: `1px solid ${theme.palette.mode === "dark" ? "#666666" : "#e0e0e0"}`,
+                      }}
+                    >
+                      <TableCell
+                        sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.875rem" }}
+                      >
+                        {row.activationDate}
+                      </TableCell>
+                      <TableCell
+                        sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.875rem" }}
+                      >
+                        {row.expirationDate}
+                      </TableCell>
                       <TableCell>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <AccountCircleIcon sx={{ color: theme.palette.grey[400] }} />
-                          {row.msisdn}
+                          <AccountCircleIcon sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
+                          <Typography
+                            variant="body2"
+                            sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                          >
+                            {row.msisdn}
+                          </Typography>
                         </Box>
                       </TableCell>
                       <TableCell>
@@ -220,10 +312,17 @@ export default function CustomerPackSection() {
                             variant="body2"
                             sx={{
                               fontWeight: 600,
-                              color: row.mainBalance > 0 ? theme.palette.success.main : theme.palette.error.main,
+                              color:
+                                row.mainBalance > 0
+                                  ? theme.palette.mode === "dark"
+                                    ? "#ffffff"
+                                    : "#000000"
+                                  : theme.palette.mode === "dark"
+                                    ? "#666666"
+                                    : "#999999",
                             }}
                           >
-                            Rs. {row.mainBalance?.toFixed(2)}
+                            $. {row.mainBalance?.toFixed(2)}
                           </Typography>
                         </TableCell>
                       )}
@@ -237,7 +336,11 @@ export default function CustomerPackSection() {
                               variant="filled"
                             />
                           </TableCell>
-                          <TableCell>{row.lastActivationDate}</TableCell>
+                          <TableCell
+                            sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.875rem" }}
+                          >
+                            {row.lastActivationDate}
+                          </TableCell>
                         </>
                       )}
                     </TableRow>
@@ -253,7 +356,10 @@ export default function CustomerPackSection() {
               onPageChange={(event, newPage) => setPage(newPage)}
               rowsPerPage={rowsPerPage}
               rowsPerPageOptions={[10]}
-              sx={{ borderTop: `1px solid ${theme.palette.divider}` }}
+              sx={{
+                borderTop: `1px solid ${theme.palette.mode === "dark" ? "#666666" : "#e0e0e0"}`,
+                color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+              }}
             />
           </Box>
         </Collapse>
@@ -264,8 +370,8 @@ export default function CustomerPackSection() {
   return (
     <Box>
       <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-        <PeopleIcon sx={{ fontSize: 32, color: theme.palette.primary.main, mr: 1 }} />
-        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+        <PeopleIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mr: 1 }} />
+        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
           Customer Pack Details
         </Typography>
       </Box>
@@ -275,23 +381,26 @@ export default function CustomerPackSection() {
         <Grid item xs={12} md={3}>
           <Card
             sx={{
-              borderRadius: theme.shape.borderRadius,
-              boxShadow: 3,
-              bgcolor: theme.palette.success.main,
-              color: "white",
+              borderRadius: 2,
+              border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+              bgcolor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+              boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
             }}
           >
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                  >
                     {activeCustomers.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
                     Active Customers
                   </Typography>
                 </Box>
-                <PeopleIcon sx={{ fontSize: 40, opacity: 0.8 }} />
+                <PeopleIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
@@ -300,23 +409,26 @@ export default function CustomerPackSection() {
         <Grid item xs={12} md={3}>
           <Card
             sx={{
-              borderRadius: theme.shape.borderRadius,
-              boxShadow: 3,
-              bgcolor: theme.palette.error.main,
-              color: "white",
+              borderRadius: 2,
+              border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+              bgcolor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+              boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
             }}
           >
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                  >
                     {inactiveCustomers.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
                     Inactive Customers
                   </Typography>
                 </Box>
-                <PersonOffIcon sx={{ fontSize: 40, opacity: 0.8 }} />
+                <PersonOffIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
@@ -325,23 +437,26 @@ export default function CustomerPackSection() {
         <Grid item xs={12} md={3}>
           <Card
             sx={{
-              borderRadius: theme.shape.borderRadius,
-              boxShadow: 3,
-              bgcolor: theme.palette.warning.main,
-              color: "white",
+              borderRadius: 2,
+              border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+              bgcolor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+              boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
             }}
           >
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                  >
                     {repeatedCustomers.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
                     Repeated Customers
                   </Typography>
                 </Box>
-                <RepeatIcon sx={{ fontSize: 40, opacity: 0.8 }} />
+                <RepeatIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
@@ -350,23 +465,26 @@ export default function CustomerPackSection() {
         <Grid item xs={12} md={3}>
           <Card
             sx={{
-              borderRadius: theme.shape.borderRadius,
-              boxShadow: 3,
-              bgcolor: theme.palette.info.main,
-              color: "white",
+              borderRadius: 2,
+              border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+              bgcolor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+              boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
             }}
           >
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
-                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                  >
                     {newCustomers.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
                     New Customers
                   </Typography>
                 </Box>
-                <PersonAddIcon sx={{ fontSize: 40, opacity: 0.8 }} />
+                <PersonAddIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
@@ -380,7 +498,7 @@ export default function CustomerPackSection() {
         activeCustomersPage,
         setActiveCustomersPage,
         <PeopleIcon />,
-        theme.palette.success.main,
+        theme.palette.mode === "dark" ? "#ffffff" : "#000000",
         "active",
       )}
 
@@ -390,7 +508,7 @@ export default function CustomerPackSection() {
         inactiveCustomersPage,
         setInactiveCustomersPage,
         <PersonOffIcon />,
-        theme.palette.error.main,
+        theme.palette.mode === "dark" ? "#666666" : "#999999",
         "inactive",
       )}
 
@@ -400,7 +518,7 @@ export default function CustomerPackSection() {
         repeatedCustomersPage,
         setRepeatedCustomersPage,
         <RepeatIcon />,
-        theme.palette.warning.main,
+        theme.palette.mode === "dark" ? "#cccccc" : "#666666",
         "repeated",
       )}
 
@@ -410,7 +528,7 @@ export default function CustomerPackSection() {
         newCustomersPage,
         setNewCustomersPage,
         <PersonAddIcon />,
-        theme.palette.info.main,
+        theme.palette.mode === "dark" ? "#ffffff" : "#000000",
         "new",
       )}
     </Box>

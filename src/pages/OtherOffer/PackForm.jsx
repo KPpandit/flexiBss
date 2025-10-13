@@ -28,6 +28,8 @@ import {
   Fade,
   IconButton,
   Tooltip,
+  Snackbar,
+  Alert,
 } from "@mui/material"
 import {
   Close as CloseIcon,
@@ -106,6 +108,11 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
   const theme = useTheme()
   const [formData, setFormData] = useState(initialPackState)
   const [activeStep, setActiveStep] = useState(0)
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  })
 
   useEffect(() => {
     if (pack && isEdit) {
@@ -115,6 +122,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
     }
     setActiveStep(0)
   }, [pack, isEdit, open])
+
+  const handleCloseNotification = () => {
+    setNotification((prev) => ({ ...prev, open: false }))
+  }
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -150,7 +161,18 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
       assigned_data_balance: `${formData.data_balance} ${formData.data_balance_parameter}`,
     }
     onSave(packToSave)
-    onClose()
+
+    setNotification({
+      open: true,
+      message: isEdit
+        ? `Pack "${formData.pack_name}" updated successfully!`
+        : `Pack "${formData.pack_name}" created successfully!`,
+      severity: "success",
+    })
+
+    setTimeout(() => {
+      onClose()
+    }, 1500)
   }
 
   const getCategoryConfig = (category) => {
@@ -193,14 +215,15 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                   sx={{
                     p: 3,
                     borderRadius: 3,
-                    background: `linear-gradient(135deg, ${theme.palette.primary.main}15 0%, ${theme.palette.primary.main}05 100%)`,
-                    border: `1px solid ${theme.palette.primary.main}20`,
+                    background: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                    border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
                     <Avatar
                       sx={{
-                        background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+                        background: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                         width: 48,
                         height: 48,
                       }}
@@ -228,7 +251,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              <DescriptionIcon sx={{ color: theme.palette.primary.main }} />
+                              <DescriptionIcon sx={{ color: theme.palette.text.secondary }} />
                             </InputAdornment>
                           ),
                         }}
@@ -252,7 +275,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              <CodeIcon sx={{ color: theme.palette.secondary.main }} />
+                              <CodeIcon sx={{ color: theme.palette.text.secondary }} />
                             </InputAdornment>
                           ),
                         }}
@@ -281,19 +304,19 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         >
                           <MenuItem value="Prepaid">
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <CallIcon sx={{ color: theme.palette.primary.main }} />
+                              <CallIcon sx={{ color: theme.palette.text.secondary }} />
                               Prepaid
                             </Box>
                           </MenuItem>
                           <MenuItem value="Postpaid">
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <SecurityIcon sx={{ color: theme.palette.secondary.main }} />
+                              <SecurityIcon sx={{ color: theme.palette.text.secondary }} />
                               Postpaid
                             </Box>
                           </MenuItem>
                           <MenuItem value="FWA">
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <DataIcon sx={{ color: theme.palette.info.main }} />
+                              <DataIcon sx={{ color: theme.palette.text.secondary }} />
                               FWA
                             </Box>
                           </MenuItem>
@@ -361,14 +384,15 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                   sx={{
                     p: 3,
                     borderRadius: 3,
-                    background: `linear-gradient(135deg, ${theme.palette.success.main}15 0%, ${theme.palette.success.main}05 100%)`,
-                    border: `1px solid ${theme.palette.success.main}20`,
+                    background: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                    border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
                     <Avatar
                       sx={{
-                        background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
+                        background: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                         width: 48,
                         height: 48,
                       }}
@@ -397,10 +421,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              <PriceIcon sx={{ color: theme.palette.success.main }} />
+                              <PriceIcon sx={{ color: theme.palette.text.secondary }} />
                             </InputAdornment>
                           ),
-                          endAdornment: <InputAdornment position="end">₹</InputAdornment>,
+                          endAdornment: <InputAdornment position="end">$</InputAdornment>,
                         }}
                         sx={{
                           "& .MuiOutlinedInput-root": {
@@ -423,7 +447,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              <ValidityIcon sx={{ color: theme.palette.info.main }} />
+                              <ValidityIcon sx={{ color: theme.palette.text.secondary }} />
                             </InputAdornment>
                           ),
                         }}
@@ -514,14 +538,15 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                   sx={{
                     p: 3,
                     borderRadius: 3,
-                    background: `linear-gradient(135deg, ${theme.palette.info.main}15 0%, ${theme.palette.info.main}05 100%)`,
-                    border: `1px solid ${theme.palette.info.main}20`,
+                    background: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                    border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
                     <Avatar
                       sx={{
-                        background: `linear-gradient(135deg, ${theme.palette.info.main} 0%, ${theme.palette.info.dark} 100%)`,
+                        background: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                         width: 48,
                         height: 48,
                       }}
@@ -545,12 +570,12 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: `linear-gradient(135deg, ${theme.palette.primary.main}10 0%, ${theme.palette.primary.main}05 100%)`,
-                          border: `1px solid ${theme.palette.primary.main}20`,
+                          background: theme.palette.mode === "dark" ? "#1a1a1a" : "#f5f5f5",
+                          border: theme.palette.mode === "dark" ? "1px solid #444444" : "1px solid #e0e0e0",
                         }}
                       >
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                          <CallIcon sx={{ color: theme.palette.primary.main }} />
+                          <CallIcon sx={{ color: theme.palette.text.secondary }} />
                           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                             Voice Call Benefits
                           </Typography>
@@ -606,12 +631,12 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: `linear-gradient(135deg, ${theme.palette.info.main}10 0%, ${theme.palette.info.main}05 100%)`,
-                          border: `1px solid ${theme.palette.info.main}20`,
+                          background: theme.palette.mode === "dark" ? "#1a1a1a" : "#f5f5f5",
+                          border: theme.palette.mode === "dark" ? "1px solid #444444" : "1px solid #e0e0e0",
                         }}
                       >
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                          <DataIcon sx={{ color: theme.palette.info.main }} />
+                          <DataIcon sx={{ color: theme.palette.text.secondary }} />
                           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                             Data Benefits
                           </Typography>
@@ -666,12 +691,12 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: `linear-gradient(135deg, ${theme.palette.secondary.main}10 0%, ${theme.palette.secondary.main}05 100%)`,
-                          border: `1px solid ${theme.palette.secondary.main}20`,
+                          background: theme.palette.mode === "dark" ? "#1a1a1a" : "#f5f5f5",
+                          border: theme.palette.mode === "dark" ? "1px solid #444444" : "1px solid #e0e0e0",
                         }}
                       >
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                          <SmsIcon sx={{ color: theme.palette.secondary.main }} />
+                          <SmsIcon sx={{ color: theme.palette.text.secondary }} />
                           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                             SMS Benefits
                           </Typography>
@@ -736,14 +761,15 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                   sx={{
                     p: 3,
                     borderRadius: 3,
-                    background: `linear-gradient(135deg, ${theme.palette.warning.main}15 0%, ${theme.palette.warning.main}05 100%)`,
-                    border: `1px solid ${theme.palette.warning.main}20`,
+                    background: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                    border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
                     <Avatar
                       sx={{
-                        background: `linear-gradient(135deg, ${theme.palette.warning.main} 0%, ${theme.palette.warning.dark} 100%)`,
+                        background: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                         width: 48,
                         height: 48,
                       }}
@@ -766,8 +792,8 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: `linear-gradient(135deg, ${theme.palette.success.main}10 0%, ${theme.palette.success.main}05 100%)`,
-                          border: `1px solid ${theme.palette.success.main}20`,
+                          background: theme.palette.mode === "dark" ? "#1a1a1a" : "#f5f5f5",
+                          border: theme.palette.mode === "dark" ? "1px solid #444444" : "1px solid #e0e0e0",
                         }}
                       >
                         <FormControlLabel
@@ -777,10 +803,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                               onChange={(e) => handleBasePackChange("is_fup_enabled", e.target.checked)}
                               sx={{
                                 "& .MuiSwitch-switchBase.Mui-checked": {
-                                  color: theme.palette.success.main,
+                                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                                 },
                                 "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                                  backgroundColor: theme.palette.success.main,
+                                  backgroundColor: theme.palette.mode === "dark" ? "#666666" : "#999999",
                                 },
                               }}
                             />
@@ -882,10 +908,8 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
         PaperProps={{
           sx: {
             borderRadius: 4,
-            background:
-              theme.palette.mode === "dark"
-                ? `linear-gradient(145deg, ${theme.palette.grey[900]} 0%, ${theme.palette.grey[800]} 100%)`
-                : `linear-gradient(145deg, ${theme.palette.common.white} 0%, ${theme.palette.grey[50]} 100%)`,
+            background: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+            border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
             minHeight: "80vh",
           },
         }}
@@ -893,23 +917,12 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
         {/* Header */}
         <DialogTitle
           sx={{
-            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-            color: "white",
+            background: theme.palette.mode === "dark" ? "#1a1a1a" : "#f5f5f5",
+            borderBottom: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
+            color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
             fontWeight: 700,
             fontSize: "1.5rem",
             position: "relative",
-            overflow: "hidden",
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background:
-                'url(\'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>\')',
-              opacity: 0.3,
-            },
           }}
         >
           <Box
@@ -924,18 +937,18 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               <Avatar
                 sx={{
-                  background: "rgba(255,255,255,0.2)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255,255,255,0.3)",
+                  background: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
+                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #cccccc",
                 }}
               >
                 {isEdit ? <SettingsIcon /> : <InfoIcon />}
               </Avatar>
               <Box>
-                <Typography variant="h5" sx={{ fontWeight: 800, textShadow: "0 2px 4px rgba(0,0,0,0.3)" }}>
+                <Typography variant="h5" sx={{ fontWeight: 800 }}>
                   {isEdit ? "Edit Pack" : "Create New Pack"}
                 </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                <Typography variant="body2" sx={{ opacity: 0.7 }}>
                   {isEdit ? "Update pack information" : "Configure your new telecom package"}
                 </Typography>
               </Box>
@@ -944,11 +957,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
               <IconButton
                 onClick={onClose}
                 sx={{
-                  color: "white",
-                  background: "rgba(255,255,255,0.1)",
-                  backdropFilter: "blur(10px)",
+                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  background: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                   "&:hover": {
-                    background: "rgba(255,255,255,0.2)",
+                    background: theme.palette.mode === "dark" ? "#444444" : "#cccccc",
                   },
                 }}
               >
@@ -967,12 +979,22 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                   sx={{
                     "& .MuiStepLabel-label": {
                       fontWeight: 600,
-                      color: index === activeStep ? theme.palette.primary.main : theme.palette.text.secondary,
+                      color:
+                        index === activeStep
+                          ? theme.palette.mode === "dark"
+                            ? "#ffffff"
+                            : "#000000"
+                          : theme.palette.text.secondary,
                     },
                     "& .MuiStepIcon-root": {
-                      color: index === activeStep ? theme.palette.primary.main : theme.palette.grey[400],
+                      color:
+                        index === activeStep
+                          ? theme.palette.mode === "dark"
+                            ? "#ffffff"
+                            : "#000000"
+                          : theme.palette.grey[400],
                       "&.Mui-completed": {
-                        color: theme.palette.success.main,
+                        color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
                       },
                     },
                   }}
@@ -991,10 +1013,8 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
         <DialogActions
           sx={{
             p: 3,
-            background:
-              theme.palette.mode === "dark"
-                ? `linear-gradient(135deg, ${theme.palette.grey[800]} 0%, ${theme.palette.grey[700]} 100%)`
-                : `linear-gradient(135deg, ${theme.palette.grey[50]} 0%, ${theme.palette.common.white} 100%)`,
+            background: theme.palette.mode === "dark" ? "#1a1a1a" : "#f5f5f5",
+            borderTop: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
             gap: 2,
           }}
         >
@@ -1006,7 +1026,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
               px: 3,
               py: 1,
               fontWeight: 600,
-              borderColor: theme.palette.grey[400],
+              borderColor: theme.palette.mode === "dark" ? "#666666" : "#cccccc",
               color: theme.palette.text.secondary,
             }}
           >
@@ -1022,8 +1042,8 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                 px: 3,
                 py: 1,
                 fontWeight: 600,
-                borderColor: theme.palette.primary.main,
-                color: theme.palette.primary.main,
+                borderColor: theme.palette.mode === "dark" ? "#666666" : "#cccccc",
+                color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
               }}
             >
               Back
@@ -1039,13 +1059,11 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                 px: 4,
                 py: 1,
                 fontWeight: 700,
-                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-                boxShadow: theme.shadows[4],
+                background: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                 "&:hover": {
-                  boxShadow: theme.shadows[8],
-                  transform: "translateY(-2px)",
+                  background: theme.palette.mode === "dark" ? "#e0e0e0" : "#333333",
                 },
-                transition: "all 0.3s ease",
               }}
             >
               Next Step
@@ -1060,13 +1078,11 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                 px: 4,
                 py: 1,
                 fontWeight: 700,
-                background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
-                boxShadow: theme.shadows[4],
+                background: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                 "&:hover": {
-                  boxShadow: theme.shadows[8],
-                  transform: "translateY(-2px)",
+                  background: theme.palette.mode === "dark" ? "#e0e0e0" : "#333333",
                 },
-                transition: "all 0.3s ease",
               }}
             >
               {isEdit ? "Update Pack" : "Create Pack"}
@@ -1074,6 +1090,17 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
           )}
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={4000}
+        onClose={handleCloseNotification}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleCloseNotification} severity={notification.severity} sx={{ width: "100%" }}>
+          {notification.message}
+        </Alert>
+      </Snackbar>
     </LocalizationProvider>
   )
 }

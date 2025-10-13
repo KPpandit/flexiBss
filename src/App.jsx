@@ -18,10 +18,24 @@ import Configuration from './pages/Configuration/Configuration';
 import Report from './pages/reports/Reports';
 import SimConversion from './pages/Configuration/SimConversion';
 import CampaignManagement from './pages/Configuration/CampaignManagement';
+import Partner from './pages/Dealer/Partner';
+import ScheduleDailyMIS from './pages/config/ScheduleDailyMIS';
+import ScheduleDailyRevenue from './pages/config/ScheduleDailyRevenue';
+import ScheduleInventoryReport from './pages/config/ScheduleInventoryReport';
+import ScheduleResellerReport from './pages/config/ScheduleResellerReport';
+import SMSNotification from './pages/config/SMSNotification';
+import EmailNotification from './pages/config/EmailNotification';
+import PostpaidMediation from './pages/config/PostpaidMediation';
+import BillGenerateDate from './pages/config/BillGenerateDate';
+import BillDispatchDate from './pages/config/BillDispatchDate';
+import RatingEngine from './pages/RatingEngine/RatingEngine';
+import MISReports from './pages/MISReport/MISReports';
+import FraudManagement from './pages/FroudMangement/FraudManagement';
+import TicketManagement from './pages/TicketManagemnt/TicketManagement';
 
 
 function App() {
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState('dark');
 
   const theme = useMemo(() => {
     return mode === 'light' ? lightTheme : darkTheme;
@@ -66,6 +80,46 @@ function App() {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/dashboard/rating-engine"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <RatingEngine />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/dashboard/mis-reports"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <MISReports />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/dashboard/fraud-management"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <FraudManagement />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/dashboard/ticket-management"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <TicketManagement />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard/dealer"
           element={
@@ -96,6 +150,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/dashboard/partner"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <Partner />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard/simConver"
           element={
@@ -116,7 +180,112 @@ function App() {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/dashboard/config/schedule/daily-mis"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <ScheduleDailyMIS />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
        
+        <Route
+          path="/dashboard/config/schedule/daily-revenue"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <ScheduleDailyRevenue />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+         <Route
+          path="/dashboard/config/schedule/inventory-report"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <ScheduleInventoryReport />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+       
+       <Route
+          path="/dashboard/config/schedule/inventory-report"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <ScheduleInventoryReport />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+         <Route
+          path="/dashboard/config/schedule/reseller-report"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <ScheduleResellerReport />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/dashboard/config/notification/sms"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <SMSNotification />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+          <Route
+          path="/dashboard/config/notification/email"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <EmailNotification />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/dashboard/config/mediation/postpaid"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <PostpaidMediation />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/config/mediation/bill-generate"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <BillGenerateDate />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+         <Route
+          path="/dashboard/config/mediation/bill-dispatch"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <BillDispatchDate />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
        
       </Routes>
     </ThemeProvider>

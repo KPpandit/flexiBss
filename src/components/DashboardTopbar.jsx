@@ -1,65 +1,65 @@
-import { 
-  AppBar, 
-  Toolbar, 
-  IconButton, 
-  Typography, 
-  Select, 
-  MenuItem, 
-  Badge, 
-  Avatar,
-  Box,
-  useTheme
-} from '@mui/material';
-import { 
-  Menu as MenuIcon,
-  Star as StarIcon,
-  Download as DownloadIcon,
-  Email as EmailIcon,
-  Brightness4 as DarkModeIcon,
-  Brightness7 as LightModeIcon
-} from '@mui/icons-material';
+"use client"
+
+import { AppBar, Toolbar, IconButton, Typography, Select, MenuItem, Avatar, Box, useTheme } from "@mui/material"
+import { Menu as MenuIcon, Brightness4 as DarkModeIcon, Brightness7 as LightModeIcon } from "@mui/icons-material"
 
 const DashboardTopbar = ({ toggleTheme, mode }) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
-    <AppBar 
-      position="fixed" 
-      sx={{ 
+    <AppBar
+      position="fixed"
+      sx={{
         zIndex: (theme) => theme.zIndex.drawer + 1,
-        background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`
+        background:
+          theme.palette.mode === "dark"
+            ? `linear-gradient(45deg, #000000 30%, #1a1a1a 90%)`
+            : `linear-gradient(45deg, #ffffff 30%, #f8f9fa 90%)`,
+        borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     >
       <Toolbar>
         <IconButton
           color="inherit"
           edge="start"
-          sx={{ mr: 2 }}
+          sx={{
+            mr: 2,
+            color: theme.palette.text.primary, // Use theme text color
+          }}
         >
           <MenuIcon />
         </IconButton>
-        
-        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{
+            flexGrow: 1,
+            color: theme.palette.text.primary, // Use theme text color
+          }}
+        >
           Flexi 5G BSS
         </Typography>
-        
+
         <Select
           value={mode}
           onChange={toggleTheme}
           size="small"
-          sx={{ 
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            color: 'white',
+          sx={{
+            backgroundColor: theme.palette.mode === "dark" ? "rgba(248,213,130,0.1)" : "rgba(248,213,130,0.2)",
+            color: theme.palette.text.primary,
             mr: 2,
-            '& .MuiSelect-icon': {
-              color: 'white'
-            }
+            border: `1px solid ${theme.palette.divider}`,
+            "& .MuiSelect-icon": {
+              color: theme.palette.text.primary,
+            },
           }}
           renderValue={(value) => (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {value === 'dark' ? <DarkModeIcon fontSize="small" /> : <LightModeIcon fontSize="small" />}
-              <Typography sx={{ ml: 1 }}>
-                {value === 'dark' ? 'Dark Mode' : 'Light Mode'}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              {value === "dark" ? <DarkModeIcon fontSize="small" /> : <LightModeIcon fontSize="small" />}
+              <Typography sx={{ ml: 1, color: theme.palette.text.primary }}>
+                {value === "dark" ? "Dark Mode" : "Light Mode"}
               </Typography>
             </Box>
           )}
@@ -73,34 +73,21 @@ const DashboardTopbar = ({ toggleTheme, mode }) => {
             Dark
           </MenuItem>
         </Select>
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <StarIcon fontSize="small" sx={{ mr: 0.5 }} />
-            <Typography variant="body2">Star</Typography>
-            <Badge 
-              badgeContent="25,494" 
-              color="secondary" 
-              sx={{ ml: 1 }}
-            />
-          </Box> */}
-          
-          {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <DownloadIcon fontSize="small" sx={{ mr: 0.5 }} />
-            <Typography variant="body2">470,000</Typography>
-          </Box> */}
-          
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {/* <EmailIcon fontSize="small" sx={{ mr: 0.5 }} /> */}
-            <Typography variant="body2">Hello, Admin</Typography>
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
+              Hello, Admin
+            </Typography>
           </Box>
-          
-          <Avatar 
-            sx={{ 
-              width: 32, 
+
+          <Avatar
+            sx={{
+              width: 32,
               height: 32,
-              bgcolor: 'white',
-              color: theme.palette.primary.main
+              bgcolor: theme.palette.primary.main, // Use golden color
+              color: theme.palette.mode === "dark" ? "#000000" : "#000000", // Black text on golden background
+              fontWeight: 600,
             }}
           >
             A
@@ -108,7 +95,7 @@ const DashboardTopbar = ({ toggleTheme, mode }) => {
         </Box>
       </Toolbar>
     </AppBar>
-  );
-};
+  )
+}
 
-export default DashboardTopbar;
+export default DashboardTopbar

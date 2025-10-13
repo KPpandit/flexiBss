@@ -26,25 +26,25 @@ export default function Report() {
       label: "Usage Reports",
       icon: <TrendingUpIcon />,
       component: <UsageReportSection />,
-      color: theme.palette.primary.main,
+      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
     },
     {
       label: "Customer Pack Details",
       icon: <PeopleIcon />,
       component: <CustomerPackSection />,
-      color: theme.palette.success.main,
+      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
     },
     {
       label: "CDR Details",
       icon: <AssessmentIcon />,
       component: <CDRDetailsSection />,
-      color: theme.palette.info.main,
+      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
     },
     {
       label: "IDD Reports",
       icon: <PublicIcon />,
       component: <IDDReportsSection />,
-      color: theme.palette.warning.main,
+      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
     },
   ]
 
@@ -53,35 +53,29 @@ export default function Report() {
       {/* Header */}
       <Box
         sx={{
-          textAlign: "center",
-          mb: 4,
-          borderRadius: theme.shape.borderRadius,
-          p: 1,
-          boxShadow: 3,
+          textAlign: "left",
+          mb: 2,
+          borderRadius: 2,
+          p: 3,
+          border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
           bgcolor: theme.palette.background.paper,
+          boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: 800,
-            color: theme.palette.primary.main,
-            mb: 1,
-          }}
-        >
+         <Typography variant="h4" sx={{ mb: 0, fontWeight: 600, color: theme.palette.text.primary }}>
           Reports
         </Typography>
-       
       </Box>
 
       {/* Navigation Tabs */}
       <Paper
         sx={{
           mb: 4,
-          borderRadius: theme.shape.borderRadius,
-          boxShadow: 3,
+          borderRadius: 2,
+          border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
           overflow: "hidden",
           bgcolor: theme.palette.background.paper,
+          boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
         }}
       >
         <Tabs
@@ -94,6 +88,7 @@ export default function Report() {
               fontSize: "1rem",
               textTransform: "none",
               minHeight: 80,
+              color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
             },
             "& .Mui-selected": {
               color: tabData[activeSection]?.color,

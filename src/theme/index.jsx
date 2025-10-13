@@ -1,17 +1,26 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles"
 
 export const lightTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#673ab7',
+      main: "#6c757d", // Neutral grey instead of golden yellow
     },
     secondary: {
-      main: '#3f51b5',
+      main: "#495057", // Darker grey for secondary actions
     },
     background: {
-      default: '#f5f7fa',
-      paper: '#ffffff',
+      default: "#ffffff", // Pure white background
+      paper: "#f8f9fa", // Light grey for cards
+    },
+    text: {
+      primary: "#212529", // Dark text for contrast
+      secondary: "#6c757d", // Grey text
+    },
+    divider: "#dee2e6", // Light grey borders
+    action: {
+      hover: "#f8f9fa",
+      selected: "#e9ecef",
     },
   },
   typography: {
@@ -20,20 +29,29 @@ export const lightTheme = createTheme({
   shape: {
     borderRadius: 8,
   },
-});
+})
 
 export const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#9c27b0',
+      main: "#9e9e9e", // Neutral grey instead of golden yellow
     },
     secondary: {
-      main: '#673ab7',
+      main: "#6c757d", // Neutral grey
     },
     background: {
-      default: '#121212',
-      paper: '#1e1e1e',
+      default: "#000000", // Pure black background
+      paper: "#1a1a1a", // Dark grey for cards
+    },
+    text: {
+      primary: "#ffffff", // White text
+      secondary: "#adb5bd", // Light grey text
+    },
+    divider: "#495057", // Grey borders
+    action: {
+      hover: "#212529",
+      selected: "#343a40",
     },
   },
   typography: {
@@ -42,4 +60,4 @@ export const darkTheme = createTheme({
   shape: {
     borderRadius: 8,
   },
-});
+})

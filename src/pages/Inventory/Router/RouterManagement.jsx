@@ -54,7 +54,7 @@ const sampleRouters = Array.from({ length: 50 }, (_, i) => ({
   vendorId: Math.floor(Math.random() * 10) + 1,
   macAddress: `00:1B:44:11:3A:${(i + 10).toString(16).toUpperCase().padStart(2, "0")}`,
   userName: `router_user_${i + 1}`,
-  activationDate: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)),
+  activationDate: new Date(2025, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)),
   deviceId: `DEV${Math.floor(1000 + Math.random() * 9000)}`,
   deviceModel: ["RT-AC68U", "RT-AX88U", "RT-AC86U", "RT-AX58U"][Math.floor(Math.random() * 4)],
   deviceMake: ["ASUS", "Netgear", "Linksys", "TP-Link"][Math.floor(Math.random() * 4)],
@@ -190,16 +190,28 @@ const RouterManagement = () => {
           </Alert>
         </Snackbar>
 
-        <Card sx={{ mb: 3 }}>
+        <Card
+          sx={{
+            mb: 3,
+            background: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+            border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
+          }}
+        >
           <CardHeader
             title="Router Inventory Management"
             action={
               <Button
                 variant="contained"
-                color="secondary"
+                sx={{
+                  borderRadius: 2,
+                  backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                  "&:hover": {
+                    backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
+                  },
+                }}
                 startIcon={<AddIcon />}
                 onClick={handleAddRouter}
-                sx={{ borderRadius: 2 }}
               >
                 Add Router
               </Button>
@@ -252,7 +264,13 @@ const RouterManagement = () => {
                   <TableRow key={router.id} hover>
                     <TableCell>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Avatar sx={{ mr: 2, bgcolor: theme.palette.secondary.main }}>
+                        <Avatar
+                          sx={{
+                            mr: 2,
+                            bgcolor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                            color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                          }}
+                        >
                           <RouterIcon />
                         </Avatar>
                         <Box>

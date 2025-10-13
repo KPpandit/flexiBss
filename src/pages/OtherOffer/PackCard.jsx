@@ -25,12 +25,9 @@ import {
   Phone as CallIcon,
   Sms as SmsIcon,
   Wifi as DataIcon,
-  AttachMoney as PriceIcon,
   CalendarToday as ValidityIcon,
-  Star as StarIcon,
   TrendingUp as TrendingUpIcon,
-  Security as SecurityIcon,
-  Speed as SpeedIcon,
+  Star as StarIcon,
 } from "@mui/icons-material"
 import { useState } from "react"
 
@@ -44,29 +41,21 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
         return {
           icon: <ApprovedIcon />,
           color: theme.palette.success.main,
-          bgColor: theme.palette.success.light,
-          gradient: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
         }
       case "Pending":
         return {
           icon: <PendingIcon />,
           color: theme.palette.warning.main,
-          bgColor: theme.palette.warning.light,
-          gradient: `linear-gradient(135deg, ${theme.palette.warning.main} 0%, ${theme.palette.warning.dark} 100%)`,
         }
       case "Rejected":
         return {
           icon: <RejectedIcon />,
           color: theme.palette.error.main,
-          bgColor: theme.palette.error.light,
-          gradient: `linear-gradient(135deg, ${theme.palette.error.main} 0%, ${theme.palette.error.dark} 100%)`,
         }
       default:
         return {
           icon: <PendingIcon />,
           color: theme.palette.grey[500],
-          bgColor: theme.palette.grey[200],
-          gradient: `linear-gradient(135deg, ${theme.palette.grey[500]} 0%, ${theme.palette.grey[700]} 100%)`,
         }
     }
   }
@@ -76,80 +65,63 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
       case "Prepaid":
         return {
           color: theme.palette.primary.main,
-          gradient: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          icon: <SpeedIcon />,
+          icon: <CallIcon />,
         }
       case "Postpaid":
         return {
           color: theme.palette.secondary.main,
-          gradient: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.secondary.dark} 100%)`,
-          icon: <SecurityIcon />,
+          icon: <SmsIcon />,
         }
       case "FWA":
         return {
           color: theme.palette.info.main,
-          gradient: `linear-gradient(135deg, ${theme.palette.info.main} 0%, ${theme.palette.info.dark} 100%)`,
           icon: <DataIcon />,
         }
       default:
         return {
           color: theme.palette.grey[500],
-          gradient: `linear-gradient(135deg, ${theme.palette.grey[500]} 0%, ${theme.palette.grey[700]} 100%)`,
           icon: <StarIcon />,
         }
     }
   }
-
-  const statusConfig = getStatusConfig(pack.pack_status)
-  const categoryConfig = getCategoryConfig(pack.category_name)
 
   const getDataUsagePercentage = () => {
     // Mock calculation for visual appeal
     return Math.min((pack.data_balance / 1000) * 100, 100)
   }
 
+  const statusConfig = getStatusConfig(pack.pack_status)
+  const categoryConfig = getCategoryConfig(pack.category_name)
+
   return (
-    <Zoom in={true} timeout={600} >
+    <Zoom in={true} timeout={600}>
       <Card
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         sx={{
-          height: "100%", // Ensures consistent height
-          minHeight: 580, // Set minimum height for consistency
+          height: "100%",
+          minHeight: 580,
           display: "flex",
           flexDirection: "column",
-          width:550,
+          width: 550,
           position: "relative",
           overflow: "hidden",
           borderRadius: 4,
           transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
           transform: isHovered ? "translateY(-12px) scale(1.02)" : "translateY(0) scale(1)",
-          boxShadow: isHovered ? `0 20px 40px rgba(0,0,0,0.15), 0 0 0 1px ${statusConfig.color}40` : theme.shadows[4],
-          background:
-            theme.palette.mode === "dark"
-              ? `linear-gradient(145deg, ${theme.palette.grey[900]} 0%, ${theme.palette.grey[800]} 50%, ${theme.palette.grey[900]} 100%)`
-              : `linear-gradient(145deg, ${theme.palette.common.white} 0%, ${theme.palette.grey[50]} 50%, ${theme.palette.common.white} 100%)`,
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 6,
-            background: statusConfig.gradient,
-            opacity: isHovered ? 1 : 0.8,
-            transition: "opacity 0.3s ease",
-          },
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: `radial-gradient(circle at top right, ${statusConfig.color}08 0%, transparent 50%)`,
-            pointerEvents: "none",
-          },
+          backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+          border: isHovered
+            ? theme.palette.mode === "dark"
+              ? "1px solid #ffffff"
+              : "1px solid #000000"
+            : theme.palette.mode === "dark"
+              ? "1px solid #666666"
+              : "1px solid #e0e0e0",
+          boxShadow: isHovered
+            ? theme.palette.mode === "dark"
+              ? "0 20px 40px rgba(255,255,255,0.1)"
+              : "0 20px 40px rgba(0,0,0,0.15)"
+            : theme.shadows[4],
         }}
       >
         {/* Floating Action Buttons */}
@@ -171,12 +143,12 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
               onClick={() => onEdit(pack)}
               size="small"
               sx={{
-                backgroundColor: theme.palette.primary.main,
-                color: "white",
+                backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                 width: 36,
                 height: 36,
                 "&:hover": {
-                  backgroundColor: theme.palette.primary.dark,
+                  backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
                   transform: "scale(1.1)",
                 },
                 transition: "all 0.2s ease",
@@ -217,7 +189,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                   variant="h6"
                   sx={{
                     fontWeight: 700,
-                    color: theme.palette.text.primary,
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                     mb: 0.5,
                     fontSize: "1.1rem",
                     lineHeight: 1.3,
@@ -230,13 +202,10 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                     label={pack.pack_code}
                     size="small"
                     sx={{
-                      background: categoryConfig.gradient,
-                      color: "white",
+                      backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                      color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                       fontWeight: 600,
                       fontSize: "0.75rem",
-                      "& .MuiChip-icon": {
-                        color: "white",
-                      },
                     }}
                   />
                   <Chip
@@ -244,13 +213,10 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                     label={pack.category_name}
                     size="small"
                     sx={{
-                      background: categoryConfig.gradient,
-                      color: "white",
+                      backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                      color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                       fontWeight: 600,
                       fontSize: "0.75rem",
-                      "& .MuiChip-icon": {
-                        color: "white",
-                      },
                     }}
                   />
                 </Box>
@@ -261,8 +227,8 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                 sx={{
                   width: 48,
                   height: 48,
-                  background: statusConfig.gradient,
-                  boxShadow: `0 4px 12px ${statusConfig.color}40`,
+                  backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                 }}
               >
                 {statusConfig.icon}
@@ -272,10 +238,10 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
             <Typography
               variant="body2"
               sx={{
-                color: theme.palette.text.secondary,
+                color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
                 lineHeight: 1.5,
                 fontStyle: "italic",
-                height: 48, // Fixed height for description
+                height: 48,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "-webkit-box",
@@ -287,72 +253,113 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
             </Typography>
           </Box>
 
-          <Divider sx={{ my: 2, opacity: 0.6 }} />
+          <Divider
+            sx={{
+              my: 2,
+              opacity: 0.6,
+              borderColor: theme.palette.mode === "dark" ? "#666666" : "#e0e0e0",
+            }}
+          />
 
           {/* Price Section */}
           <Box
             sx={{
-              background: `linear-gradient(135deg, ${theme.palette.success.main}15 0%, ${theme.palette.success.main}05 100%)`,
+              backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+              border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
               borderRadius: 3,
               p: 2,
               mb: 3,
-              border: `1px solid ${theme.palette.success.main}20`,
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                {/* <Avatar
-                  sx={{
-                    width: 40,
-                    height: 40,
-                    backgroundColor: theme.palette.success.main,
-                  }}
-                >
-                 
-                </Avatar> */}
                 <Box>
-                  <Typography variant="h5" sx={{ fontWeight: 800, color: theme.palette.success.main }}>
-                    Rs. {pack.pack_price.toLocaleString()}
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 800,
+                      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    }}
+                  >
+                    $ {pack.pack_price.toLocaleString()}
                   </Typography>
-                  <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
+                    }}
+                  >
                     {pack.pricing_model} Price
                   </Typography>
                 </Box>
               </Box>
               <Box sx={{ textAlign: "right" }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                  <ValidityIcon sx={{ fontSize: 16, color: theme.palette.info.main }} />
-                  <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+                  <ValidityIcon
+                    sx={{
+                      fontSize: 16,
+                      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    }}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: 600,
+                      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    }}
+                  >
                     {pack.validity} {pack.validity_type}
                   </Typography>
                 </Box>
-                <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
+                  }}
+                >
                   Validity Period
                 </Typography>
               </Box>
             </Box>
           </Box>
 
-          {/* Benefits Grid - Flex-grow to take available space */}
+          {/* Benefits Grid */}
           <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <Grid container spacing={2}>
               {pack.onn_call_balance > 0 && (
                 <Grid item xs={12}>
                   <Box
                     sx={{
-                      background: `linear-gradient(135deg, ${theme.palette.primary.main}10 0%, ${theme.palette.primary.main}05 100%)`,
+                      backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                      border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                       borderRadius: 2,
                       p: 1.5,
-                      border: `1px solid ${theme.palette.primary.main}20`,
                     }}
                   >
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                      <CallIcon sx={{ color: theme.palette.primary.main, fontSize: 20 }} />
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+                      <CallIcon
+                        sx={{
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          fontSize: 20,
+                        }}
+                      />
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 600,
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        }}
+                      >
                         Voice Calls
                       </Typography>
                     </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 700,
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                      }}
+                    >
                       {pack.onn_assigned_call_balance}
                     </Typography>
                     <LinearProgress
@@ -361,9 +368,9 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       sx={{
                         height: 4,
                         borderRadius: 2,
-                        backgroundColor: `${theme.palette.primary.main}20`,
+                        backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                         "& .MuiLinearProgress-bar": {
-                          backgroundColor: theme.palette.primary.main,
+                          backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                         },
                       }}
                     />
@@ -375,19 +382,36 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                 <Grid item xs={12}>
                   <Box
                     sx={{
-                      background: `linear-gradient(135deg, ${theme.palette.info.main}10 0%, ${theme.palette.info.main}05 100%)`,
+                      backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                      border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                       borderRadius: 2,
                       p: 1.5,
-                      border: `1px solid ${theme.palette.info.main}20`,
                     }}
                   >
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                      <DataIcon sx={{ color: theme.palette.info.main, fontSize: 20 }} />
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+                      <DataIcon
+                        sx={{
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          fontSize: 20,
+                        }}
+                      />
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 600,
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        }}
+                      >
                         Data Allowance
                       </Typography>
                     </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.info.main }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 700,
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                      }}
+                    >
                       {pack.assigned_data_balance}
                     </Typography>
                     <LinearProgress
@@ -396,9 +420,9 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       sx={{
                         height: 4,
                         borderRadius: 2,
-                        backgroundColor: `${theme.palette.info.main}20`,
+                        backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                         "& .MuiLinearProgress-bar": {
-                          backgroundColor: theme.palette.info.main,
+                          backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                         },
                       }}
                     />
@@ -410,19 +434,36 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                 <Grid item xs={12}>
                   <Box
                     sx={{
-                      background: `linear-gradient(135deg, ${theme.palette.secondary.main}10 0%, ${theme.palette.secondary.main}05 100%)`,
+                      backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                      border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                       borderRadius: 2,
                       p: 1.5,
-                      border: `1px solid ${theme.palette.secondary.main}20`,
                     }}
                   >
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                      <SmsIcon sx={{ color: theme.palette.secondary.main, fontSize: 20 }} />
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+                      <SmsIcon
+                        sx={{
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          fontSize: 20,
+                        }}
+                      />
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 600,
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        }}
+                      >
                         SMS Messages
                       </Typography>
                     </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 700,
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                      }}
+                    >
                       {pack.onn_sms_balance} SMS
                     </Typography>
                     <LinearProgress
@@ -431,9 +472,9 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       sx={{
                         height: 4,
                         borderRadius: 2,
-                        backgroundColor: `${theme.palette.secondary.main}20`,
+                        backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                         "& .MuiLinearProgress-bar": {
-                          backgroundColor: theme.palette.secondary.main,
+                          backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                         },
                       }}
                     />
@@ -451,15 +492,27 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                   sx={{
                     mt: 2,
                     p: 2,
-                    background: `linear-gradient(135deg, ${theme.palette.error.main}15 0%, ${theme.palette.error.main}05 100%)`,
+                    backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                    border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                     borderRadius: 2,
-                    border: `1px solid ${theme.palette.error.main}30`,
                   }}
                 >
-                  <Typography variant="caption" sx={{ color: theme.palette.error.main, fontWeight: 600 }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: theme.palette.error.main,
+                      fontWeight: 600,
+                    }}
+                  >
                     Rejection Reason:
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.text.primary, mt: 0.5 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                      mt: 0.5,
+                    }}
+                  >
                     {pack.approver_rejection_remark}
                   </Typography>
                 </Box>
@@ -474,19 +527,37 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                   alignItems: "center",
                   gap: 1,
                   p: 1.5,
-                  background: `linear-gradient(135deg, ${theme.palette.success.main}10 0%, ${theme.palette.success.main}05 100%)`,
+                  backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                  border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                   borderRadius: 2,
-                  border: `1px solid ${theme.palette.success.main}20`,
                 }}
               >
-                <Avatar sx={{ width: 24, height: 24, backgroundColor: theme.palette.success.main }}>
+                <Avatar
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    backgroundColor: theme.palette.success.main,
+                  }}
+                >
                   <TrendingUpIcon fontSize="small" />
                 </Avatar>
                 <Box>
-                  <Typography variant="caption" sx={{ color: theme.palette.success.main, fontWeight: 600 }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: theme.palette.success.main,
+                      fontWeight: 600,
+                    }}
+                  >
                     Approved by:
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.text.primary, fontWeight: 600 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                      fontWeight: 600,
+                    }}
+                  >
                     {pack.approver_name}
                   </Typography>
                 </Box>
@@ -494,22 +565,6 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
             )}
           </Box>
         </CardContent>
-
-        {/* Animated Border Effect */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            borderRadius: 4,
-            background: `linear-gradient(45deg, ${statusConfig.color}40, transparent, ${statusConfig.color}40)`,
-            opacity: isHovered ? 0.1 : 0,
-            transition: "opacity 0.3s ease",
-            pointerEvents: "none",
-          }}
-        />
       </Card>
     </Zoom>
   )

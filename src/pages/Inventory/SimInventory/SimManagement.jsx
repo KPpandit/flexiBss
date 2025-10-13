@@ -56,12 +56,12 @@ const sampleSims = Array.from({ length: 50 }, (_, i) => ({
   imsi: `5261020003222${i}`,
   pimsi: `1284${i}`,
   batchId: 2231 + Math.floor(i / 10),
-  batchDate: new Date(2024, 10, 27),
+  batchDate: new Date(2025, 10, 27),
   vendorId: Math.floor(Math.random() * 5) + 1,
   status: Math.random() > 0.3,
   provStatus: Math.random() > 0.2,
-  allocationDate: new Date(2024, 10, 27, 17, 52, 46),
-  activationDate: new Date(2024, 10, 27, 17, 54, 3),
+  allocationDate: new Date(2025, 6, 27, 17, 52, 46),
+  activationDate: new Date(2025, 6, 27, 17, 54, 3),
   simType: ["micro-SIM", "nano-SIM", "eSIM"][Math.floor(Math.random() * 3)],
   buyingPriceUsd: Math.floor(Math.random() * 1000) + 100,
   sellingPriceUsd: Math.floor(Math.random() * 50),
@@ -203,16 +203,28 @@ const SimManagement = () => {
           </Alert>
         </Snackbar>
 
-        <Card sx={{ mb: 3 }}>
+        <Card
+          sx={{
+            mb: 3,
+            background: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+            border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
+          }}
+        >
           <CardHeader
             title="SIM Inventory Management"
             action={
               <Button
                 variant="contained"
-                color="primary"
+                sx={{
+                  borderRadius: 2,
+                  backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                  "&:hover": {
+                    backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
+                  },
+                }}
                 startIcon={<AddIcon />}
                 onClick={handleAddSim}
-                sx={{ borderRadius: 2 }}
               >
                 Add SIM
               </Button>
@@ -265,7 +277,13 @@ const SimManagement = () => {
                   <TableRow key={sim.id} hover>
                     <TableCell>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Avatar sx={{ mr: 2, bgcolor: theme.palette.primary.main }}>
+                        <Avatar
+                          sx={{
+                            mr: 2,
+                            bgcolor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                            color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                          }}
+                        >
                           <SimCardIcon />
                         </Avatar>
                         <Box>
@@ -284,9 +302,10 @@ const SimManagement = () => {
                     <TableCell>
                       <Chip
                         label={sim.category}
-                        color={
-                          sim.category === "VIP" ? "warning" : sim.category === "PREMIUM" ? "secondary" : "default"
-                        }
+                        sx={{
+                          backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        }}
                         size="small"
                       />
                     </TableCell>
