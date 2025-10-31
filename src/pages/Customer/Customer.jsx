@@ -15,8 +15,23 @@ import {
   Alert,
   Dialog,
   DialogContent,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Chip,
+  IconButton,
 } from "@mui/material"
-import { Add as AddIcon, Search as SearchIcon } from "@mui/icons-material"
+import {
+  Add as AddIcon,
+  Search as SearchIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+  Person as PersonIcon,
+} from "@mui/icons-material"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
 import CustomerForm from "./CustomerForm"
@@ -602,6 +617,7 @@ const Customer = ({ onCustomersChange, onCurrentCustomerChange }) => {
   const [isEditMode, setIsEditMode] = useState(false)
   const [selectedCustomer, setSelectedCustomer] = useState(sampleCustomers[0])
   const [notFoundDialog, setNotFoundDialog] = useState(false)
+  const [showAllCustomers, setShowAllCustomers] = useState(false)
   const [notification, setNotification] = useState({
     open: false,
     message: "",
@@ -639,6 +655,7 @@ const Customer = ({ onCustomersChange, onCurrentCustomerChange }) => {
       })
 
       if (exactMatches.length > 0) {
+        setShowAllCustomers(false)
         setSelectedCustomer(exactMatches[0])
         setNotification({
           open: true,
@@ -706,6 +723,20 @@ const Customer = ({ onCustomersChange, onCurrentCustomerChange }) => {
       open: true,
       message: message,
       severity: severity,
+    })
+  }
+
+  const handleToggleAllCustomers = () => {
+    setShowAllCustomers(!showAllCustomers)
+  }
+
+  const handleViewCustomer = (customer) => {
+    setSelectedCustomer(customer)
+    setShowAllCustomers(false)
+    setNotification({
+      open: true,
+      message: `Viewing customer: ${customer.name}`,
+      severity: "info",
     })
   }
 
@@ -842,6 +873,25 @@ const Customer = ({ onCustomersChange, onCurrentCustomerChange }) => {
               </Button>
               <Button
                 variant="contained"
+                startIcon={showAllCustomers ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                onClick={handleToggleAllCustomers}
+                sx={{
+                  borderRadius: 2,
+                  px: 3,
+                  py: 1.5,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                  "&:hover": {
+                    backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
+                  },
+                }}
+              >
+                {showAllCustomers ? "Hide" : "Show All Customer"}
+              </Button>
+              <Button
+                variant="contained"
                 startIcon={<AddIcon />}
                 onClick={handleAddCustomer}
                 sx={{
@@ -863,7 +913,238 @@ const Customer = ({ onCustomersChange, onCurrentCustomerChange }) => {
           </Toolbar>
         </Card>
 
-        {selectedCustomer && (
+        {showAllCustomers && (
+          <Card
+            sx={{
+              mb: 3,
+              backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+              border: theme.palette.mode === "dark" ? "1px solid #ffffff" : "1px solid #e0e0e0",
+              boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
+            }}
+          >
+            <CardHeader
+              title={
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 600,
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                >
+                  All Customers ({customers.length})
+                </Typography>
+              }
+            />
+            <Divider
+              sx={{
+                borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+              }}
+            />
+            <TableContainer component={Paper} sx={{ backgroundColor: "transparent" }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      ID
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Name
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      MSISDN
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Type
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Service
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Status
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      eKYC
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                        fontWeight: 600,
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Action
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {customers.map((customer) => (
+                    <TableRow
+                      key={customer.id}
+                      sx={{
+                        "&:hover": {
+                          backgroundColor:
+                            theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.02)",
+                        },
+                      }}
+                    >
+                      <TableCell
+                        sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
+                      >
+                        {customer.id}
+                      </TableCell>
+                      <TableCell
+                        sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
+                      >
+                        {customer.name}
+                      </TableCell>
+                      <TableCell
+                        sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
+                      >
+                        {customer.msisdn}
+                      </TableCell>
+                      <TableCell sx={{ fontSize: "0.75rem" }}>
+                        <Chip
+                          label={customer.customerType}
+                          size="small"
+                          sx={{
+                            backgroundColor:
+                              customer.customerType === "Prepaid"
+                                ? theme.palette.mode === "dark"
+                                  ? "#1a472a"
+                                  : "#e8f5e9"
+                                : theme.palette.mode === "dark"
+                                  ? "#1a237e"
+                                  : "#e3f2fd",
+                            color:
+                              customer.customerType === "Prepaid"
+                                ? theme.palette.mode === "dark"
+                                  ? "#4caf50"
+                                  : "#2e7d32"
+                                : theme.palette.mode === "dark"
+                                  ? "#64b5f6"
+                                  : "#1565c0",
+                            fontSize: "0.7rem",
+                            height: "20px",
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
+                      >
+                        {customer.serviceType}
+                      </TableCell>
+                      <TableCell sx={{ fontSize: "0.75rem" }}>
+                        <Chip
+                          label={customer.status}
+                          size="small"
+                          sx={{
+                            backgroundColor: theme.palette.mode === "dark" ? "#1a472a" : "#e8f5e9",
+                            color: theme.palette.mode === "dark" ? "#4caf50" : "#2e7d32",
+                            fontSize: "0.7rem",
+                            height: "20px",
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ fontSize: "0.75rem" }}>
+                        <Chip
+                          label={customer.eKycStatus}
+                          size="small"
+                          sx={{
+                            backgroundColor:
+                              customer.eKycStatus === "Verified"
+                                ? theme.palette.mode === "dark"
+                                  ? "#1a472a"
+                                  : "#e8f5e9"
+                                : customer.eKycStatus === "Pending"
+                                  ? theme.palette.mode === "dark"
+                                    ? "#4a3c00"
+                                    : "#fff3e0"
+                                  : theme.palette.mode === "dark"
+                                    ? "#4a1a1a"
+                                    : "#ffebee",
+                            color:
+                              customer.eKycStatus === "Verified"
+                                ? theme.palette.mode === "dark"
+                                  ? "#4caf50"
+                                  : "#2e7d32"
+                                : customer.eKycStatus === "Pending"
+                                  ? theme.palette.mode === "dark"
+                                    ? "#ffa726"
+                                    : "#e65100"
+                                  : theme.palette.mode === "dark"
+                                    ? "#ef5350"
+                                    : "#c62828",
+                            fontSize: "0.7rem",
+                            height: "20px",
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleViewCustomer(customer)}
+                          sx={{
+                            color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                            "&:hover": {
+                              backgroundColor:
+                                theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)",
+                            },
+                          }}
+                        >
+                          <PersonIcon fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+        )}
+
+        {!showAllCustomers && selectedCustomer && (
           <CustomerDetails
             customer={selectedCustomer}
             onClose={() => setSelectedCustomer(null)}

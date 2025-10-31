@@ -100,10 +100,10 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
         onMouseLeave={() => setIsHovered(false)}
         sx={{
           height: "100%",
-          minHeight: 580,
+          minHeight: 450,
           display: "flex",
           flexDirection: "column",
-          width: 550,
+          width: 420,
           position: "relative",
           overflow: "hidden",
           borderRadius: 4,
@@ -145,8 +145,8 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
               sx={{
                 backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                 color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
-                width: 36,
-                height: 36,
+                width: 28,
+                height: 28,
                 "&:hover": {
                   backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
                   transform: "scale(1.1)",
@@ -164,8 +164,8 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
               sx={{
                 backgroundColor: theme.palette.error.main,
                 color: "white",
-                width: 36,
-                height: 36,
+                width: 28,
+                height: 28,
                 "&:hover": {
                   backgroundColor: theme.palette.error.dark,
                   transform: "scale(1.1)",
@@ -179,11 +179,11 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
         </Box>
 
         <CardContent
-          sx={{ p: 3, flexGrow: 1, position: "relative", zIndex: 1, display: "flex", flexDirection: "column" }}
+          sx={{ p: 2.5, flexGrow: 1, position: "relative", zIndex: 1, display: "flex", flexDirection: "column" }}
         >
           {/* Header Section */}
-          <Box sx={{ mb: 3 }}>
-            <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", mb: 2 }}>
+          <Box sx={{ mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", mb: 1.5 }}>
               <Box sx={{ flex: 1 }}>
                 <Typography
                   variant="h6"
@@ -191,7 +191,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                     fontWeight: 700,
                     color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                     mb: 0.5,
-                    fontSize: "1.1rem",
+                    fontSize: "0.95rem",
                     lineHeight: 1.3,
                   }}
                 >
@@ -205,7 +205,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                       color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                       fontWeight: 600,
-                      fontSize: "0.75rem",
+                      fontSize: "0.7rem",
                     }}
                   />
                   <Chip
@@ -216,7 +216,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                       color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                       fontWeight: 600,
-                      fontSize: "0.75rem",
+                      fontSize: "0.7rem",
                     }}
                   />
                 </Box>
@@ -225,8 +225,8 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
               {/* Status Badge */}
               <Avatar
                 sx={{
-                  width: 48,
-                  height: 48,
+                  width: 36,
+                  height: 36,
                   backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                   color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                 }}
@@ -241,7 +241,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                 color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
                 lineHeight: 1.5,
                 fontStyle: "italic",
-                height: 48,
+                height: 40,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "-webkit-box",
@@ -255,7 +255,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
 
           <Divider
             sx={{
-              my: 2,
+              my: 1.5,
               opacity: 0.6,
               borderColor: theme.palette.mode === "dark" ? "#666666" : "#e0e0e0",
             }}
@@ -267,15 +267,15 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
               backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
               border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
               borderRadius: 3,
-              p: 2,
-              mb: 3,
+              p: 1.5,
+              mb: 2,
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Box>
                   <Typography
-                    variant="h5"
+                    variant="h6"
                     sx={{
                       fontWeight: 800,
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -297,7 +297,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                   <ValidityIcon
                     sx={{
-                      fontSize: 16,
+                      fontSize: 14,
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                     }}
                   />
@@ -325,7 +325,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
 
           {/* Benefits Grid */}
           <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-            <Grid container spacing={2}>
+            <Grid container spacing={1.5}>
               {pack.onn_call_balance > 0 && (
                 <Grid item xs={12}>
                   <Box
@@ -333,14 +333,14 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                       border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                       borderRadius: 2,
-                      p: 1.5,
+                      p: 1.2,
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
                       <CallIcon
                         sx={{
                           color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                          fontSize: 20,
+                          fontSize: 16,
                         }}
                       />
                       <Typography
@@ -348,13 +348,14 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                         sx={{
                           fontWeight: 600,
                           color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          fontSize: "0.8rem",
                         }}
                       >
                         Voice Calls
                       </Typography>
                     </Box>
                     <Typography
-                      variant="h6"
+                      variant="body1"
                       sx={{
                         fontWeight: 700,
                         color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -366,7 +367,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       variant="determinate"
                       value={75}
                       sx={{
-                        height: 4,
+                        height: 3,
                         borderRadius: 2,
                         backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                         "& .MuiLinearProgress-bar": {
@@ -385,14 +386,14 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                       border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                       borderRadius: 2,
-                      p: 1.5,
+                      p: 1.2,
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
                       <DataIcon
                         sx={{
                           color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                          fontSize: 20,
+                          fontSize: 16,
                         }}
                       />
                       <Typography
@@ -400,13 +401,14 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                         sx={{
                           fontWeight: 600,
                           color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          fontSize: "0.8rem",
                         }}
                       >
                         Data Allowance
                       </Typography>
                     </Box>
                     <Typography
-                      variant="h6"
+                      variant="body1"
                       sx={{
                         fontWeight: 700,
                         color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -418,7 +420,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       variant="determinate"
                       value={getDataUsagePercentage()}
                       sx={{
-                        height: 4,
+                        height: 3,
                         borderRadius: 2,
                         backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                         "& .MuiLinearProgress-bar": {
@@ -437,14 +439,14 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                       border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                       borderRadius: 2,
-                      p: 1.5,
+                      p: 1.2,
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
                       <SmsIcon
                         sx={{
                           color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                          fontSize: 20,
+                          fontSize: 16,
                         }}
                       />
                       <Typography
@@ -452,13 +454,14 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                         sx={{
                           fontWeight: 600,
                           color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          fontSize: "0.8rem",
                         }}
                       >
                         SMS Messages
                       </Typography>
                     </Box>
                     <Typography
-                      variant="h6"
+                      variant="body1"
                       sx={{
                         fontWeight: 700,
                         color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -470,7 +473,7 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
                       variant="determinate"
                       value={60}
                       sx={{
-                        height: 4,
+                        height: 3,
                         borderRadius: 2,
                         backgroundColor: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                         "& .MuiLinearProgress-bar": {
@@ -485,13 +488,13 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
           </Box>
 
           {/* Status Footer */}
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: 1.5 }}>
             {pack.pack_status === "Rejected" && pack.approver_rejection_remark && (
               <Fade in={true}>
                 <Box
                   sx={{
-                    mt: 2,
-                    p: 2,
+                    mt: 1.5,
+                    p: 1.5,
                     backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                     border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                     borderRadius: 2,
@@ -522,11 +525,11 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
             {pack.approver_name && pack.pack_status === "Approved" && (
               <Box
                 sx={{
-                  mt: 2,
+                  mt: 1.5,
                   display: "flex",
                   alignItems: "center",
                   gap: 1,
-                  p: 1.5,
+                  p: 1.2,
                   backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                   border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                   borderRadius: 2,
@@ -534,8 +537,8 @@ const PackCard = ({ pack, onEdit, onDelete }) => {
               >
                 <Avatar
                   sx={{
-                    width: 24,
-                    height: 24,
+                    width: 20,
+                    height: 20,
                     backgroundColor: theme.palette.success.main,
                   }}
                 >

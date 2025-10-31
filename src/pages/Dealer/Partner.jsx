@@ -65,7 +65,7 @@ const samplePartners = [
     isNeotel: true,
     businessNature: "retailers",
     type: "Outside",
-    creationDate: new Date(2024, 0, 15),
+    creationDate: new Date(2025, 0, 15),
     isActive: true,
     token: "87654321",
     totalCoreBalance: 15000,
@@ -88,7 +88,7 @@ const samplePartners = [
     isNeotel: true,
     businessNature: "distributors",
     type: "Telco Shop",
-    creationDate: new Date(2024, 1, 20),
+    creationDate: new Date(2025, 1, 20),
     isActive: true,
     token: "76543210",
     totalCoreBalance: 22000,
@@ -111,7 +111,7 @@ const samplePartners = [
     isNeotel: false,
     businessNature: "wholesalers",
     type: "Outside",
-    creationDate: new Date(2024, 2, 10),
+    creationDate: new Date(2025, 2, 10),
     isActive: true,
     token: "65432109",
     totalCoreBalance: 18500,
@@ -134,7 +134,7 @@ const samplePartners = [
     isNeotel: true,
     businessNature: "retailers",
     type: "Inside",
-    creationDate: new Date(2024, 3, 5),
+    creationDate: new Date(2025, 3, 5),
     isActive: false,
     token: "54321098",
     totalCoreBalance: 8500,
@@ -157,7 +157,7 @@ const samplePartners = [
     isNeotel: true,
     businessNature: "distributors",
     type: "Outside",
-    creationDate: new Date(2024, 4, 12),
+    creationDate: new Date(2025, 4, 12),
     isActive: true,
     token: "43210987",
     totalCoreBalance: 31000,
@@ -652,7 +652,7 @@ const Partner = ({ onPartnersChange, onCurrentPartnerChange }) => {
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2" fontWeight={600} color="success.main">
-                          ₹{partner.totalCoreBalance}
+                          ${partner.totalCoreBalance}
                         </Typography>
                       </TableCell>
                       <TableCell>

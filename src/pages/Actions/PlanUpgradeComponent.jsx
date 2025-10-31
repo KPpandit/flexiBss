@@ -147,7 +147,7 @@ const PlanUpgradeComponent = ({ open, onClose, customer, onCustomerUpdate, onPla
             <Typography variant="h6" sx={{ mb: 1, fontWeight: 600, fontSize: "1rem" }}>
               Current Plan: {customer?.currentPack?.name || "Basic Plan"}
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ fontSize: "1rem" }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.9rem" }}>
               Choose a new plan to upgrade your services and get better benefits
             </Typography>
           </Box>

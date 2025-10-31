@@ -50,7 +50,7 @@ import SimDetails from "./SimDetails"
 // Sample SIM data
 const sampleSims = Array.from({ length: 50 }, (_, i) => ({
   id: 1221 + i,
-  msisdn: `5261301${i % 10}`,
+  msisdn: `6755261301${i % 10}`,
   category: ["NORMAL", "VIP", "PREMIUM"][Math.floor(Math.random() * 3)],
   specialNumber: Math.random() > 0.8,
   imsi: `5261020003222${i}`,

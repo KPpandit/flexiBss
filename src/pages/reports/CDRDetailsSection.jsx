@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, memo } from "react"
 import {
   Box,
   Typography,
@@ -33,12 +33,14 @@ import {
   Assessment as AssessmentIcon,
 } from "@mui/icons-material"
 
-export default function CDRDetailsSection() {
+export default memo(function CDRDetailsSection() {
   const theme = useTheme()
   const [cdrPage, setCdrPage] = useState(0)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [typeFilter, setTypeFilter] = useState("all")
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
   const rowsPerPage = 10
 
   const cdrData = [
@@ -124,7 +126,21 @@ export default function CDRDetailsSection() {
     const matchesSearch = row.msisdn.includes(searchTerm) || row.calledParty.includes(searchTerm)
     const matchesStatus = statusFilter === "all" || row.status.toLowerCase() === statusFilter.toLowerCase()
     const matchesType = typeFilter === "all" || row.type.toLowerCase() === typeFilter.toLowerCase()
-    return matchesSearch && matchesStatus && matchesType
+
+    let matchesDateRange = true
+    if (startDate || endDate) {
+      const rowDate = new Date(row.startTime.split(" ")[0])
+      if (startDate) {
+        const start = new Date(startDate)
+        matchesDateRange = matchesDateRange && rowDate >= start
+      }
+      if (endDate) {
+        const end = new Date(endDate)
+        matchesDateRange = matchesDateRange && rowDate <= end
+      }
+    }
+
+    return matchesSearch && matchesStatus && matchesType && matchesDateRange
   })
 
   const totalRevenue = cdrData.reduce((sum, record) => sum + record.price, 0)
@@ -133,16 +149,21 @@ export default function CDRDetailsSection() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-        <AssessmentIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mr: 1 }} />
-        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
-          CDR Details
-        </Typography>
-      </Box>
+      <Typography
+        variant="body1"
+        sx={{
+          fontWeight: 600,
+          fontSize: "0.85rem",
+          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+          mb: 2,
+        }}
+      >
+        CDR Details
+      </Typography>
 
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid sx={{width:'15%'}} item xs={12} md={3}>
+        <Grid sx={{ width: "15%" }} item xs={12} md={3}>
           <Card
             sx={{
               borderRadius: 2,
@@ -155,22 +176,25 @@ export default function CDRDetailsSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {cdrData.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Total Records
                   </Typography>
                 </Box>
-                <AssessmentIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
+                <AssessmentIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
         </Grid>
 
-        <Grid item sx={{width:'15%'}} xs={12} md={3}>
+        <Grid item sx={{ width: "15%" }} xs={12} md={3}>
           <Card
             sx={{
               borderRadius: 2,
@@ -183,12 +207,15 @@ export default function CDRDetailsSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     $ {totalRevenue.toFixed(2)}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Total Revenue
                   </Typography>
                 </Box>
@@ -197,7 +224,7 @@ export default function CDRDetailsSection() {
           </Card>
         </Grid>
 
-        <Grid sx={{width:'15%'}} item xs={12} md={3}>
+        <Grid sx={{ width: "15%" }} item xs={12} md={3}>
           <Card
             sx={{
               borderRadius: 2,
@@ -210,22 +237,25 @@ export default function CDRDetailsSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {totalCalls}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Voice Calls
                   </Typography>
                 </Box>
-                <CallMadeIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
+                <CallMadeIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
         </Grid>
 
-        <Grid sx={{width:'15%'}} item xs={12} md={3}>
+        <Grid sx={{ width: "15%" }} item xs={12} md={3}>
           <Card
             sx={{
               borderRadius: 2,
@@ -238,16 +268,19 @@ export default function CDRDetailsSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {totalSMS}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     SMS Messages
                   </Typography>
                 </Box>
-                <SmsIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
+                <SmsIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
@@ -266,16 +299,80 @@ export default function CDRDetailsSection() {
       >
         <CardContent>
           <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-            <FilterListIcon sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mr: 1 }} />
+            <FilterListIcon
+              sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mr: 1, fontSize: "1.2rem" }}
+            />
             <Typography
-              variant="h6"
-              sx={{ fontWeight: 600, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+              variant="body1"
+              sx={{ fontWeight: 600, fontSize: "0.9rem", color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
             >
               Filters & Search
             </Typography>
           </Box>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={2.4}>
+              <TextField
+                fullWidth
+                label="Start Date"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+                size="small"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    "& fieldset": {
+                      borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
+                  },
+                  "& input[type='date']::-webkit-calendar-picker-indicator": {
+                    filter: theme.palette.mode === "dark" ? "invert(1) brightness(1.5)" : "invert(0)",
+                    opacity: theme.palette.mode === "dark" ? 1 : 0.7,
+                    cursor: "pointer",
+                  },
+                  "&:hover input[type='date']::-webkit-calendar-picker-indicator": {
+                    opacity: 1,
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={2.4}>
+              <TextField
+                fullWidth
+                label="End Date"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+                size="small"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                    "& fieldset": {
+                      borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
+                  },
+                  "& input[type='date']::-webkit-calendar-picker-indicator": {
+                    filter: theme.palette.mode === "dark" ? "invert(1) brightness(1.5)" : "invert(0)",
+                    opacity: theme.palette.mode === "dark" ? 1 : 0.7,
+                    cursor: "pointer",
+                  },
+                  "&:hover input[type='date']::-webkit-calendar-picker-indicator": {
+                    opacity: 1,
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={2.4}>
               <TextField
                 fullWidth
                 label="Search MSISDN or Called Party"
@@ -287,6 +384,7 @@ export default function CDRDetailsSection() {
                   ),
                 }}
                 variant="outlined"
+                size="small"
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -300,8 +398,8 @@ export default function CDRDetailsSection() {
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
-              <FormControl fullWidth>
+            <Grid item xs={12} md={2}>
+              <FormControl fullWidth size="small">
                 <InputLabel sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>Status</InputLabel>
                 <Select
                   value={statusFilter}
@@ -321,8 +419,8 @@ export default function CDRDetailsSection() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={3}>
-              <FormControl fullWidth>
+            <Grid item xs={12} md={1.6}>
+              <FormControl fullWidth size="small">
                 <InputLabel sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>Type</InputLabel>
                 <Select
                   value={typeFilter}
@@ -342,13 +440,14 @@ export default function CDRDetailsSection() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={1.2}>
               <Button
                 fullWidth
                 variant="contained"
                 sx={{
-                  height: "56px",
+                  height: "40px",
                   borderRadius: 2,
+                  fontSize: "0.85rem",
                   backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                   color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                   "&:hover": { backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333" },
@@ -357,6 +456,8 @@ export default function CDRDetailsSection() {
                   setSearchTerm("")
                   setStatusFilter("all")
                   setTypeFilter("all")
+                  setStartDate("")
+                  setEndDate("")
                 }}
               >
                 Clear
@@ -377,8 +478,13 @@ export default function CDRDetailsSection() {
       >
         <CardContent>
           <Typography
-            variant="h6"
-            sx={{ mb: 2, fontWeight: 600, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+            variant="body1"
+            sx={{
+              mb: 2,
+              fontWeight: 600,
+              fontSize: "0.9rem",
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+            }}
           >
             All IDD CDR Records ({filteredData.length} records)
           </Typography>
@@ -387,14 +493,14 @@ export default function CDRDetailsSection() {
             component={Paper}
             sx={{ borderRadius: 2, border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}` }}
           >
-            <Table>
+            <Table size="small">
               <TableHead>
                 <TableRow sx={{ backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#f5f5f5" }}>
                   <TableCell
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     MSISDN
@@ -403,7 +509,7 @@ export default function CDRDetailsSection() {
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     Type
@@ -412,7 +518,7 @@ export default function CDRDetailsSection() {
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     Called Party
@@ -421,7 +527,7 @@ export default function CDRDetailsSection() {
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     Country
@@ -430,7 +536,7 @@ export default function CDRDetailsSection() {
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     Price ($.)
@@ -439,7 +545,7 @@ export default function CDRDetailsSection() {
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     Duration
@@ -448,7 +554,7 @@ export default function CDRDetailsSection() {
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     Start Time
@@ -457,7 +563,7 @@ export default function CDRDetailsSection() {
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     End Time
@@ -466,7 +572,7 @@ export default function CDRDetailsSection() {
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                      fontSize: "0.875rem",
+                      fontSize: "0.75rem",
                     }}
                   >
                     Status
@@ -489,9 +595,9 @@ export default function CDRDetailsSection() {
                       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                         <Avatar
                           sx={{
-                            width: 24,
-                            height: 24,
-                            fontSize: "0.8rem",
+                            width: 20,
+                            height: 20,
+                            fontSize: "0.7rem",
                             bgcolor: theme.palette.mode === "dark" ? "#666666" : "#cccccc",
                             color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                           }}
@@ -500,7 +606,7 @@ export default function CDRDetailsSection() {
                         </Avatar>
                         <Typography
                           variant="body2"
-                          sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                          sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
                         >
                           {row.msisdn}
                         </Typography>
@@ -513,41 +619,51 @@ export default function CDRDetailsSection() {
                         color={row.type === "Voice" ? "primary" : row.type === "SMS" ? "secondary" : "info"}
                         size="small"
                         variant="outlined"
+                        sx={{ fontSize: "0.7rem" }}
                       />
                     </TableCell>
                     <TableCell
-                      sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.875rem" }}
+                      sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
                     >
                       {row.calledParty}
                     </TableCell>
                     <TableCell>
-                      <Chip label={row.country} size="small" variant="filled" />
+                      <Chip label={row.country} size="small" variant="filled" sx={{ fontSize: "0.7rem" }} />
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body2"
-                        sx={{ fontWeight: 600, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                        sx={{
+                          fontWeight: 600,
+                          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                          fontSize: "0.75rem",
+                        }}
                       >
                         $ {row.price.toFixed(2)}
                       </Typography>
                     </TableCell>
                     <TableCell
-                      sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.875rem" }}
+                      sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
                     >
                       {formatDuration(row.duration)}
                     </TableCell>
                     <TableCell
-                      sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.875rem" }}
+                      sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
                     >
                       {row.startTime}
                     </TableCell>
                     <TableCell
-                      sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.875rem" }}
+                      sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", fontSize: "0.75rem" }}
                     >
                       {row.endTime}
                     </TableCell>
                     <TableCell>
-                      <Chip label={row.status} color={getStatusColor(row.status)} size="small" />
+                      <Chip
+                        label={row.status}
+                        color={getStatusColor(row.status)}
+                        size="small"
+                        sx={{ fontSize: "0.7rem" }}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -568,4 +684,4 @@ export default function CDRDetailsSection() {
       </Card>
     </Box>
   )
-}
+})

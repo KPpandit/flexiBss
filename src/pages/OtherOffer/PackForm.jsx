@@ -209,41 +209,42 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
       case 0:
         return (
           <Fade in={true} timeout={500}>
-            <Grid container spacing={4}>
+            <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper
                   sx={{
-                    p: 3,
+                    p: 2.5,
                     borderRadius: 3,
                     background: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                     border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                   }}
                 >
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
                     <Avatar
                       sx={{
                         background: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                         color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                        width: 48,
-                        height: 48,
+                        width: 36,
+                        height: 36,
                       }}
                     >
                       <InfoIcon />
                     </Avatar>
                     <Box>
-                      <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
+                      <Typography variant="body1" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
                         Basic Information
                       </Typography>
-                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary, fontSize: "0.8rem" }}>
                         Enter the fundamental details of your pack
                       </Typography>
                     </Box>
                   </Box>
 
-                  <Grid container spacing={3}>
+                  <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="Pack Name"
                         value={formData.pack_name}
                         onChange={(e) => handleInputChange("pack_name", e.target.value)}
@@ -268,6 +269,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     <Grid item xs={12} md={6}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="Pack Code"
                         value={formData.pack_code}
                         onChange={(e) => handleInputChange("pack_code", e.target.value)}
@@ -290,7 +292,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     </Grid>
 
                     <Grid item xs={12} md={6}>
-                      <FormControl fullWidth>
+                      <FormControl fullWidth size="small">
                         <InputLabel>Category</InputLabel>
                         <Select
                           value={formData.category_name}
@@ -325,7 +327,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     </Grid>
 
                     <Grid item xs={12} md={6}>
-                      <FormControl fullWidth>
+                      <FormControl fullWidth size="small">
                         <InputLabel>Status</InputLabel>
                         <Select
                           value={formData.pack_status}
@@ -353,11 +355,12 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     <Grid item xs={12}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="Description"
                         value={formData.description}
                         onChange={(e) => handleInputChange("description", e.target.value)}
                         multiline
-                        rows={4}
+                        rows={3}
                         variant="outlined"
                         sx={{
                           "& .MuiOutlinedInput-root": {
@@ -413,11 +416,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     <Grid item xs={12} md={4}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="Pack Price"
                         type="number"
-                        value={formData.pack_price}
-                        onChange={(e) => handleInputChange("pack_price", Number(e.target.value))}
+                        value={formData.pack_price || ""}
+                        onChange={(e) => handleInputChange("pack_price", Number(e.target.value) || 0)}
                         variant="outlined"
+                        inputProps={{ min: 0, step: 1 }}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
@@ -439,11 +444,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     <Grid item xs={12} md={4}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="Validity"
                         type="number"
-                        value={formData.validity}
-                        onChange={(e) => handleInputChange("validity", Number(e.target.value))}
+                        value={formData.validity || ""}
+                        onChange={(e) => handleInputChange("validity", Number(e.target.value) || 30)}
                         variant="outlined"
+                        inputProps={{ min: 1, step: 1 }}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
@@ -462,7 +469,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <FormControl fullWidth>
+                      <FormControl fullWidth size="small">
                         <InputLabel>Validity Type</InputLabel>
                         <Select
                           value={formData.validity_type}
@@ -482,7 +489,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     </Grid>
 
                     <Grid item xs={12} md={6}>
-                      <FormControl fullWidth>
+                      <FormControl fullWidth size="small">
                         <InputLabel>Pricing Model</InputLabel>
                         <Select
                           value={formData.pricing_model}
@@ -502,7 +509,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     </Grid>
 
                     <Grid item xs={12} md={6}>
-                      <FormControl fullWidth>
+                      <FormControl fullWidth size="small">
                         <InputLabel>Billing Cycle</InputLabel>
                         <Select
                           value={formData.billing_cycle}
@@ -584,11 +591,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                           <Grid item xs={12} md={6}>
                             <TextField
                               fullWidth
+                              size="small"
                               label="On-Net Call Balance"
                               type="number"
-                              value={formData.onn_call_balance}
-                              onChange={(e) => handleInputChange("onn_call_balance", Number(e.target.value))}
+                              value={formData.onn_call_balance || ""}
+                              onChange={(e) => handleInputChange("onn_call_balance", Number(e.target.value) || 0)}
                               variant="outlined"
+                              inputProps={{ min: 0, step: 1 }}
                               InputProps={{
                                 endAdornment: <InputAdornment position="end">Minutes</InputAdornment>,
                               }}
@@ -604,11 +613,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                           <Grid item xs={12} md={6}>
                             <TextField
                               fullWidth
+                              size="small"
                               label="Off-Net Call Balance"
                               type="number"
-                              value={formData.ofn_call_balance}
-                              onChange={(e) => handleInputChange("ofn_call_balance", Number(e.target.value))}
+                              value={formData.ofn_call_balance || ""}
+                              onChange={(e) => handleInputChange("ofn_call_balance", Number(e.target.value) || 0)}
                               variant="outlined"
+                              inputProps={{ min: 0, step: 1 }}
                               InputProps={{
                                 endAdornment: <InputAdornment position="end">Minutes</InputAdornment>,
                               }}
@@ -645,11 +656,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                           <Grid item xs={12} md={6}>
                             <TextField
                               fullWidth
+                              size="small"
                               label="Data Balance"
                               type="number"
-                              value={formData.data_balance}
-                              onChange={(e) => handleInputChange("data_balance", Number(e.target.value))}
+                              value={formData.data_balance || ""}
+                              onChange={(e) => handleInputChange("data_balance", Number(e.target.value) || 0)}
                               variant="outlined"
+                              inputProps={{ min: 0, step: 0.1 }}
                               InputProps={{
                                 endAdornment: <InputAdornment position="end">GB</InputAdornment>,
                               }}
@@ -663,7 +676,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                             />
                           </Grid>
                           <Grid item xs={12} md={6}>
-                            <FormControl fullWidth>
+                            <FormControl fullWidth size="small">
                               <InputLabel>Data Parameter</InputLabel>
                               <Select
                                 value={formData.data_balance_parameter}
@@ -705,11 +718,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                           <Grid item xs={12} md={6}>
                             <TextField
                               fullWidth
+                              size="small"
                               label="On-Net SMS Balance"
                               type="number"
-                              value={formData.onn_sms_balance}
-                              onChange={(e) => handleInputChange("onn_sms_balance", Number(e.target.value))}
+                              value={formData.onn_sms_balance || ""}
+                              onChange={(e) => handleInputChange("onn_sms_balance", Number(e.target.value) || 0)}
                               variant="outlined"
+                              inputProps={{ min: 0, step: 1 }}
                               InputProps={{
                                 endAdornment: <InputAdornment position="end">SMS</InputAdornment>,
                               }}
@@ -725,11 +740,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                           <Grid item xs={12} md={6}>
                             <TextField
                               fullWidth
+                              size="small"
                               label="Off-Net SMS Balance"
                               type="number"
-                              value={formData.ofn_sms_balance}
-                              onChange={(e) => handleInputChange("ofn_sms_balance", Number(e.target.value))}
+                              value={formData.ofn_sms_balance || ""}
+                              onChange={(e) => handleInputChange("ofn_sms_balance", Number(e.target.value) || 0)}
                               variant="outlined"
+                              inputProps={{ min: 0, step: 1 }}
                               InputProps={{
                                 endAdornment: <InputAdornment position="end">SMS</InputAdornment>,
                               }}
@@ -833,6 +850,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                         slotProps={{
                           textField: {
                             fullWidth: true,
+                            size: "small",
                             sx: {
                               "& .MuiOutlinedInput-root": {
                                 borderRadius: 3,
@@ -848,11 +866,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     <Grid item xs={12} md={6}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="CUG Minutes"
                         type="number"
-                        value={formData.cug_mins}
-                        onChange={(e) => handleInputChange("cug_mins", Number(e.target.value))}
+                        value={formData.cug_mins || ""}
+                        onChange={(e) => handleInputChange("cug_mins", Number(e.target.value) || 0)}
                         variant="outlined"
+                        inputProps={{ min: 0, step: 1 }}
                         InputProps={{
                           endAdornment: <InputAdornment position="end">Minutes</InputAdornment>,
                         }}
@@ -869,11 +889,13 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                     <Grid item xs={12} md={6}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="CUG SMS"
                         type="number"
-                        value={formData.cug_sms}
-                        onChange={(e) => handleInputChange("cug_sms", Number(e.target.value))}
+                        value={formData.cug_sms || ""}
+                        onChange={(e) => handleInputChange("cug_sms", Number(e.target.value) || 0)}
                         variant="outlined"
+                        inputProps={{ min: 0, step: 1 }}
                         InputProps={{
                           endAdornment: <InputAdornment position="end">SMS</InputAdornment>,
                         }}
@@ -921,7 +943,7 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
             borderBottom: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
             color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
             fontWeight: 700,
-            fontSize: "1.5rem",
+            fontSize: "1.2rem",
             position: "relative",
           }}
         >
@@ -937,6 +959,8 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               <Avatar
                 sx={{
+                  width: 36,
+                  height: 36,
                   background: theme.palette.mode === "dark" ? "#333333" : "#e0e0e0",
                   color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                   border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #cccccc",
@@ -945,10 +969,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
                 {isEdit ? <SettingsIcon /> : <InfoIcon />}
               </Avatar>
               <Box>
-                <Typography variant="h5" sx={{ fontWeight: 800 }}>
+                <Typography variant="h6" sx={{ fontWeight: 800 }}>
                   {isEdit ? "Edit Pack" : "Create New Pack"}
                 </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                <Typography variant="body2" sx={{ opacity: 0.7, fontSize: "0.8rem" }}>
                   {isEdit ? "Update pack information" : "Configure your new telecom package"}
                 </Typography>
               </Box>
@@ -971,14 +995,15 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
         </DialogTitle>
 
         {/* Stepper */}
-        <Box sx={{ p: 3, pb: 0 }}>
+        <Box sx={{ p: 2.5, pb: 0 }}>
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map((label, index) => (
               <Step key={label}>
                 <StepLabel
                   sx={{
                     "& .MuiStepLabel-label": {
-                      fontWeight: 600,
+                      fontWeight: 500,
+                      fontSize: "0.85rem",
                       color:
                         index === activeStep
                           ? theme.palette.mode === "dark"
@@ -1007,12 +1032,12 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
         </Box>
 
         {/* Content */}
-        <DialogContent sx={{ p: 3, minHeight: 400 }}>{renderStepContent(activeStep)}</DialogContent>
+        <DialogContent sx={{ p: 2.5, minHeight: 400 }}>{renderStepContent(activeStep)}</DialogContent>
 
         {/* Actions */}
         <DialogActions
           sx={{
-            p: 3,
+            p: 2.5,
             background: theme.palette.mode === "dark" ? "#1a1a1a" : "#f5f5f5",
             borderTop: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
             gap: 2,
@@ -1023,9 +1048,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
             variant="outlined"
             sx={{
               borderRadius: 3,
-              px: 3,
-              py: 1,
+              px: 2.5,
+              py: 0.8,
               fontWeight: 600,
+              fontSize: "0.85rem",
               borderColor: theme.palette.mode === "dark" ? "#666666" : "#cccccc",
               color: theme.palette.text.secondary,
             }}
@@ -1039,9 +1065,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
               variant="outlined"
               sx={{
                 borderRadius: 3,
-                px: 3,
-                py: 1,
+                px: 2.5,
+                py: 0.8,
                 fontWeight: 600,
+                fontSize: "0.85rem",
                 borderColor: theme.palette.mode === "dark" ? "#666666" : "#cccccc",
                 color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
               }}
@@ -1056,9 +1083,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
               variant="contained"
               sx={{
                 borderRadius: 3,
-                px: 4,
-                py: 1,
+                px: 3,
+                py: 0.8,
                 fontWeight: 700,
+                fontSize: "0.85rem",
                 background: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                 color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                 "&:hover": {
@@ -1075,9 +1103,10 @@ const PackForm = ({ open, onClose, onSave, pack, isEdit = false }) => {
               startIcon={<CheckIcon />}
               sx={{
                 borderRadius: 3,
-                px: 4,
-                py: 1,
+                px: 3,
+                py: 0.8,
                 fontWeight: 700,
+                fontSize: "0.85rem",
                 background: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                 color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                 "&:hover": {

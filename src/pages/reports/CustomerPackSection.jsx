@@ -20,6 +20,8 @@ import {
   Paper,
   Collapse,
   IconButton,
+  TextField,
+  Button,
 } from "@mui/material"
 import {
   People as PeopleIcon,
@@ -28,10 +30,13 @@ import {
   Repeat as RepeatIcon,
   ExpandMore as ExpandMoreIcon,
   AccountCircle as AccountCircleIcon,
+  Search as SearchIcon,
 } from "@mui/icons-material"
 
 export default function CustomerPackSection() {
   const theme = useTheme()
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
   const [activeCustomersPage, setActiveCustomersPage] = useState(0)
   const [inactiveCustomersPage, setInactiveCustomersPage] = useState(0)
   const [repeatedCustomersPage, setRepeatedCustomersPage] = useState(0)
@@ -43,6 +48,11 @@ export default function CustomerPackSection() {
     new: false,
   })
   const rowsPerPage = 10
+
+  const handleSearch = () => {
+    console.log("[v0] Searching with date range:", startDate, "to", endDate)
+    // Filter logic would go here
+  }
 
   const activeCustomers = [
     {
@@ -85,27 +95,26 @@ export default function CustomerPackSection() {
     },
   ]
 
- const repeatedCustomers = [
-  {
-    packName: "Premium Pack",
-    msisdn: "675526167890",
-    activationDate: "2025-01-15",
-    expirationDate: "2025-02-15",
-    lastPackName: "Basic Pack",
-    lastActivationDate: "2023-12-15",
-    mainBalance: 20.5,   
-  },
-  {
-    packName: "Business Pack",
-    msisdn: "675526167895",
-    activationDate: "2025-01-20",
-    expirationDate: "2025-02-20",
-    lastPackName: "Premium Pack",
-    lastActivationDate: "2023-12-20",
-    mainBalance: 10.0,    
-  },
-]
-
+  const repeatedCustomers = [
+    {
+      packName: "Premium Pack",
+      msisdn: "675526167890",
+      activationDate: "2025-01-15",
+      expirationDate: "2025-02-15",
+      lastPackName: "Basic Pack",
+      lastActivationDate: "2023-12-15",
+      mainBalance: 20.5,
+    },
+    {
+      packName: "Business Pack",
+      msisdn: "675526167895",
+      activationDate: "2025-01-20",
+      expirationDate: "2025-02-20",
+      lastPackName: "Premium Pack",
+      lastActivationDate: "2023-12-20",
+      mainBalance: 10.0,
+    },
+  ]
 
   const newCustomers = [
     {
@@ -369,11 +378,112 @@ export default function CustomerPackSection() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-        <PeopleIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mr: 1 }} />
-        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
-          Customer Pack Details
-        </Typography>
+      <Typography
+        variant="body1"
+        sx={{
+          fontWeight: 600,
+          fontSize: "0.85rem",
+          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+          mb: 2,
+        }}
+      >
+        Customer Pack Details
+      </Typography>
+
+      <Box
+        sx={{
+          mb: 3,
+          p: 2,
+          borderRadius: 2,
+          border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+          bgcolor: theme.palette.background.paper,
+          display: "flex",
+          gap: 2,
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <TextField
+          label="Start Date"
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          sx={{
+            minWidth: 160,
+            "& .MuiInputLabel-root": {
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+            },
+            "& .MuiOutlinedInput-root": {
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+              "& fieldset": {
+                borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+              },
+              "&:hover fieldset": {
+                borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+              },
+            },
+            "& input[type='date']::-webkit-calendar-picker-indicator": {
+              filter: theme.palette.mode === "dark" ? "invert(1) brightness(1.5)" : "invert(0)",
+              opacity: theme.palette.mode === "dark" ? 1 : 0.7,
+              cursor: "pointer",
+            },
+            "&:hover input[type='date']::-webkit-calendar-picker-indicator": {
+              opacity: 1,
+            },
+          }}
+        />
+        <TextField
+          label="End Date"
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          sx={{
+            minWidth: 160,
+            "& .MuiInputLabel-root": {
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+            },
+            "& .MuiOutlinedInput-root": {
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+              "& fieldset": {
+                borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+              },
+              "&:hover fieldset": {
+                borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+              },
+            },
+            "& input[type='date']::-webkit-calendar-picker-indicator": {
+              filter: theme.palette.mode === "dark" ? "invert(1) brightness(1.5)" : "invert(0)",
+              opacity: theme.palette.mode === "dark" ? 1 : 0.7,
+              cursor: "pointer",
+            },
+            "&:hover input[type='date']::-webkit-calendar-picker-indicator": {
+              opacity: 1,
+            },
+          }}
+        />
+        <Button
+          variant="contained"
+          startIcon={<SearchIcon />}
+          onClick={handleSearch}
+          sx={{
+            bgcolor: theme.palette.mode === "dark" ? "#ffffff" : "#1976d2",
+            color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+            "&:hover": {
+              bgcolor: theme.palette.mode === "dark" ? "#cccccc" : "#1565c0",
+            },
+            textTransform: "none",
+            fontWeight: 600,
+            px: 3,
+          }}
+        >
+          Search
+        </Button>
       </Box>
 
       {/* Summary Cards */}
@@ -391,16 +501,19 @@ export default function CustomerPackSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {activeCustomers.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Active Customers
                   </Typography>
                 </Box>
-                <PeopleIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
+                <PeopleIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
@@ -419,16 +532,19 @@ export default function CustomerPackSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {inactiveCustomers.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Inactive Customers
                   </Typography>
                 </Box>
-                <PersonOffIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
+                <PersonOffIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
@@ -447,16 +563,19 @@ export default function CustomerPackSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {repeatedCustomers.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Repeated Customers
                   </Typography>
                 </Box>
-                <RepeatIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
+                <RepeatIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
               </Box>
             </CardContent>
           </Card>
@@ -475,16 +594,19 @@ export default function CustomerPackSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {newCustomers.length}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     New Customers
                   </Typography>
                 </Box>
-                <PersonAddIcon sx={{ fontSize: 40, color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }} />
+                <PersonAddIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }} />
               </Box>
             </CardContent>
           </Card>

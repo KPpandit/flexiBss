@@ -294,8 +294,8 @@ Remember: You're not just answering questions - you're actively helping improve 
     <Box sx={{ position: "fixed", bottom: 24, right: 24, zIndex: 50 }}>
       <Card
         sx={{
-          width: 384,
-          height: isMinimized ? 64 : 500,
+          width: 340,
+          height: isMinimized ? 64 : 480,
           boxShadow: 6,
           border: 2,
           borderColor: isDarkMode ? "#404040" : "grey.300",
@@ -307,7 +307,7 @@ Remember: You're not just answering questions - you're actively helping improve 
           sx={{
             backgroundColor: "#F8D582",
             color: "black",
-            p: 2,
+            p: 1.5,
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
@@ -315,8 +315,8 @@ Remember: You're not just answering questions - you're actively helping improve 
           }}
           title={
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Bot size={20} />
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: "0.875rem" }}>
+              <Bot size={18} />
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: "0.8rem" }}>
                 AI Assistant
               </Typography>
             </Box>
@@ -328,42 +328,42 @@ Remember: You're not just answering questions - you're actively helping improve 
                 onClick={() => setIsMinimized(!isMinimized)}
                 sx={{ color: "black", "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" } }}
               >
-                {isMinimized ? <Maximize size={16} /> : <Minimize size={16} />}
+                {isMinimized ? <Maximize size={14} /> : <Minimize size={14} />}
               </IconButton>
               <IconButton
                 size="small"
                 onClick={() => setIsOpen(false)}
                 sx={{ color: "black", "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" } }}
               >
-                <X size={16} />
+                <X size={14} />
               </IconButton>
             </Box>
           }
         />
 
         {!isMinimized && (
-          <CardContent sx={{ p: 0, display: "flex", flexDirection: "column", height: 436 }}>
-            <Box sx={{ flex: 1, p: 2, overflowY: "auto", maxHeight: 350 }}>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <CardContent sx={{ p: 0, display: "flex", flexDirection: "column", height: 416 }}>
+            <Box sx={{ flex: 1, p: 1.5, overflowY: "auto", maxHeight: 330 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
                 {messages.map((message) => (
                   <Box
                     key={message.id}
                     sx={{
                       display: "flex",
-                      gap: 1.5,
+                      gap: 1,
                       justifyContent: message.role === "user" ? "flex-end" : "flex-start",
                     }}
                   >
                     {message.role === "assistant" && (
-                      <Avatar sx={{ width: 32, height: 32, backgroundColor: "#F8D582", color: "black" }}>
-                        <Bot size={16} />
+                      <Avatar sx={{ width: 28, height: 28, backgroundColor: "#F8D582", color: "black" }}>
+                        <Bot size={14} />
                       </Avatar>
                     )}
                     <Paper
                       elevation={1}
                       sx={{
-                        maxWidth: "80%",
-                        p: 1.5,
+                        maxWidth: "75%",
+                        p: 1.25,
                         backgroundColor: message.role === "user" ? "#F8D582" : isDarkMode ? "#2a2a2a" : "#f5f5f5",
                         color: message.role === "user" ? "black" : isDarkMode ? "#ffffff" : "#000000",
                         borderRadius: 2,
@@ -375,6 +375,7 @@ Remember: You're not just answering questions - you're actively helping improve 
                         sx={{
                           whiteSpace: "pre-wrap",
                           mb: 0.5,
+                          fontSize: "0.8rem",
                           color: message.role === "user" ? "black" : isDarkMode ? "#ffffff" : "#000000",
                         }}
                       >
@@ -384,6 +385,7 @@ Remember: You're not just answering questions - you're actively helping improve 
                         variant="caption"
                         sx={{
                           opacity: 0.7,
+                          fontSize: "0.65rem",
                           color: message.role === "user" ? "black" : isDarkMode ? "#cccccc" : "#666666",
                         }}
                       >
@@ -391,29 +393,32 @@ Remember: You're not just answering questions - you're actively helping improve 
                       </Typography>
                     </Paper>
                     {message.role === "user" && (
-                      <Avatar sx={{ width: 32, height: 32, backgroundColor: "#F8D582", color: "black" }}>
-                        <User size={16} />
+                      <Avatar sx={{ width: 28, height: 28, backgroundColor: "#F8D582", color: "black" }}>
+                        <User size={14} />
                       </Avatar>
                     )}
                   </Box>
                 ))}
                 {isLoading && (
-                  <Box sx={{ display: "flex", gap: 1.5, justifyContent: "flex-start" }}>
-                    <Avatar sx={{ width: 32, height: 32, backgroundColor: "#F8D582", color: "black" }}>
-                      <Bot size={16} />
+                  <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-start" }}>
+                    <Avatar sx={{ width: 28, height: 28, backgroundColor: "#F8D582", color: "black" }}>
+                      <Bot size={14} />
                     </Avatar>
                     <Paper
                       elevation={1}
                       sx={{
-                        p: 1.5,
+                        p: 1.25,
                         backgroundColor: isDarkMode ? "#2a2a2a" : "#f5f5f5",
                         borderRadius: 2,
                         border: isDarkMode ? "1px solid #404040" : "none",
                       }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <CircularProgress size={16} sx={{ color: "#F8D582" }} />
-                        <Typography variant="body2" sx={{ color: isDarkMode ? "#ffffff" : "#000000" }}>
+                        <CircularProgress size={14} sx={{ color: "#F8D582" }} />
+                        <Typography
+                          variant="body2"
+                          sx={{ fontSize: "0.8rem", color: isDarkMode ? "#ffffff" : "#000000" }}
+                        >
                           Thinking...
                         </Typography>
                       </Box>
@@ -425,7 +430,7 @@ Remember: You're not just answering questions - you're actively helping improve 
             </Box>
 
             <Divider sx={{ borderColor: isDarkMode ? "#404040" : "divider" }} />
-            <Box sx={{ p: 2 }}>
+            <Box sx={{ p: 1.5 }}>
               <Box sx={{ display: "flex", gap: 1 }}>
                 <TextField
                   fullWidth
@@ -433,13 +438,14 @@ Remember: You're not just answering questions - you're actively helping improve 
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Ask me about CRM features, navigation, workflows..."
+                  placeholder="Ask me anything..."
                   disabled={isLoading}
                   variant="outlined"
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       backgroundColor: isDarkMode ? "#2a2a2a" : "background.paper",
                       color: isDarkMode ? "#ffffff" : "text.primary",
+                      fontSize: "0.8rem",
                       "& fieldset": {
                         borderColor: isDarkMode ? "#404040" : "rgba(0, 0, 0, 0.23)",
                       },
@@ -453,12 +459,14 @@ Remember: You're not just answering questions - you're actively helping improve 
                     "& .MuiInputBase-input::placeholder": {
                       color: isDarkMode ? "#cccccc" : "rgba(0, 0, 0, 0.6)",
                       opacity: 1,
+                      fontSize: "0.8rem",
                     },
                   }}
                 />
                 <IconButton
                   onClick={handleSendMessage}
                   disabled={!input.trim() || isLoading}
+                  size="small"
                   sx={{
                     backgroundColor: "#F8D582",
                     color: "black",
@@ -472,7 +480,7 @@ Remember: You're not just answering questions - you're actively helping improve 
                     },
                   }}
                 >
-                  <Send size={16} />
+                  <Send size={14} />
                 </IconButton>
               </Box>
             </Box>

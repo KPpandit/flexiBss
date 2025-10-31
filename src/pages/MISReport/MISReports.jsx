@@ -308,6 +308,7 @@ const MISReports = () => {
           mb: 3,
           border: `1px solid ${theme.palette.divider}`,
           bgcolor: theme.palette.background.paper,
+          width: "99%",
         }}
       >
         <Grid container spacing={2} alignItems="center">
@@ -320,6 +321,12 @@ const MISReports = () => {
               onChange={(e) => setDateFrom(e.target.value)}
               InputLabelProps={{ shrink: true }}
               size="small"
+              sx={{
+                '& input[type="date"]::-webkit-calendar-picker-indicator': {
+                  filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+                  cursor: "pointer",
+                },
+              }}
             />
           </Grid>
           <Grid sx={{ width: "20%" }} item xs={12} md={3}>
@@ -331,6 +338,12 @@ const MISReports = () => {
               onChange={(e) => setDateTo(e.target.value)}
               InputLabelProps={{ shrink: true }}
               size="small"
+              sx={{
+                '& input[type="date"]::-webkit-calendar-picker-indicator': {
+                  filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+                  cursor: "pointer",
+                },
+              }}
             />
           </Grid>
           <Grid sx={{ width: "20%" }} item xs={12} md={2}>
@@ -368,7 +381,7 @@ const MISReports = () => {
 
       {/* KPI Cards */}
       <Grid container spacing={2} mb={3}>
-        <Grid sx={{ width: "16%" }} item xs={12} sm={6} md={2}>
+        <Grid sx={{ width: "16%" }} item xs={2} sm={2} md={2}>
           <KPICard
             title="Total Subscribers"
             value={kpis.totalSubscribers.toLocaleString()}
@@ -376,7 +389,7 @@ const MISReports = () => {
             icon={<PeopleIcon />}
           />
         </Grid>
-        <Grid sx={{ width: "16%" }} item xs={12} sm={6} md={2}>
+        <Grid sx={{ width: "17%" }} item xs={2} sm={2} md={2}>
           <KPICard
             title="Active Subscribers"
             value={kpis.activeSubscribers.toLocaleString()}
@@ -384,7 +397,7 @@ const MISReports = () => {
             icon={<TrendingUpIcon />}
           />
         </Grid>
-        <Grid sx={{ width: "16%" }} item xs={12} sm={6} md={2}>
+        <Grid sx={{ width: "16%" }} item xs={2} sm={2} md={2}>
           <KPICard
             title="Churn Rate"
             value={`${kpis.churnRate.toFixed(2)}%`}
@@ -392,7 +405,7 @@ const MISReports = () => {
             icon={<TrendingDownIcon />}
           />
         </Grid>
-        <Grid sx={{ width: "16%" }} item xs={12} sm={6} md={2}>
+        <Grid sx={{ width: "15%" }} item xs={2} sm={2} md={2}>
           <KPICard
             title="Revenue"
             value={`$${(kpis.revenue / 100000).toFixed(2)}`}
@@ -400,7 +413,7 @@ const MISReports = () => {
             icon={<RevenueIcon />}
           />
         </Grid>
-        <Grid sx={{ width: "15%" }} item xs={12} sm={6} md={2}>
+        <Grid sx={{ width: "15%" }} item xs={2} sm={2} md={2}>
           <KPICard
             title="ARPU (est.)"
             value={`$${Math.round(kpis.arpu)}`}
@@ -408,7 +421,7 @@ const MISReports = () => {
             icon={<WalletIcon />}
           />
         </Grid>
-        <Grid sx={{ width: "15%" }} item xs={12} sm={6} md={2}>
+        <Grid sx={{ width: "15%" }} item xs={2} sm={2} md={2}>
           <KPICard
             title="eKYC Complete"
             value={`${kpis.eKYCComplete.toFixed(1)}%`}
@@ -420,7 +433,7 @@ const MISReports = () => {
 
       {/* Charts Row 1 */}
       <Grid container spacing={2} mb={3}>
-        <Grid sx={{ width: "33%" }} item xs={12} md={4}>
+        <Grid sx={{ width: "33.5%" }} item xs={12} md={4}>
           <ChartCard title="Daily Activations (Prepaid vs Postpaid)" onRefresh={() => handleRefresh("activations")}>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={dailyActivations}>
@@ -523,7 +536,7 @@ const MISReports = () => {
 
       {/* Charts Row 2 */}
       <Grid container spacing={2}>
-        <Grid sx={{ width: "33%" }} item xs={12} md={4}>
+        <Grid sx={{ width: "33.5%" }} item xs={12} md={4}>
           <ChartCard title="Trouble Tickets (Open vs Closed)" onRefresh={() => handleRefresh("tickets")}>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={troubleTickets}>

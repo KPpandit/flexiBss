@@ -207,7 +207,7 @@ const CustomerForm = ({ open, onClose, onSave, customer, isEditMode }) => {
             <Typography variant="h5" fontWeight={600} sx={{ fontSize: "1rem" }}>
               {isEditMode ? "Edit Customer" : "Add New Customer"}
             </Typography>
-            <IconButton onClick={onClose} size="small" sx={{ color: "#000000" }}>
+            <IconButton onClick={onClose} size="small" >
               <CloseIcon />
             </IconButton>
           </Box>

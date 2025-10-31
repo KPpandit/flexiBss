@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, memo } from "react"
 import {
   Box,
   Typography,
@@ -34,7 +34,7 @@ import {
   GetApp as GetAppIcon,
 } from "@mui/icons-material"
 
-export default function IDDReportsSection() {
+export default memo(function IDDReportsSection() {
   const theme = useTheme()
   const [iddPage, setIddPage] = useState(0)
   const [trendsPage, setTrendsPage] = useState(0)
@@ -118,12 +118,17 @@ export default function IDDReportsSection() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-        <PublicIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mr: 1 }} />
-        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
-          IDD Reports
-        </Typography>
-      </Box>
+      <Typography
+        variant="body1"
+        sx={{
+          fontWeight: 600,
+          fontSize: "0.85rem",
+          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+          mb: 2,
+        }}
+      >
+        IDD Reports
+      </Typography>
 
       {/* Filters */}
       <Card
@@ -137,19 +142,25 @@ export default function IDDReportsSection() {
       >
         <CardContent>
           <Typography
-            variant="h6"
-            sx={{ mb: 2, fontWeight: 600, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+            variant="body1"
+            sx={{
+              mb: 2,
+              fontWeight: 600,
+              fontSize: "0.9rem",
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+            }}
           >
             Report Filters
           </Typography>
           <Grid container spacing={2}>
-            <Grid sx={{width:'20%'}} item xs={12} md={3}>
+            <Grid sx={{ width: "20%" }} item xs={12} md={3}>
               <TextField
                 fullWidth
                 label="Start Date"
                 type="date"
                 InputLabelProps={{ shrink: true }}
                 defaultValue="2024-01-01"
+                size="small"
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -160,16 +171,23 @@ export default function IDDReportsSection() {
                   "& .MuiInputLabel-root": {
                     color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
                   },
+                  "& .MuiIconButton-root": {
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "& input[type='date']::-webkit-calendar-picker-indicator": {
+                    filter: theme.palette.mode === "dark" ? "invert(1)" : "invert(0)",
+                  },
                 }}
               />
             </Grid>
-            <Grid sx={{width:'20%'}} item xs={12} md={3}>
+            <Grid sx={{ width: "20%" }} item xs={12} md={3}>
               <TextField
                 fullWidth
                 label="End Date"
                 type="date"
                 InputLabelProps={{ shrink: true }}
                 defaultValue="2024-01-31"
+                size="small"
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -180,11 +198,17 @@ export default function IDDReportsSection() {
                   "& .MuiInputLabel-root": {
                     color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
                   },
+                  "& .MuiIconButton-root": {
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "& input[type='date']::-webkit-calendar-picker-indicator": {
+                    filter: theme.palette.mode === "dark" ? "invert(1)" : "invert(0)",
+                  },
                 }}
               />
             </Grid>
-            <Grid sx={{width:'20%'}} item xs={12} md={2}>
-              <FormControl fullWidth>
+            <Grid sx={{ width: "20%" }} item xs={12} md={2}>
+              <FormControl fullWidth size="small">
                 <InputLabel sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>Country</InputLabel>
                 <Select
                   value={selectedCountry}
@@ -205,8 +229,8 @@ export default function IDDReportsSection() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid sx={{width:'20%'}} item xs={12} md={2}>
-              <FormControl fullWidth>
+            <Grid sx={{ width: "20%" }} item xs={12} md={2}>
+              <FormControl fullWidth size="small">
                 <InputLabel sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>Period</InputLabel>
                 <Select
                   value={dateRange}
@@ -226,14 +250,15 @@ export default function IDDReportsSection() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid sx={{width:'15%'}} item xs={12} md={2}>
+            <Grid sx={{ width: "15%" }} item xs={12} md={2}>
               <Button
                 fullWidth
                 variant="contained"
                 startIcon={<GetAppIcon />}
                 sx={{
-                  height: "56px",
+                  height: "40px",
                   borderRadius: 2,
+                  fontSize: "0.85rem",
                   backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                   color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                   "&:hover": { backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333" },
@@ -261,19 +286,25 @@ export default function IDDReportsSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {totalStats.totalCalls.toLocaleString()}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Total IDD Calls
                   </Typography>
-                  <Typography variant="caption" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.7rem" }}
+                  >
                     +12% from last month
                   </Typography>
                 </Box>
-                <PhoneIcon sx={{ fontSize: 50, color: theme.palette.mode === "dark" ? "#666666" : "#cccccc" }} />
+                <PhoneIcon sx={{ fontSize: 36, color: theme.palette.mode === "dark" ? "#666666" : "#cccccc" }} />
               </Box>
             </CardContent>
           </Card>
@@ -292,19 +323,25 @@ export default function IDDReportsSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     $ {totalStats.totalRevenue.toFixed(0)}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Total Revenue
                   </Typography>
-                  <Typography variant="caption" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.7rem" }}
+                  >
                     +15% from last month
                   </Typography>
                 </Box>
-                <AttachMoneyIcon sx={{ fontSize: 50, color: theme.palette.mode === "dark" ? "#666666" : "#cccccc" }} />
+                <AttachMoneyIcon sx={{ fontSize: 36, color: theme.palette.mode === "dark" ? "#666666" : "#cccccc" }} />
               </Box>
             </CardContent>
           </Card>
@@ -323,19 +360,25 @@ export default function IDDReportsSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {formatDuration(totalStats.totalDuration)}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Total Duration
                   </Typography>
-                  <Typography variant="caption" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.7rem" }}
+                  >
                     +8% from last month
                   </Typography>
                 </Box>
-                <AccessTimeIcon sx={{ fontSize: 50, color: theme.palette.mode === "dark" ? "#666666" : "#cccccc" }} />
+                <AccessTimeIcon sx={{ fontSize: 36, color: theme.palette.mode === "dark" ? "#666666" : "#cccccc" }} />
               </Box>
             </CardContent>
           </Card>
@@ -354,19 +397,25 @@ export default function IDDReportsSection() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
                   >
                     {totalStats.avgDuration.toFixed(1)}m
                   </Typography>
-                  <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.8rem" }}
+                  >
                     Avg Call Duration
                   </Typography>
-                  <Typography variant="caption" sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666" }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", fontSize: "0.7rem" }}
+                  >
                     -2% from last month
                   </Typography>
                 </Box>
-                <TrendingUpIcon sx={{ fontSize: 50, color: theme.palette.mode === "dark" ? "#666666" : "#cccccc" }} />
+                <TrendingUpIcon sx={{ fontSize: 36, color: theme.palette.mode === "dark" ? "#666666" : "#cccccc" }} />
               </Box>
             </CardContent>
           </Card>
@@ -682,4 +731,4 @@ export default function IDDReportsSection() {
       </Card>
     </Box>
   )
-}
+})

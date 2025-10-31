@@ -106,7 +106,7 @@ const TicketManagement = () => {
     {
       id: "TCK-00123",
       subject: "Data not working",
-      customer: "987654321",
+      customer: "67587654321",
       priority: "High",
       status: "Open",
       assignedTo: "John",
@@ -115,7 +115,7 @@ const TicketManagement = () => {
     {
       id: "TCK-00124",
       subject: "Wrong billing",
-      customer: "912345678",
+      customer: "67512345678",
       priority: "Medium",
       status: "In Progress",
       assignedTo: "Sarah",
@@ -124,7 +124,7 @@ const TicketManagement = () => {
     {
       id: "TCK-00125",
       subject: "Network issue",
-      customer: "923456789",
+      customer: "67523456789",
       priority: "Critical",
       status: "Open",
       assignedTo: "Mike",
@@ -133,7 +133,7 @@ const TicketManagement = () => {
     {
       id: "TCK-00126",
       subject: "SIM activation",
-      customer: "934567890",
+      customer: "67534567890",
       priority: "Low",
       status: "Resolved",
       assignedTo: "John",
@@ -241,7 +241,7 @@ const TicketManagement = () => {
               Filters
             </Typography>
             <Grid container spacing={2}>
-              <Grid sx={{width:'15%'}} item xs={12} sm={6} md={3}>
+              <Grid sx={{ width: "15%" }} item xs={12} sm={6} md={3}>
                 <FormControl fullWidth size="small">
                   <InputLabel>Status</InputLabel>
                   <Select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} label="Status">
@@ -253,7 +253,7 @@ const TicketManagement = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid sx={{width:'15%'}} item xs={12} sm={6} md={3}>
+              <Grid sx={{ width: "15%" }} item xs={12} sm={6} md={3}>
                 <FormControl fullWidth size="small">
                   <InputLabel>Priority</InputLabel>
                   <Select value={filterPriority} onChange={(e) => setFilterPriority(e.target.value)} label="Priority">
@@ -265,7 +265,7 @@ const TicketManagement = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid sx={{width:'15%'}} item xs={12} sm={6} md={3}>
+              <Grid sx={{ width: "15%" }} item xs={12} sm={6} md={3}>
                 <FormControl fullWidth size="small">
                   <InputLabel>Assigned Agent</InputLabel>
                   <Select value={filterAgent} onChange={(e) => setFilterAgent(e.target.value)} label="Assigned Agent">
@@ -276,7 +276,7 @@ const TicketManagement = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid sx={{width:'15%'}} item xs={12} sm={6} md={3}>
+              <Grid sx={{ width: "15%" }} item xs={12} sm={6} md={3}>
                 <TextField
                   fullWidth
                   size="small"
@@ -285,9 +285,15 @@ const TicketManagement = () => {
                   value={dateFrom}
                   onChange={(e) => setDateFrom(e.target.value)}
                   InputLabelProps={{ shrink: true }}
+                  sx={{
+                    '& input[type="date"]::-webkit-calendar-picker-indicator': {
+                      filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+                      cursor: "pointer",
+                    },
+                  }}
                 />
               </Grid>
-              <Grid sx={{width:'15%'}} item xs={12} sm={6} md={3}>
+              <Grid sx={{ width: "15%" }} item xs={12} sm={6} md={3}>
                 <TextField
                   fullWidth
                   size="small"
@@ -296,6 +302,12 @@ const TicketManagement = () => {
                   value={dateTo}
                   onChange={(e) => setDateTo(e.target.value)}
                   InputLabelProps={{ shrink: true }}
+                  sx={{
+                    '& input[type="date"]::-webkit-calendar-picker-indicator': {
+                      filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+                      cursor: "pointer",
+                    },
+                  }}
                 />
               </Grid>
             </Grid>
@@ -356,7 +368,7 @@ const TicketManagement = () => {
             New Support Ticket Form
           </Typography>
           <Grid container spacing={3}>
-            <Grid sx={{width:'20%'}} item xs={12} sm={6}>
+            <Grid sx={{ width: "20%" }} item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Customer Number"
@@ -364,7 +376,7 @@ const TicketManagement = () => {
                 onChange={(e) => setNewTicket({ ...newTicket, customerNumber: e.target.value })}
               />
             </Grid>
-            <Grid sx={{width:'20%'}} item xs={12} sm={6}>
+            <Grid sx={{ width: "20%" }} item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Subject"
@@ -372,7 +384,7 @@ const TicketManagement = () => {
                 onChange={(e) => setNewTicket({ ...newTicket, subject: e.target.value })}
               />
             </Grid>
-            <Grid sx={{width:'20%'}} item xs={12} sm={6}>
+            <Grid sx={{ width: "20%" }} item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>Issue Category</InputLabel>
                 <Select
@@ -386,7 +398,7 @@ const TicketManagement = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid sx={{width:'20%'}} item xs={12} sm={6}>
+            <Grid sx={{ width: "20%" }} item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>Priority</InputLabel>
                 <Select
@@ -401,14 +413,14 @@ const TicketManagement = () => {
                 </Select>
               </FormControl>
             </Grid>
-            
-            <Grid sx={{width:'10%'}} item xs={12} sm={6}>
+
+            <Grid sx={{ width: "10%" }} item xs={12} sm={6}>
               <Button variant="outlined" component="label" fullWidth>
                 Upload File
                 <input type="file" hidden />
               </Button>
             </Grid>
-            <Grid sx={{width:'15%'}} item xs={12} sm={6}>
+            <Grid sx={{ width: "15%" }} item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>Assigned To</InputLabel>
                 <Select
@@ -423,7 +435,7 @@ const TicketManagement = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid sx={{width:'50%'}} item xs={12}>
+            <Grid sx={{ width: "50%" }} item xs={12}>
               <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
                 Description
               </Typography>
@@ -444,7 +456,7 @@ const TicketManagement = () => {
                 placeholder="Describe the issue..."
               />
             </Grid>
-            <Grid sx={{width:'100%'}} item xs={12}>
+            <Grid sx={{ width: "100%" }} item xs={12}>
               <Box sx={{ display: "flex", gap: 2 }}>
                 <Button variant="contained" sx={{ bgcolor: theme.palette.primary.main }} onClick={handleCreateTicket}>
                   Save Ticket
@@ -536,7 +548,7 @@ const TicketManagement = () => {
         <Box>
           <Grid container spacing={3}>
             {/* Tickets per Category */}
-            <Grid sx={{width:'30%'}} item xs={12} md={6}>
+            <Grid sx={{ width: "30%" }} item xs={12} md={6}>
               <Paper
                 sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, bgcolor: theme.palette.background.paper }}
               >
@@ -566,7 +578,7 @@ const TicketManagement = () => {
             </Grid>
 
             {/* Tickets by Status Over Time */}
-            <Grid sx={{width:'30%'}} item xs={12} md={6}>
+            <Grid sx={{ width: "30%" }} item xs={12} md={6}>
               <Paper
                 sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, bgcolor: theme.palette.background.paper }}
               >
@@ -589,7 +601,7 @@ const TicketManagement = () => {
             </Grid>
 
             {/* Agent Performance */}
-            <Grid sx={{width:'30%'}} item xs={12} md={6}>
+            <Grid sx={{ width: "30%" }} item xs={12} md={6}>
               <Paper
                 sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, bgcolor: theme.palette.background.paper }}
               >

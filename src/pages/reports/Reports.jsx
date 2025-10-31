@@ -1,126 +1,196 @@
 "use client"
 
-import { useState } from "react"
-import { Box, Typography, Paper, Tabs, Tab, useTheme, Container } from "@mui/material"
+import { useState, lazy, Suspense } from "react"
 import {
+  Box,
+  Typography,
+  useTheme,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Chip,
+  CircularProgress,
+} from "@mui/material"
+import {
+  ExpandMore as ExpandMoreIcon,
   TrendingUp as TrendingUpIcon,
   People as PeopleIcon,
   Assessment as AssessmentIcon,
   Public as PublicIcon,
+  Business as BusinessIcon,
+  PhoneAndroid as PhoneAndroidIcon,
+  AccountBalance as AccountBalanceIcon,
 } from "@mui/icons-material"
-import UsageReportSection from "./UsageReportSection"
-import CustomerPackSection from "./CustomerPackSection"
-import CDRDetailsSection from "./CDRDetailsSection"
-import IDDReportsSection from "./IDDReportsSection"
+
+const UsageReportSection = lazy(() => import("./UsageReportSection"))
+const CustomerPackSection = lazy(() => import("./CustomerPackSection"))
+const CDRDetailsSection = lazy(() => import("./CDRDetailsSection"))
+const IDDReportsSection = lazy(() => import("./IDDReportsSection"))
+const PartnerReportSection = lazy(() => import("./PartnerReportSection"))
+const PrepaidPostpaidReportSection = lazy(() => import("./PrepaidPostpaidReportSection"))
+const MainBalanceReportSection = lazy(() => import("./MainBalanceReportSection"))
 
 export default function Report() {
   const theme = useTheme()
-  const [activeSection, setActiveSection] = useState(0)
+  const [expanded, setExpanded] = useState("panel1")
 
-  const handleSectionChange = (event, newValue) => {
-    setActiveSection(newValue)
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
   }
 
-  const tabData = [
+  const sections = [
     {
-      label: "Usage Reports",
+      id: "panel1",
+      title: "Usage Reports",
       icon: <TrendingUpIcon />,
-      component: <UsageReportSection />,
-      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+      badge: "Live",
+      component: UsageReportSection,
     },
     {
-      label: "Customer Pack Details",
+      id: "panel2",
+      title: "Customer Pack Details",
       icon: <PeopleIcon />,
-      component: <CustomerPackSection />,
-      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+      badge: "Active",
+      component: CustomerPackSection,
     },
     {
-      label: "CDR Details",
+      id: "panel3",
+      title: "CDR Details",
       icon: <AssessmentIcon />,
-      component: <CDRDetailsSection />,
-      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+      badge: "Real-time",
+      component: CDRDetailsSection,
     },
     {
-      label: "IDD Reports",
+      id: "panel4",
+      title: "IDD Reports",
       icon: <PublicIcon />,
-      component: <IDDReportsSection />,
-      color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+      badge: "Analytics",
+      component: IDDReportsSection,
+    },
+    {
+      id: "panel5",
+      title: "Partner Reports",
+      icon: <BusinessIcon />,
+      badge: "Revenue",
+      component: PartnerReportSection,
+    },
+    {
+      id: "panel6",
+      title: "Prepaid & Postpaid Reports",
+      icon: <PhoneAndroidIcon />,
+      badge: "Segments",
+      component: PrepaidPostpaidReportSection,
+    },
+    {
+      id: "panel7",
+      title: "Main Balance Reports",
+      icon: <AccountBalanceIcon />,
+      badge: "Balance",
+      component: MainBalanceReportSection,
     },
   ]
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      {/* Header */}
-      <Box
+    <Box sx={{ p: 2 }}>
+      <Typography
+        variant="h6"
         sx={{
-          textAlign: "left",
+          fontWeight: 600,
+          fontSize: "1.1rem",
+          color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
           mb: 2,
-          borderRadius: 2,
-          p: 3,
-          border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
-          bgcolor: theme.palette.background.paper,
-          boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
         }}
       >
-         <Typography variant="h4" sx={{ mb: 0, fontWeight: 600, color: theme.palette.text.primary }}>
-          Reports
-        </Typography>
-      </Box>
+        Reports Dashboard
+      </Typography>
 
-      {/* Navigation Tabs */}
-      <Paper
-        sx={{
-          mb: 4,
-          borderRadius: 2,
-          border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
-          overflow: "hidden",
-          bgcolor: theme.palette.background.paper,
-          boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
-        }}
-      >
-        <Tabs
-          value={activeSection}
-          onChange={handleSectionChange}
-          variant="fullWidth"
-          sx={{
-            "& .MuiTab-root": {
-              fontWeight: 600,
-              fontSize: "1rem",
-              textTransform: "none",
-              minHeight: 80,
-              color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
-            },
-            "& .Mui-selected": {
-              color: tabData[activeSection]?.color,
-            },
-            "& .MuiTabs-indicator": {
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: tabData[activeSection]?.color,
-            },
-          }}
-        >
-          {tabData.map((tab, index) => (
-            <Tab
-              key={index}
-              icon={tab.icon}
-              iconPosition="start"
-              label={tab.label}
+      {sections.map((section) => {
+        const SectionComponent = section.component
+
+        return (
+          <Accordion
+            key={section.id}
+            expanded={expanded === section.id}
+            onChange={handleChange(section.id)}
+            sx={{
+              mb: 2,
+              border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+              bgcolor: theme.palette.background.paper,
+              boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
+              "&:before": {
+                display: "none",
+              },
+              "&.Mui-expanded": {
+                margin: "0 0 16px 0",
+              },
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }} />}
               sx={{
-                color: activeSection === index ? tab.color : "inherit",
+                "& .MuiAccordionSummary-content": {
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                },
               }}
-            />
-          ))}
-        </Tabs>
-      </Paper>
-
-      {/* Content Area */}
-      <Box sx={{ minHeight: "60vh" }}>
-        {activeSection === 0 && <UsageReportSection />}
-        {activeSection === 1 && <CustomerPackSection />}
-        {activeSection === 2 && <CDRDetailsSection />}
-        {activeSection === 3 && <IDDReportsSection />}
-      </Box>
-    </Container>
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 32,
+                  height: 32,
+                  borderRadius: 1,
+                  bgcolor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+                }}
+              >
+                {section.icon}
+              </Box>
+              <Typography
+                variant="body1"
+                sx={{
+                  fontWeight: 600,
+                  fontSize: "0.9rem",
+                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                }}
+              >
+                {section.title}
+              </Typography>
+              <Chip
+                label={section.badge}
+                size="small"
+                sx={{
+                  height: 20,
+                  fontSize: "0.7rem",
+                  fontWeight: 600,
+                  bgcolor: theme.palette.mode === "dark" ? "#333333" : "#f5f5f5",
+                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  border: `1px solid ${theme.palette.mode === "dark" ? "#666666" : "#e0e0e0"}`,
+                }}
+              />
+            </AccordionSummary>
+            <AccordionDetails sx={{ p: 2 }}>
+              {expanded === section.id && (
+                <Suspense
+                  fallback={
+                    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+                      <CircularProgress
+                        size={40}
+                        sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+                      />
+                    </Box>
+                  }
+                >
+                  <SectionComponent />
+                </Suspense>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        )
+      })}
+    </Box>
   )
 }

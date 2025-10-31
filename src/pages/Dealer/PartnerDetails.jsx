@@ -408,6 +408,16 @@ const PartnerDetails = ({ open, onClose, partner, inline = false, onEdit }) => {
                       onChange={(e) => handleDateRangeChange("fromDate", e.target.value)}
                       InputLabelProps={{ shrink: true }}
                       variant="outlined"
+                      sx={{
+                        "& input[type='date']::-webkit-calendar-picker-indicator": {
+                          filter: theme.palette.mode === "dark" ? "invert(1) brightness(1.5)" : "invert(0)",
+                          opacity: theme.palette.mode === "dark" ? 1 : 0.7,
+                          cursor: "pointer",
+                        },
+                        "&:hover input[type='date']::-webkit-calendar-picker-indicator": {
+                          opacity: 1,
+                        },
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -419,6 +429,16 @@ const PartnerDetails = ({ open, onClose, partner, inline = false, onEdit }) => {
                       onChange={(e) => handleDateRangeChange("toDate", e.target.value)}
                       InputLabelProps={{ shrink: true }}
                       variant="outlined"
+                      sx={{
+                        "& input[type='date']::-webkit-calendar-picker-indicator": {
+                          filter: theme.palette.mode === "dark" ? "invert(1) brightness(1.5)" : "invert(0)",
+                          opacity: theme.palette.mode === "dark" ? 1 : 0.7,
+                          cursor: "pointer",
+                        },
+                        "&:hover input[type='date']::-webkit-calendar-picker-indicator": {
+                          opacity: 1,
+                        },
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} md={4}>

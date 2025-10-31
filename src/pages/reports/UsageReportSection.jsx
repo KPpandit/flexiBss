@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, memo } from "react"
 import {
   Box,
   Typography,
@@ -18,21 +18,21 @@ import {
   CardContent,
   useTheme,
   LinearProgress,
+  TextField,
+  Button,
 } from "@mui/material"
-import {
-  Sms as SmsIcon,
-  DataUsage as DataIcon,
-  Phone as PhoneIcon,
-  TrendingUp as TrendingUpIcon,
-} from "@mui/icons-material"
+import { Sms as SmsIcon, DataUsage as DataIcon, Phone as PhoneIcon, Search as SearchIcon } from "@mui/icons-material"
 
-export default function UsageReportSection() {
+export default memo(function UsageReportSection() {
   const theme = useTheme()
   const [usageTab, setUsageTab] = useState(0)
   const [smsPage, setSmsPage] = useState(0)
   const [dataPage, setDataPage] = useState(0)
   const [callsPage, setCallsPage] = useState(0)
   const rowsPerPage = 10
+
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
 
   // Sample data
   const smsUsageData = [
@@ -111,6 +111,11 @@ export default function UsageReportSection() {
     setUsageTab(newValue)
   }
 
+  const handleSearch = () => {
+    console.log("[v0] Searching usage data from", startDate, "to", endDate)
+    // Filter logic will be implemented here
+  }
+
   const getUsagePercentage = (consumed, offered) => {
     if (!consumed || !offered) return 0
     return Math.round((consumed / offered) * 100)
@@ -126,12 +131,26 @@ export default function UsageReportSection() {
         boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
       }}
     >
-      <CardContent>
+      <CardContent sx={{ p: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          {icon}
+          <Box
+            sx={{
+              p: 1,
+              borderRadius: 1,
+              bgcolor: theme.palette.mode === "dark" ? "#000000" : "#f5f5f5",
+              border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+              mr: 2,
+            }}
+          >
+            {icon}
+          </Box>
           <Typography
             variant="h6"
-            sx={{ ml: 1, fontWeight: 600, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}
+            sx={{
+              fontWeight: 600,
+              fontSize: "1rem",
+              color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+            }}
           >
             {title}
           </Typography>
@@ -148,7 +167,7 @@ export default function UsageReportSection() {
                   <TableCell
                     key={column.id}
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 600,
                       color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                       fontSize: "0.875rem",
                       borderBottom: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
@@ -159,7 +178,7 @@ export default function UsageReportSection() {
                 ))}
                 <TableCell
                   sx={{
-                    fontWeight: "bold",
+                    fontWeight: 600,
                     color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                     fontSize: "0.875rem",
                     borderBottom: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
@@ -270,18 +289,105 @@ export default function UsageReportSection() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-        <TrendingUpIcon sx={{ fontSize: 32, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mr: 1 }} />
-        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
-          Customer Usage Reports
-        </Typography>
-      </Box>
+      <Paper
+        sx={{
+          p: 2,
+          mb: 2,
+          borderRadius: 2,
+          border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
+          bgcolor: theme.palette.background.paper,
+          boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
+        }}
+      >
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
+          <TextField
+            label="Start Date"
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            size="small"
+            sx={{
+              minWidth: 160,
+              "& .MuiInputLabel-root": {
+                color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+              },
+              "& .MuiOutlinedInput-root": {
+                color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                "& fieldset": {
+                  borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+                },
+                "&:hover fieldset": {
+                  borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                },
+              },
+              "& input[type='date']::-webkit-calendar-picker-indicator": {
+                filter: theme.palette.mode === "dark" ? "invert(1) brightness(1.5)" : "invert(0)",
+                opacity: theme.palette.mode === "dark" ? 1 : 0.7,
+                cursor: "pointer",
+              },
+              "&:hover input[type='date']::-webkit-calendar-picker-indicator": {
+                opacity: 1,
+              },
+            }}
+          />
+          <TextField
+            label="End Date"
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            size="small"
+            sx={{
+              minWidth: 160,
+              "& .MuiInputLabel-root": {
+                color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+              },
+              "& .MuiOutlinedInput-root": {
+                color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                "& fieldset": {
+                  borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0",
+                },
+                "&:hover fieldset": {
+                  borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                },
+              },
+              "& input[type='date']::-webkit-calendar-picker-indicator": {
+                filter: theme.palette.mode === "dark" ? "invert(1) brightness(1.5)" : "invert(0)",
+                opacity: theme.palette.mode === "dark" ? 1 : 0.7,
+                cursor: "pointer",
+              },
+              "&:hover input[type='date']::-webkit-calendar-picker-indicator": {
+                opacity: 1,
+              },
+            }}
+          />
+          <Button
+            variant="contained"
+            startIcon={<SearchIcon />}
+            onClick={handleSearch}
+            sx={{
+              bgcolor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+              color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
+              textTransform: "none",
+              fontWeight: 600,
+              fontSize: "0.750rem",
+              "&:hover": {
+                bgcolor: theme.palette.mode === "dark" ? "#e0e0e0" : "#333333",
+              },
+            }}
+          >
+            SEARCH
+          </Button>
+        </Box>
+      </Paper>
 
       <Paper
         sx={{
           borderRadius: 2,
           border: `1px solid ${theme.palette.mode === "dark" ? "#ffffff" : "#e0e0e0"}`,
           bgcolor: theme.palette.background.paper,
+          boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(255, 255, 255, 0.1)" : theme.shadows[1],
         }}
       >
         <Tabs
@@ -291,14 +397,20 @@ export default function UsageReportSection() {
           sx={{
             "& .MuiTab-root": {
               fontWeight: 600,
-              fontSize: "1rem",
+              fontSize: "0.875rem",
               textTransform: "none",
-              color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
+              minHeight: 60,
+              color: theme.palette.mode === "dark" ? "#666666" : "#999999",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
+              },
             },
             "& .Mui-selected": {
               color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
             },
             "& .MuiTabs-indicator": {
+              height: 3,
               backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
             },
           }}
@@ -338,4 +450,4 @@ export default function UsageReportSection() {
         )}
     </Box>
   )
-}
+})

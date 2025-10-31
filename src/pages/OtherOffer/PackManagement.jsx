@@ -115,12 +115,12 @@ const PackManagement = () => {
         backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
       }}
     >
-      <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Container maxWidth="xl" sx={{ py: 2.5 }}>
         <Paper
           elevation={0}
           sx={{
-            p: 4,
-            mb: 4,
+            p: 2.5,
+            mb: 3,
             borderRadius: 4,
             backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
             border: theme.palette.mode === "dark" ? "1px solid #ffffff" : "1px solid #e0e0e0",
@@ -128,31 +128,31 @@ const PackManagement = () => {
           }}
         >
           <Box>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
               <Box>
-                 <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: 600,
-                  color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                }}
-              >
-                  Tarrif Management
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: 700,
+                    color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                >
+                  Tariff Management
                 </Typography>
               </Box>
               <Button
                 variant="contained"
-                size="large"
+                size="medium"
                 startIcon={<AddIcon />}
                 onClick={handleAddPack}
                 sx={{
                   borderRadius: 4,
-                  px: 4,
-                  py: 1.5,
+                  px: 3,
+                  py: 1,
                   backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                   color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                   fontWeight: 700,
-                  fontSize: "1rem",
+                  fontSize: "0.85rem",
                   "&:hover": {
                     backgroundColor: theme.palette.mode === "dark" ? "#cccccc" : "#333333",
                   },
@@ -162,7 +162,7 @@ const PackManagement = () => {
               </Button>
             </Box>
 
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
               {statusTabs.map((status, index) => {
                 const config = getTabConfig(index)
                 const count = getPackCountByStatus(status)
@@ -173,7 +173,7 @@ const PackManagement = () => {
                         backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                         border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
                         borderRadius: 3,
-                        p: 3,
+                        p: 2,
                         transition: "all 0.3s ease",
                         "&:hover": {
                           borderColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -184,8 +184,8 @@ const PackManagement = () => {
                       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Avatar
                           sx={{
-                            width: 48,
-                            height: 48,
+                            width: 36,
+                            height: 36,
                             backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                             color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
                           }}
@@ -194,7 +194,7 @@ const PackManagement = () => {
                         </Avatar>
                         <Box>
                           <Typography
-                            variant="h4"
+                            variant="h5"
                             sx={{
                               fontWeight: 800,
                               color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
@@ -203,7 +203,7 @@ const PackManagement = () => {
                             {count}
                           </Typography>
                           <Typography
-                            variant="body1"
+                            variant="body2"
                             sx={{
                               color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
                             }}
@@ -223,17 +223,18 @@ const PackManagement = () => {
         <Paper
           elevation={3}
           sx={{
-            p: 3,
-            mb: 4,
+            p: 2,
+            mb: 3,
             borderRadius: 4,
             backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
             border: theme.palette.mode === "dark" ? "1px solid #666666" : "1px solid #e0e0e0",
           }}
         >
-          <Grid container spacing={3} alignItems="center">
+          <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={8} sx={{ width: 400 }}>
               <TextField
                 fullWidth
+                size="small"
                 placeholder="Search packs by name, code, or description..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -263,7 +264,7 @@ const PackManagement = () => {
               />
             </Grid>
             <Grid item xs={12} md={4} sx={{ width: 300 }}>
-              <FormControl fullWidth>
+              <FormControl fullWidth size="small">
                 <InputLabel sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
                   Category Filter
                 </InputLabel>
@@ -299,7 +300,7 @@ const PackManagement = () => {
         <Paper
           elevation={2}
           sx={{
-            mb: 4,
+            mb: 3,
             borderRadius: 4,
             overflow: "hidden",
             backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
@@ -313,8 +314,8 @@ const PackManagement = () => {
             sx={{
               "& .MuiTab-root": {
                 fontWeight: 700,
-                fontSize: "1rem",
-                py: 3,
+                fontSize: "0.85rem",
+                py: 2,
                 transition: "all 0.3s ease",
                 color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
                 "&.Mui-selected": {
@@ -357,7 +358,6 @@ const PackManagement = () => {
           </Tabs>
         </Paper>
 
-        {/* Pack Grid */}
         <Fade in={true} timeout={800}>
           <Grid container spacing={4}>
             {filteredPacks.map((pack, index) => (
@@ -371,7 +371,7 @@ const PackManagement = () => {
         {filteredPacks.length === 0 && (
           <Paper
             sx={{
-              p: 8,
+              p: 6,
               textAlign: "center",
               borderRadius: 4,
               backgroundColor: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
@@ -380,31 +380,31 @@ const PackManagement = () => {
           >
             <Avatar
               sx={{
-                width: 80,
-                height: 80,
+                width: 56,
+                height: 56,
                 mx: "auto",
-                mb: 3,
+                mb: 2,
                 backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                 color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
               }}
             >
-              <InsightsIcon sx={{ fontSize: 40 }} />
+              <InsightsIcon sx={{ fontSize: 28 }} />
             </Avatar>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 color: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
-                mb: 2,
+                mb: 1.5,
                 fontWeight: 600,
               }}
             >
               No packs found
             </Typography>
             <Typography
-              variant="body1"
+              variant="body2"
               sx={{
                 color: theme.palette.mode === "dark" ? "#cccccc" : "#666666",
-                mb: 3,
+                mb: 2,
               }}
             >
               Try adjusting your search criteria or create a new pack to get started
@@ -413,7 +413,7 @@ const PackManagement = () => {
               variant="contained"
               startIcon={<AddIcon />}
               onClick={handleAddPack}
-              size="large"
+              size="medium"
               sx={{
                 backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#000000",
                 color: theme.palette.mode === "dark" ? "#000000" : "#ffffff",
@@ -427,7 +427,6 @@ const PackManagement = () => {
           </Paper>
         )}
 
-        {/* Pack Form Dialog */}
         <PackForm
           open={openForm}
           onClose={() => setOpenForm(false)}

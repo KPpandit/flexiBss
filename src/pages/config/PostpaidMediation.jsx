@@ -54,7 +54,7 @@ export default function PostpaidMediation() {
       </Box>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid item sx={{width:'100%'}} xs={12} md={6}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
@@ -106,7 +106,7 @@ export default function PostpaidMediation() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid item  sx={{width:'100%'}} xs={12} md={6}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>

@@ -32,6 +32,8 @@ import RatingEngine from './pages/RatingEngine/RatingEngine';
 import MISReports from './pages/MISReport/MISReports';
 import FraudManagement from './pages/FroudMangement/FraudManagement';
 import TicketManagement from './pages/TicketManagemnt/TicketManagement';
+import CVMPage from './pages/CVM/CVMPage';
+import CorporateCustomer from './pages/Customer/CorporateCustomer';
 
 
 function App() {
@@ -71,6 +73,16 @@ function App() {
           }
         />
         <Route
+          path="/dashboard/Cvm"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <CVMPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/dashboard/plan"
           element={
             <ProtectedRoute>
@@ -96,6 +108,16 @@ function App() {
             <ProtectedRoute>
               <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
                 <MISReports />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/dashboard/coporate"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <CorporateCustomer />
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -166,6 +188,16 @@ function App() {
             <ProtectedRoute>
               <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
                 <SimConversion />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/dashboard/reports"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout toggleTheme={toggleTheme} mode={mode}>
+                <Report />
               </DashboardLayout>
             </ProtectedRoute>
           }
